@@ -87,7 +87,7 @@ This list keeps track of currently open and completed tasks.
     - [x] Create a new private github Project
     - [x] Add simeonlin as a collaborator
     - [x] Push changes to main
-- [ ] First Quarkus project
+- [x] First Quarkus project
     - [x] Create a new Quarkus project
     - [x] Start and test the project
     - [x] Expand the project / Thinker around
