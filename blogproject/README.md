@@ -1,17 +1,28 @@
 # blogproject
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+This is my school project, that is part of the "Distributed Systems" course from the third year of study at the HFTM in Grenchen.
+The goal is to build up a web-api backend, which I can utilise and extend in future courses.
 
-If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
+This project uses the java framework Quarkus.
+
+# Quarkus
 
 ## Running the application in dev mode
-
-You can run your application in dev mode that enables live coding using:
+To run the application in dev mode, run the following command in the terminal from the root of the project. Dev mode enables live coding.
+```shell script
+./mvnw quarkus:dev
+```
+If the previous command is not working:
 ```shell script
 ./mvnw compile quarkus:dev
 ```
 
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at http://localhost:8080/q/dev/.
+## Accessing the Webview
+After the project has been started, the following two links should be accessible:
+
+**Homepage:**       http://localhost:8080/hello
+
+**Dev UI:**         http://localhost:8080/q/dev/
 
 ## Packaging and running the application
 
@@ -45,16 +56,38 @@ Or, if you don't have GraalVM installed, you can run the native executable build
 
 You can then execute your native executable with: `./target/blogproject-1.0.0-SNAPSHOT-runner`
 
-If you want to learn more about building native executables, please consult https://quarkus.io/guides/maven-tooling.
+## Related Guides and Links
 
-## Related Guides
+- **Quarkus Website:** https://quarkus.io/
 
-- REST JSON-B ([guide](https://quarkus.io/guides/rest#json-serialisation)): JSON-B serialization support for Quarkus REST. This extension is not compatible with the quarkus-resteasy extension, or any of the extensions that depend on it.
+- **REST JSON-B serialization support for Quarkus REST:**  https://quarkus.io/guides/rest#json-serialisation
 
-## Provided Code
+- **Easily start your REST Web Services:** https://quarkus.io/guides/getting-started-reactive#reactive-jax-rs-resources
 
-### REST
+- **Building native executables:** https://quarkus.io/guides/maven-tooling
 
-Easily start your REST Web Services
 
-[Related guide section...](https://quarkus.io/guides/getting-started-reactive#reactive-jax-rs-resources)
+# Administrative
+### Grading
+The grading of this project will be done by collaborator simeonlin.
+This project will be randomly sampled and graded after every tasks.
+Each sample will be assessed according to the following scheme with a maximum of 4 points:
+* Initial repository status / starting point before the last task (max. 2 points)
+    * ✅ 2 points: Suitable project setup and evidence of initiative.
+    * ☑️ 1 point: Suitable project setup, but little evidence of initiative. (e.g., Only commits with sample solutions)
+    * ❌ 0 points: Starting point is incorrect.
+* Last task (max. 2 points)
+    * ✅ 2 points: Current task has been implemented or it is evident that the student has engaged appropriately with the current task.
+    * ☑️ 1 point: Little effort towards the last task is evident.
+    * ❌ 0 points: No effort towards the last task is evident.
+
+### To-Do
+This list keeps track of currently open and completed tasks. 
+- [x] Basic Setup
+    1. Create a new private github Project
+    2. Add simeonlin as a collaborator
+    3. Push changes to main
+- [ ] First Quarkus project
+    1. Create a new Quarkus project
+    2. Start and test the project
+    3. Expand the project / Thinker around
