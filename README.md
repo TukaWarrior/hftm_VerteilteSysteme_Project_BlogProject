@@ -84,10 +84,10 @@ Each sample will be assessed according to the following scheme with a maximum of
 ### To-Do
 This list keeps track of currently open and completed tasks. 
 - [x] Basic Setup
-    1. Create a new private github Project
-    2. Add simeonlin as a collaborator
-    3. Push changes to main
+    - [x] Create a new private github Project
+    - [x] Add simeonlin as a collaborator
+    - [x] Push changes to main
 - [ ] First Quarkus project
-    1. Create a new Quarkus project
-    2. Start and test the project
-    3. Expand the project / Thinker around
+    - [x] Create a new Quarkus project
+    - [x] Start and test the project
+    - [ ] Expand the project / Thinker around
