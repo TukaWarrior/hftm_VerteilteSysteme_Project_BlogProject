@@ -90,4 +90,4 @@ This list keeps track of currently open and completed tasks.
 - [ ] First Quarkus project
     - [x] Create a new Quarkus project
     - [x] Start and test the project
-    - [ ] Expand the project / Thinker around
+    - [x] Expand the project / Thinker around
