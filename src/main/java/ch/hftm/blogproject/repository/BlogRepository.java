@@ -1,13 +1,16 @@
 package ch.hftm.blogproject.repository;
 
+import ch.hftm.blogproject.entity.Blog;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.hftm.blogproject.entity.Blog;
+import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.transaction.Transactional;
 
 @ApplicationScoped
-public class BlogRepository {
+public class BlogRepository implements PanacheRepository<Blog>{
 
     private List<Blog> blogs = new ArrayList<>();
 
@@ -23,5 +26,14 @@ public class BlogRepository {
     public void addBlog(Blog blog) {
         blogs.add(blog);
     }
+
+    // var blogs = blogRepository.listAll();
+
     
+    //  @Transactional
+    // public void addBlog(Blog blog) {
+    //     logger.info("Adding blog " + blog.getTitle());
+    //     blogRepository.persist(blog);
+    // }
+
 }
