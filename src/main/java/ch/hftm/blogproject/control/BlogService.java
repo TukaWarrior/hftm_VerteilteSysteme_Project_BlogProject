@@ -20,6 +20,10 @@ public class BlogService {
         return blogs;
     }
 
+    // public void getBlog(long id) {
+    //     return blog;
+    // }
+
     public void addBlog(Blog blog) {
         Log.info("Adding blog " + blog.getTitle());
         blogRepository.addBlog(blog);
