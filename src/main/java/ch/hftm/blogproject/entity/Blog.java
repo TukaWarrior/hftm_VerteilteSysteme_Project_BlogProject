@@ -18,7 +18,7 @@ public class Blog {
     private Long id;
     private String title;
     private String content;
-    private List<Comment> comments;
+    // private List<Comment> comments;
 
     
     public Long getId() {
@@ -35,7 +35,7 @@ public class Blog {
     }
 
 
-    public void setId(Long it) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -54,7 +54,7 @@ public class Blog {
         this.content = content;
     }
 
-    public Blog(Long Id, String title, String content) {
+    public Blog(Long id, String title, String content) {
         this.id = id;
         this.title = title;
         this.content = content;
