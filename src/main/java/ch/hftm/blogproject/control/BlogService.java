@@ -1,29 +1,42 @@
 package ch.hftm.blogproject.control;
 
 import java.util.List;
+import java.util.Optional;
 
 import ch.hftm.blogproject.entity.Blog;
-import ch.hftm.blogproject.repository.BlogRepository;
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.logging.Log;
-
-import jakarta.enterprise.context.Dependent;
+import io.quarkus.panache.common.Page;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 
-@Dependent
+@ApplicationScoped
 public class BlogService {
     @Inject
-    BlogRepository blogRepository;
+    private BlogRepository blogRepository;
 
     public List<Blog> getBlogs() {
-        var blogs = blogRepository.getBlogs();
+        return this.getBlogs(Optional.empty(), Optional.empty());
+    }
+
+    public List<Blog> getBlogs(Optional<String> searchString, Optional<Long> page) {
+        PanacheQuery<Blog> blogQuery;
+        if (searchString.isEmpty()) {
+            blogQuery = blogRepository.findAll();
+        } else {
+            blogQuery = blogRepository.find("title like ?1 or content like ?1", "%" + searchString.get() +"%");
+        }
+        var blogs = blogQuery.page(Page.ofSize(2)).list();
         Log.info("Returning " + blogs.size() + " blogs");
         return blogs;
     }
 
-    // public void getBlog(long id) {
-    //     return blog;
-    // }
+    public Optional<Blog> getBlog(long id) {
+        return blogRepository.findByIdOptional(id);
+    }
 
+    @Transactional
     public void addBlog(Blog blog) {
         Log.info("Adding blog " + blog.getTitle());
         blogRepository.addBlog(blog);
