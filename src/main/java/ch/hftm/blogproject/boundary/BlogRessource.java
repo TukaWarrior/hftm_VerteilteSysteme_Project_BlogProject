@@ -43,7 +43,7 @@ public class BlogRessource {
 
     @POST
     public Response addBlog(Blog blog, @Context UriInfo uriInfo) {
-        Blog responseValue = blogService.addBlog(blog);
+        Blog responseValue = blogService.pushBlog(blog);
         URI uri = uriInfo.getAbsolutePathBuilder().path(Long.toString(blog.getId())).build();
         if (responseValue != null) {
             return Response.created(uri).entity(responseValue).build();
@@ -57,7 +57,6 @@ public class BlogRessource {
     public Response deleteBlog(@PathParam("id") long id) {
         Blog responseValue = blogService.deleteBlog(id);
         if (responseValue != null) {
-            Log.error("Blog with id " + id + " deleted successfully");
             return Response.status(Status.OK).entity(responseValue).build();
         } else {
             return Response.status(Status.NOT_FOUND).build();
@@ -68,7 +67,7 @@ public class BlogRessource {
     @PUT
     @Path("{id}")
     public Response putBlog(@PathParam("id") long id, Blog blog) {
-        Blog responseValue = blogService.replaceBlog(id, blog);
+        Blog responseValue = blogService.putBlog(id, blog);
         if (responseValue != null) {
             return Response.status(Status.OK).entity(responseValue).build();
         } else {
@@ -80,7 +79,7 @@ public class BlogRessource {
     @PATCH
     @Path("{id}")
     public Response patchBlog(@PathParam("id") long id, Blog blog) {
-        Blog responseValue = blogService.updateBlog(id, blog);
+        Blog responseValue = blogService.patchBlog(id, blog);
 
         if (responseValue != null) {
             return Response.status(Status.OK).entity(responseValue).build();

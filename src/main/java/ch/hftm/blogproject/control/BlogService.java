@@ -21,10 +21,7 @@ public class BlogService {
     @Inject
     private BlogRepository blogRepository;
 
-    public List<Blog> getBlogs() {
-        return this.getBlogs(Optional.empty(), Optional.empty());
-    }
-
+    // Returns a list of blogs that match the passed search terms. 
     public List<Blog> getBlogs(Optional<String> searchString, Optional<Long> pageNumber) {
         PanacheQuery<Blog> blogQuery;
         if (searchString.isEmpty()) {
@@ -32,27 +29,30 @@ public class BlogService {
         } else {
             blogQuery = blogRepository.find("title like ?1 or content like ?1", "%" + searchString.get() +"%");
         }
+    
 
         long pageIndex = pageNumber.orElse(1L);
-
         // List<Blog> blogs = blogQuery.page(Page.ofSize(2)).list(); // Old code. Just define the page size. For automatic scrolling in frontend? 
         List<Blog> blogs = blogQuery.page(Page.of((int) (pageIndex - 1), pageSize)).list();
         Log.info("Returning " + blogs.size() + " blogs");
         return blogs;
     }
 
+    // Returns a blog with the passed id.
     public Blog getBlogById(long id) {
         return blogRepository.findById(id);
     }
 
+    // Creates a new blog with a new id.
     @Transactional
-    public Blog addBlog(Blog blog) {
+    public Blog pushBlog(Blog blog) {
         Log.info("Adding blog " + blog.getTitle());
         blogRepository.persist(blog);
         return blog;
     
     }
 
+    // Deletes an existing blog with a matching id.
     @Transactional
     public Blog deleteBlog(long id) {
         Blog blog = blogRepository.findById(id);
@@ -66,16 +66,16 @@ public class BlogService {
         }
     }
 
+    // Replaces attributes of an existing blog with a matching id.
     @Transactional
-    public Blog replaceBlog(Long id, Blog blog) {
+    public Blog putBlog(Long id, Blog newBlog) {
         Blog existingBlog = blogRepository.findById(id);
         if (existingBlog != null) {
             // I treid to replace the existing blog entity completely but it would just create a new blog. SOme problems with the Primary key. 
             // For now, I just replace each attribute manualy, which seems to be suboptimal.
-            // Blog newBlog = new Blog(id, blog.getTitle(), blog.getContent(), existingBlog.getDateTime());
-            // blogRepository.delete(existingBlog);
-            existingBlog.setTitle(blog.getTitle());
-            existingBlog.setContent(blog.getContent());
+            existingBlog.setTitle(newBlog.getTitle());
+            existingBlog.setContent(newBlog.getContent());
+            existingBlog.setLastChangesAt();
             blogRepository.persist(existingBlog);
             Log.info("Replaced blog with id " + id);
             return existingBlog;
@@ -85,16 +85,18 @@ public class BlogService {
         }
     }
 
+    // Replaces attributes of existing blog with a matching id only when they are not null.
     @Transactional
-    public Blog updateBlog(long id, Blog partialBlog) {
+    public Blog patchBlog(long id, Blog newBlog) {
         Blog existingBlog = blogRepository.findById(id);
         if (existingBlog != null) {
-        if (partialBlog.getTitle() != null) {
-            existingBlog.setTitle(partialBlog.getTitle());
+        if (newBlog.getTitle() != null) {
+            existingBlog.setTitle(newBlog.getTitle());
         }
-        if (partialBlog.getContent() != null) {
-            existingBlog.setContent(partialBlog.getContent());
+        if (newBlog.getContent() != null) {
+            existingBlog.setContent(newBlog.getContent());
         }
+        existingBlog.setLastChangesAt();
         blogRepository.persist(existingBlog);
         Log.info("Partially updated blog with id " + id);
         return existingBlog;

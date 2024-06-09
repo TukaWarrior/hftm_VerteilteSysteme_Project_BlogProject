@@ -16,7 +16,8 @@ public class Blog {
     private Long id;
     private String title;
     private String content;
-    private ZonedDateTime dateTime;
+    private ZonedDateTime createdAt;
+    private ZonedDateTime lastChangedAt;
     
     public Long getId() {
         return this.id;
@@ -31,8 +32,12 @@ public class Blog {
         return this.content;
     }
 
-    public ZonedDateTime getDateTime() {
-        return this.dateTime;
+    public ZonedDateTime getCreatedAt() {
+        return this.createdAt;
+    }
+
+    public ZonedDateTime getLastChangedAt() {
+        return this.lastChangedAt;
     }
 
 
@@ -49,8 +54,12 @@ public class Blog {
         this.content = content;
     }
 
-    public void setDateTime(ZonedDateTime dateTime) {
-        this.dateTime = dateTime;
+    public void setCreatedAt(ZonedDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public void setLastChangesAt() {
+        this.lastChangedAt = ZonedDateTime.now();
     }
 
     public Blog() {
@@ -60,13 +69,7 @@ public class Blog {
         this.id = id;
         this.title = title;
         this.content = content;
-        this.dateTime = ZonedDateTime.now();
-    }
-
-    public Blog(Long id, String title, String content, ZonedDateTime dateTIme) {
-        this.id = id;
-        this.title = title;
-        this.content = content;
-        this.dateTime = ZonedDateTime.now();
+        this.createdAt = ZonedDateTime.now();
+        this.lastChangedAt = ZonedDateTime.now();
     }
 }

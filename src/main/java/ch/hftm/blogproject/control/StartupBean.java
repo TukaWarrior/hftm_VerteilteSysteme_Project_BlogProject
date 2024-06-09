@@ -20,11 +20,11 @@ public class StartupBean {
     @PostConstruct
     public void init() {
         Log.info("Initializing database with sample blogs...");
-        blogService.addBlog(new Blog(null, "Initial Blog 1", "Content of initial Blog One"));
-        blogService.addBlog(new Blog(null, "Initial Blog 2", "Content of initial Blog Two"));
-        blogService.addBlog(new Blog(null, "Initial Blog 3", "Content of initial Blog Three"));
-        blogService.addBlog(new Blog(null, "Initial Blog 4", "Content of initial Blog Four"));
-        blogService.addBlog(new Blog(null, "Initial Blog 5", "Content of initial Blog Five"));
+        blogService.pushBlog(new Blog(null, "Initial Blog 1", "Content of initial Blog One"));
+        blogService.pushBlog(new Blog(null, "Initial Blog 2", "Content of initial Blog Two"));
+        blogService.pushBlog(new Blog(null, "Initial Blog 3", "Content of initial Blog Three"));
+        blogService.pushBlog(new Blog(null, "Initial Blog 4", "Content of initial Blog Four"));
+        blogService.pushBlog(new Blog(null, "Initial Blog 5", "Content of initial Blog Five"));
         Log.info("Sample blogs added.");
     }
 }
