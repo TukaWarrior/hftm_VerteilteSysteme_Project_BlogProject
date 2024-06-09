@@ -1,18 +1,15 @@
 package ch.hftm.blogproject.entity;
 
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-// import lombok.AllArgsConstructor;
-// import lombok.Data;
-// import lombok.NoArgsConstructor;
 
 // Defines the Blog entity representing a blog post with its properties
 
 @Entity
-// @Data
-// @AllArgsConstructor
-// @NoArgsConstructor
 public class Blog {
 
     @Id 
@@ -20,18 +17,23 @@ public class Blog {
     private Long id;
     private String title;
     private String content;
+    private ZonedDateTime date;
     
     public Long getId() {
-        return id;
+        return this.id;
     }
 
     public String getTitle() {
-        return title;
+        return this.title;
     }
 
 
     public String getContent() {
-        return content;
+        return this.content;
+    }
+
+    public ZonedDateTime getDate() {
+        return this.date;
     }
 
 
@@ -48,6 +50,10 @@ public class Blog {
         this.content = content;
     }
 
+    public void setDate(ZonedDateTime date) {
+        this.date = date;
+    }
+
     public Blog() {
     }
 
@@ -55,5 +61,6 @@ public class Blog {
         this.id = id;
         this.title = title;
         this.content = content;
+        this.date = ZonedDateTime.now();
     }
 }
