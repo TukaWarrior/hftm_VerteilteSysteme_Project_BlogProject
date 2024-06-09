@@ -6,6 +6,18 @@ As for now, the application allows the user to create, view and edit blog entrie
 
 This project uses the java framework Quarkus.
 
+## Table of Contents
+1. [Quarkus](#quarkus)
+    1. [Running the application in dev mode](#running-the-application-in-dev-mode)
+    2. [Accessing the Webview](#accessing-the-webview)
+    3. [Packaging and running the application](#packaging-and-running-the-application)
+    4. [Creating a native executable](#creating-a-native-executable)
+    5. [Related Guides and Links](#related-guides-and-links)
+2. [HTTP Request Examples](#http-request-examples)
+3. [Administrative](#administrative)
+    1. [Grading](#grading)
+    2. [Roadmap](#roadmap)
+    
 # Quarkus
 
 ### Running the application in dev mode
@@ -96,7 +108,6 @@ Each sample will be assessed according to the following scheme with a maximum of
     * ❌ 0 points: No effort towards the last task is evident.
 
 ### Roadmap
-### To-Do
 This list keeps track of currently open and completed tasks. 
 - [x] PU 01 - Basic Setup
     - [x] Create a new private github Project
