@@ -11,10 +11,12 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 
+// This class handles the business logic for the blog posts. It interacts with the BlogRessource class and the BlogRepository class.
+
 @ApplicationScoped
 public class BlogService {
 
-    int pageSize = 2; // Defines the numbers of entries returned per page.
+    int pageSize = 4; // Settings: Defines the numbers of entries returned per page.
 
     @Inject
     private BlogRepository blogRepository;
@@ -33,6 +35,7 @@ public class BlogService {
 
         long pageIndex = pageNumber.orElse(1L);
 
+        // List<Blog> blogs = blogQuery.page(Page.ofSize(2)).list(); // Old code. Just define the page size. For automatic scrolling in frontend. 
         List<Blog> blogs = blogQuery.page(Page.of((int) (pageIndex - 1), pageSize)).list();
         Log.info("Returning " + blogs.size() + " blogs");
         return blogs;

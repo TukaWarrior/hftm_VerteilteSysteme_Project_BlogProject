@@ -7,6 +7,8 @@ import jakarta.persistence.Id;
 // import lombok.Data;
 // import lombok.NoArgsConstructor;
 
+// Defines the Blog entity representing a blog post with its properties
+
 @Entity
 // @Data
 // @AllArgsConstructor

@@ -1,15 +1,12 @@
 package ch.hftm.blogproject.boundary;
 
 import java.net.URI;
-import java.util.List;
 import java.util.Optional;
 
 import ch.hftm.blogproject.control.BlogService;
 import ch.hftm.blogproject.entity.Blog;
-import io.quarkus.logging.Log;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
-import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.QueryParam;
@@ -17,6 +14,8 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
 import jakarta.ws.rs.core.UriInfo;
+
+// This class provides the REST API endpoints for managing blog posts.
 
 @Path("blogs")
 public class BlogRessource {

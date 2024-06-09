@@ -7,8 +7,8 @@ import jakarta.inject.Inject;
 import io.quarkus.logging.Log;
 import io.quarkus.runtime.Startup;
 
-// This class serves testing purposes. It adds blogs to the database upon each quarkus startup / refresh. 
-// This makes testing Get requests easier. 
+// This class serves testing purposes. It adds blogs entities to the database upon quarkus startup / refresh. 
+// This makes testing GET requests easier. 
 
 @ApplicationScoped
 @Startup 
