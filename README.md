@@ -70,41 +70,15 @@ You can then execute your native executable with: `./target/blogproject-1.0.0-SN
 # HTTP Request Examples
 Once the application is running, following http requests are possible (Examples using httpie):
 
-### GET Requests
-* Retrieving all blogs (4 per page)
-```
-http -v GET http://localhost:8080/blogs
-```
-* Retrieving all blogs on page 2
-```
-http -v GET http://localhost:8080/blogs?page=2
-```
-* Retrieving blog with the id 1
-```
-http -v GET http://localhost:8080/blogs/1
-```
-### POST Requests
-* Posting new blog with title and content (title and content are required)
-```
-http -v POST http://localhost:8080/blogs title="New Blog" content="This blog is new!"
-```
-### DELETE Requests
-* Deleting blog with the id 1 (id is required)
-```
-http -v DELETE http://localhost:8080/blogs/1
-```
-### PUT Requests
-* Replacing entire blog with id 1 (id, title and content are required)
-```
-http -v PUT http://localhost:8080/blogs/1 title="This blog was replaced" content="This content was replaced"
-```
-
-### PUT Requests
-* Replacing attributes of blog with id 1 (id is required. Left out attributes or empty attributes "" will not be replaced)
-```
-http -v PATCH http://localhost:8080/blogs/1 content="This content was replaced"    
-```
-
+| Type | Command | Description |
+| --- | --- | --- |
+| GET | ```http GET http://localhost:8080/blogs``` | Lists all blogs, 4 per page |
+| GET | ```http GET http://localhost:8080/blogs?page=2``` | List all blogs, page 2 |
+| GET | ```http GET http://localhost:8080/blogs/1``` | List blog with id 1 |
+| POST | ```http POST http://localhost:8080/blogs title="New Blog" content="This blog is new!"```| Post new blog with title and content (title and content required) |
+| DELETE | ```http DELETE http://localhost:8080/blogs/1``` | Delete blog with the id 1 (id required) |
+| PUT | ```http PUT http://localhost:8080/blogs/1 title="This blog was replaced" content="This content was replaced"``` | Replace blog with id 1 (id, title content required) |
+| PATCH | ```http PATCH http://localhost:8080/blogs/1 content="This content was replaced"```  | Replace attributes of blog with id 1 (id required. Empty "" or null attributesare ignored) |
 
 # Diagrams
 
@@ -129,8 +103,7 @@ classDiagram
         +void setCreatedAt(ZonedDateTime createdAt)
         +void setLastChangesAt()
     }
-
-
+```
 
 # Administrative
 ### Grading
