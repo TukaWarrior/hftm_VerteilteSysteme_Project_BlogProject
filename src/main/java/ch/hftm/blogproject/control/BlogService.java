@@ -50,4 +50,15 @@ public class BlogService {
         Log.info("Adding blog " + blog.getTitle());
         blogRepository.persist(blog);
     }
+
+    @Transactional
+    public void deleteBlog(long id) {
+        Blog blog = blogRepository.findById(id);
+        if (blog != null) {
+            blogRepository.delete(blog);
+             Log.info("Deleted blog with id " + id);
+        } else {
+            Log.warn("Blog with id " + id + " not found for deletion");
+        }
+    }
 }
