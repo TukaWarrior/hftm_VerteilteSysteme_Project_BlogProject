@@ -67,6 +67,7 @@ You can then execute your native executable with: `./target/blogproject-1.0.0-SN
 
 - **Building native executables:** https://quarkus.io/guides/maven-tooling
 
+
 # HTTP Request Examples
 Once the application is running, following http requests are possible (Examples using httpie):
 
@@ -79,96 +80,6 @@ Once the application is running, following http requests are possible (Examples 
 | DELETE | ```http DELETE http://localhost:8080/blogs/1``` | Delete blog with the id 1 (id required) |
 | PUT | ```http PUT http://localhost:8080/blogs/1 title="This blog was replaced" content="This content was replaced"``` | Replace blog with id 1 (id, title content required) |
 | PATCH | ```http PATCH http://localhost:8080/blogs/1 content="This content was replaced"```  | Replace attributes of blog with id 1 (id required. Empty "" or null attributesare ignored) |
-
-# Diagrams
-
-```mermaid
-classDiagram
-    class Blog {
-        -Long id
-        -String title
-        -String content
-        -ZonedDateTime createdAt
-        -ZonedDateTime lastChangedAt
-        +Blog()
-        +Blog(Long id, String title, String content)
-        +Long getId()
-        +String getTitle()
-        +String getContent()
-        +ZonedDateTime getCreatedAt()
-        +ZonedDateTime getLastChangedAt()
-        +void setId(Long id)
-        +void setTitle(String title)
-        +void setContent(String content)
-        +void setCreatedAt(ZonedDateTime createdAt)
-        +void setLastChangesAt()
-    }
-```
-
-```mermaid
-sequenceDiagram
-    participant Client
-    participant BlogResource
-    participant BlogService
-    participant BlogRepository
-    participant Blog
-
-    Client->>BlogResource: GET /blogs
-    activate BlogResource
-    BlogResource->>BlogService: getAllBlogs()
-    activate BlogService
-    BlogService->>BlogRepository: findAll()
-    activate BlogRepository
-    BlogRepository-->>BlogService: List<Blog>
-    deactivate BlogRepository
-    BlogService-->>BlogResource: List<Blog>
-    deactivate BlogService
-    BlogResource-->>Client: 200 OK (List<Blog>)
-    deactivate BlogResource
-
-    Client->>BlogResource: POST /blogs
-    activate BlogResource
-    BlogResource->>BlogService: createBlog(Blog)
-    activate BlogService
-    BlogService->>BlogRepository: save(Blog)
-    activate BlogRepository
-    BlogRepository-->>BlogService: Blog
-    deactivate BlogRepository
-    BlogService-->>BlogResource: Blog
-    deactivate BlogService
-    BlogResource-->>Client: 201 Created (Blog)
-    deactivate BlogResource
-
-    Client->>BlogResource: PUT /blogs/{id}
-    activate BlogResource
-    BlogResource->>BlogService: updateBlog(id, Blog)
-    activate BlogService
-    BlogService->>BlogRepository: findById(id)
-    activate BlogRepository
-    BlogRepository-->>BlogService: Blog
-    deactivate BlogRepository
-    BlogService->>BlogRepository: save(Blog)
-    activate BlogRepository
-    BlogRepository-->>BlogService: Blog
-    deactivate BlogRepository
-    BlogService-->>BlogResource: Blog
-    deactivate BlogService
-    BlogResource-->>Client: 200 OK (Blog)
-    deactivate BlogResource
-
-    Client->>BlogResource: DELETE /blogs/{id}
-    activate BlogResource
-    BlogResource->>BlogService: deleteBlog(id)
-    activate BlogService
-    BlogService->>BlogRepository: deleteById(id)
-    activate BlogRepository
-    BlogRepository-->>BlogService: void
-    deactivate BlogRepository
-    BlogService-->>BlogResource: void
-    deactivate BlogService
-    BlogResource-->>Client: 204 No Content
-    deactivate BlogResource
-```
 
 # Administrative
 ### Grading
@@ -187,11 +98,19 @@ Each sample will be assessed according to the following scheme with a maximum of
 ### Roadmap
 ### To-Do
 This list keeps track of currently open and completed tasks. 
-- [x] Basic Setup
+- [x] PU 01 - Basic Setup
     - [x] Create a new private github Project
     - [x] Add simeonlin as a collaborator
     - [x] Push changes to main
-- [x] First Quarkus project
+- [x] PU 02 - Database Access
     - [x] Create a new Quarkus project
     - [x] Start and test the project
-    - [x] Expand the project / Thinker around
+    - [x] Access the mysql docker database
+- [x] PU 03 - HTTP Communication 1
+    - [x] Implement http GET and POST
+    - [x] Generating JSON files
+    - [x] Usage of @Path parameters
+- [x] PU 04 - HTTP Communication 4
+    - [x] Implement http DELETE, PUT, PATCH
+    - [x] Response and Header pareameters
+    - [x] Exception-Handling
