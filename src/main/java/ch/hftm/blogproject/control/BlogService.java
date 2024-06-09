@@ -49,7 +49,6 @@ public class BlogService {
         Log.info("Adding blog " + blog.getTitle());
         blogRepository.persist(blog);
         return blog;
-    
     }
 
     // Deletes an existing blog with a matching id.
@@ -85,23 +84,23 @@ public class BlogService {
         }
     }
 
-    // Replaces attributes of existing blog with a matching id only when they are not null.
+    // Replaces attributes of existing blog with a matching id only when they are not empty.
     @Transactional
     public Blog patchBlog(long id, Blog newBlog) {
         Blog existingBlog = blogRepository.findById(id);
         if (existingBlog != null) {
-        if (newBlog.getTitle() != null) {
-            existingBlog.setTitle(newBlog.getTitle());
-        }
-        if (newBlog.getContent() != null) {
-            existingBlog.setContent(newBlog.getContent());
-        }
-        existingBlog.setLastChangesAt();
-        blogRepository.persist(existingBlog);
-        Log.info("Partially updated blog with id " + id);
-        return existingBlog;
+            if (newBlog.getTitle().isEmpty() != true) {
+                existingBlog.setTitle(newBlog.getTitle());
+            }
+            if (newBlog.getContent().isEmpty() != true) {
+                existingBlog.setContent(newBlog.getContent());
+            }
+            existingBlog.setLastChangesAt();
+            blogRepository.persist(existingBlog);
+            Log.info("Partially updated blog with id " + id);
+            return existingBlog;
         } else {
-        Log.warn("Blog with id " + id + " not found for partial update");
+            Log.warn("Blog with id " + id + " not found for partial update");
         }
         return null;
     }

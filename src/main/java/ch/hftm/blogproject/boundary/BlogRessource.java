@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import ch.hftm.blogproject.control.BlogService;
 import ch.hftm.blogproject.entity.Blog;
-import io.quarkus.logging.Log;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -31,7 +30,6 @@ public class BlogRessource {
 
     @GET
     public Response getBlogs(@QueryParam("searchString") Optional<String> searchString, @QueryParam("page") Optional<Long> pageIndex) {
-        // Log.info("Search for: " + serachString);
         return Response.status(Status.OK).entity(blogService.getBlogs(searchString, pageIndex)).build();
     }
 
@@ -43,12 +41,17 @@ public class BlogRessource {
 
     @POST
     public Response addBlog(Blog blog, @Context UriInfo uriInfo) {
-        Blog responseValue = blogService.pushBlog(blog);
-        URI uri = uriInfo.getAbsolutePathBuilder().path(Long.toString(blog.getId())).build();
-        if (responseValue != null) {
-            return Response.created(uri).entity(responseValue).build();
+        if (blog.getTitle().isEmpty() || blog.getContent().isEmpty()) {
+            return Response.status(Status.BAD_REQUEST).build();
         } else {
-            return Response.created(uri).build();
+            Blog responseValue = blogService.pushBlog(blog);
+            URI uri = uriInfo.getAbsolutePathBuilder().path(Long.toString(blog.getId())).build();
+            if (responseValue != null) {
+                // return Response.status(Status.CREATED).created(uri).entity(responseValue).build();
+                return Response.created(uri).entity(responseValue).status(Status.CREATED).build();
+            } else {
+                return Response.status(Status.BAD_REQUEST).build();
+            }
         }
     }
 
@@ -63,24 +66,25 @@ public class BlogRessource {
         }
     }
 
-
     @PUT
     @Path("{id}")
     public Response putBlog(@PathParam("id") long id, Blog blog) {
-        Blog responseValue = blogService.putBlog(id, blog);
-        if (responseValue != null) {
-            return Response.status(Status.OK).entity(responseValue).build();
+        if (blog.getTitle().isEmpty() || blog.getContent().isEmpty()) {
+            return Response.status(Status.BAD_REQUEST).build();
         } else {
-            return Response.status(Status.NOT_FOUND).build();
+            Blog responseValue = blogService.putBlog(id, blog);
+            if (responseValue != null) {
+            return Response.status(Status.OK).entity(responseValue).build();
+            } else {
+                return Response.status(Status.NOT_FOUND).build();
+            }
         }
     }
-
 
     @PATCH
     @Path("{id}")
     public Response patchBlog(@PathParam("id") long id, Blog blog) {
         Blog responseValue = blogService.patchBlog(id, blog);
-
         if (responseValue != null) {
             return Response.status(Status.OK).entity(responseValue).build();
         } else {

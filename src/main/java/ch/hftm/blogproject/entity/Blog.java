@@ -14,10 +14,10 @@ public class Blog {
     @Id 
     @GeneratedValue
     private Long id;
-    private String title;
-    private String content;
-    private ZonedDateTime createdAt;
-    private ZonedDateTime lastChangedAt;
+    private String title = "";
+    private String content= "";
+    private ZonedDateTime createdAt = ZonedDateTime.now();
+    private ZonedDateTime lastChangedAt = ZonedDateTime.now();
     
     public Long getId() {
         return this.id;
@@ -65,11 +65,10 @@ public class Blog {
     public Blog() {
     }
 
+    // Constructor used in StartupBean Class to initialize some blogs for easier testing. 
     public Blog(Long id, String title, String content) {
         this.id = id;
         this.title = title;
         this.content = content;
-        this.createdAt = ZonedDateTime.now();
-        this.lastChangedAt = ZonedDateTime.now();
     }
 }
