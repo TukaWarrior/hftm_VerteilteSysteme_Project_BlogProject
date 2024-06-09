@@ -108,33 +108,27 @@ http -v PATCH http://localhost:8080/blogs/1 content="This content was replaced"
 
 # Diagrams
 
-```plantuml
-@startuml
-
-class Blog {
-    - Long id
-    - String title = ""
-    - String content = ""
-    - ZonedDateTime createdAt = ZonedDateTime.now()
-    - ZonedDateTime lastChangedAt = ZonedDateTime.now()
-    
-    + Blog()
-    + Blog(Long id, String title, String content)
-    
-    + Long getId()
-    + String getTitle()
-    + String getContent()
-    + ZonedDateTime getCreatedAt()
-    + ZonedDateTime getLastChangedAt()
-    
-    + void setId(Long id)
-    + void setTitle(String title)
-    + void setContent(String content)
-    + void setCreatedAt(ZonedDateTime createdAt)
-    + void setLastChangesAt()
-}
-
-@enduml
+```mermaid
+classDiagram
+    class Blog {
+        -Long id
+        -String title
+        -String content
+        -ZonedDateTime createdAt
+        -ZonedDateTime lastChangedAt
+        +Blog()
+        +Blog(Long id, String title, String content)
+        +Long getId()
+        +String getTitle()
+        +String getContent()
+        +ZonedDateTime getCreatedAt()
+        +ZonedDateTime getLastChangedAt()
+        +void setId(Long id)
+        +void setTitle(String title)
+        +void setContent(String content)
+        +void setCreatedAt(ZonedDateTime createdAt)
+        +void setLastChangesAt()
+    }
 
 
 
