@@ -9,6 +9,7 @@ import io.quarkus.logging.Log;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.PATCH;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
@@ -42,29 +43,49 @@ public class BlogRessource {
 
     @POST
     public Response addBlog(Blog blog, @Context UriInfo uriInfo) {
-        blogService.addBlog(blog);
+        Blog responseValue = blogService.addBlog(blog);
         URI uri = uriInfo.getAbsolutePathBuilder().path(Long.toString(blog.getId())).build();
-        return Response.created(uri).entity(blog).build();
+        if (responseValue != null) {
+            return Response.created(uri).entity(responseValue).build();
+        } else {
+            return Response.created(uri).build();
+        }
     }
 
     @DELETE
     @Path("{id}")
     public Response deleteBlog(@PathParam("id") long id) {
-        blogService.deleteBlog(id);
-        Log.error("Blog with id " + id + " deleted successfully");
-        return Response.status(Status.OK).build();
+        Blog responseValue = blogService.deleteBlog(id);
+        if (responseValue != null) {
+            Log.error("Blog with id " + id + " deleted successfully");
+            return Response.status(Status.OK).entity(responseValue).build();
+        } else {
+            return Response.status(Status.NOT_FOUND).build();
+        }
     }
 
 
     @PUT
     @Path("{id}")
     public Response putBlog(@PathParam("id") long id, Blog blog) {
-        boolean value = blogService.replaceBlog(id, blog);
-
-        if (value == true) {
-            return Response.status(Status.OK).entity(blog).build();
+        Blog responseValue = blogService.replaceBlog(id, blog);
+        if (responseValue != null) {
+            return Response.status(Status.OK).entity(responseValue).build();
         } else {
-            return Response.status(Status.NOT_FOUND).entity(blog).build();
+            return Response.status(Status.NOT_FOUND).build();
+        }
+    }
+
+
+    @PATCH
+    @Path("{id}")
+    public Response patchBlog(@PathParam("id") long id, Blog blog) {
+        Blog responseValue = blogService.updateBlog(id, blog);
+
+        if (responseValue != null) {
+            return Response.status(Status.OK).entity(responseValue).build();
+        } else {
+            return Response.status(Status.NOT_FOUND).build();
         }
     }
 }

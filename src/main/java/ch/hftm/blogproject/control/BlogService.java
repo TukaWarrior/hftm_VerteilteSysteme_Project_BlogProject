@@ -10,10 +10,6 @@ import io.quarkus.panache.common.Page;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import jakarta.ws.rs.PUT;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.core.Response;
 
 // This class handles the business logic for the blog posts. It interacts with the BlogRessource class and the BlogRepository class.
 
@@ -39,7 +35,7 @@ public class BlogService {
 
         long pageIndex = pageNumber.orElse(1L);
 
-        // List<Blog> blogs = blogQuery.page(Page.ofSize(2)).list(); // Old code. Just define the page size. For automatic scrolling in frontend. 
+        // List<Blog> blogs = blogQuery.page(Page.ofSize(2)).list(); // Old code. Just define the page size. For automatic scrolling in frontend? 
         List<Blog> blogs = blogQuery.page(Page.of((int) (pageIndex - 1), pageSize)).list();
         Log.info("Returning " + blogs.size() + " blogs");
         return blogs;
@@ -50,24 +46,28 @@ public class BlogService {
     }
 
     @Transactional
-    public void addBlog(Blog blog) {
+    public Blog addBlog(Blog blog) {
         Log.info("Adding blog " + blog.getTitle());
         blogRepository.persist(blog);
+        return blog;
+    
     }
 
     @Transactional
-    public void deleteBlog(long id) {
+    public Blog deleteBlog(long id) {
         Blog blog = blogRepository.findById(id);
         if (blog != null) {
             blogRepository.delete(blog);
             Log.info("Deleted blog with id " + id);
+            return blog;
         } else {
             Log.warn("Blog with id " + id + " not found for deletion");
+            return null;
         }
     }
 
     @Transactional
-    public boolean replaceBlog(Long id, Blog blog) {
+    public Blog replaceBlog(Long id, Blog blog) {
         Blog existingBlog = blogRepository.findById(id);
         if (existingBlog != null) {
             // I treid to replace the existing blog entity completely but it would just create a new blog. SOme problems with the Primary key. 
@@ -78,10 +78,29 @@ public class BlogService {
             existingBlog.setContent(blog.getContent());
             blogRepository.persist(existingBlog);
             Log.info("Replaced blog with id " + id);
-            return true;
+            return existingBlog;
         } else {
             Log.warn("Blog with id " + id + " not found for replacement");
-            return false;
+            return null;
         }
+    }
+
+    @Transactional
+    public Blog updateBlog(long id, Blog partialBlog) {
+        Blog existingBlog = blogRepository.findById(id);
+        if (existingBlog != null) {
+        if (partialBlog.getTitle() != null) {
+            existingBlog.setTitle(partialBlog.getTitle());
+        }
+        if (partialBlog.getContent() != null) {
+            existingBlog.setContent(partialBlog.getContent());
+        }
+        blogRepository.persist(existingBlog);
+        Log.info("Partially updated blog with id " + id);
+        return existingBlog;
+        } else {
+        Log.warn("Blog with id " + id + " not found for partial update");
+        }
+        return null;
     }
 }
