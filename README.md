@@ -105,6 +105,71 @@ classDiagram
     }
 ```
 
+```mermaid
+sequenceDiagram
+    participant Client
+    participant BlogResource
+    participant BlogService
+    participant BlogRepository
+    participant Blog
+
+    Client->>BlogResource: GET /blogs
+    activate BlogResource
+    BlogResource->>BlogService: getAllBlogs()
+    activate BlogService
+    BlogService->>BlogRepository: findAll()
+    activate BlogRepository
+    BlogRepository-->>BlogService: List<Blog>
+    deactivate BlogRepository
+    BlogService-->>BlogResource: List<Blog>
+    deactivate BlogService
+    BlogResource-->>Client: 200 OK (List<Blog>)
+    deactivate BlogResource
+
+    Client->>BlogResource: POST /blogs
+    activate BlogResource
+    BlogResource->>BlogService: createBlog(Blog)
+    activate BlogService
+    BlogService->>BlogRepository: save(Blog)
+    activate BlogRepository
+    BlogRepository-->>BlogService: Blog
+    deactivate BlogRepository
+    BlogService-->>BlogResource: Blog
+    deactivate BlogService
+    BlogResource-->>Client: 201 Created (Blog)
+    deactivate BlogResource
+
+    Client->>BlogResource: PUT /blogs/{id}
+    activate BlogResource
+    BlogResource->>BlogService: updateBlog(id, Blog)
+    activate BlogService
+    BlogService->>BlogRepository: findById(id)
+    activate BlogRepository
+    BlogRepository-->>BlogService: Blog
+    deactivate BlogRepository
+    BlogService->>BlogRepository: save(Blog)
+    activate BlogRepository
+    BlogRepository-->>BlogService: Blog
+    deactivate BlogRepository
+    BlogService-->>BlogResource: Blog
+    deactivate BlogService
+    BlogResource-->>Client: 200 OK (Blog)
+    deactivate BlogResource
+
+    Client->>BlogResource: DELETE /blogs/{id}
+    activate BlogResource
+    BlogResource->>BlogService: deleteBlog(id)
+    activate BlogService
+    BlogService->>BlogRepository: deleteById(id)
+    activate BlogRepository
+    BlogRepository-->>BlogService: void
+    deactivate BlogRepository
+    BlogService-->>BlogResource: void
+    deactivate BlogService
+    BlogResource-->>Client: 204 No Content
+    deactivate BlogResource
+```
+
 # Administrative
 ### Grading
 The grading of this project will be done by collaborator simeonlin.
