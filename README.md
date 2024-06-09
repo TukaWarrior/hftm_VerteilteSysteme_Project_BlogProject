@@ -1,13 +1,14 @@
-# blogproject
-
+# BlogProject
 This is my school project, that is part of the "Distributed Systems" course from the third year of study at the HFTM in Grenchen.
-The goal is to build up a web-api backend, which I can utilise and extend in future courses.
+The goal is to build up a web-api backend, which I can utilise and extend in future courses. 
+
+As for now, the application allows the user to create, view and edit blog entries via http requests.
 
 This project uses the java framework Quarkus.
 
 # Quarkus
 
-## Running the application in dev mode
+### Running the application in dev mode
 To run the application in dev mode, run the following command in the terminal from the root of the project. Dev mode enables live coding.
 ```shell script
 ./mvnw quarkus:dev
@@ -66,6 +67,76 @@ You can then execute your native executable with: `./target/blogproject-1.0.0-SN
 
 - **Building native executables:** https://quarkus.io/guides/maven-tooling
 
+# HTTP Request Examples
+Once the application is running, following http requests are possible (Examples using httpie):
+
+### GET Requests
+* Retrieving all blogs (4 per page)
+```
+http -v GET http://localhost:8080/blogs
+```
+* Retrieving all blogs on page 2
+```
+http -v GET http://localhost:8080/blogs?page=2
+```
+* Retrieving blog with the id 1
+```
+http -v GET http://localhost:8080/blogs/1
+```
+### POST Requests
+* Posting new blog with title and content (title and content are required)
+```
+http -v POST http://localhost:8080/blogs title="New Blog" content="This blog is new!"
+```
+### DELETE Requests
+* Deleting blog with the id 1 (id is required)
+```
+http -v DELETE http://localhost:8080/blogs/1
+```
+### PUT Requests
+* Replacing entire blog with id 1 (id, title and content are required)
+```
+http -v PUT http://localhost:8080/blogs/1 title="This blog was replaced" content="This content was replaced"
+```
+
+### PUT Requests
+* Replacing attributes of blog with id 1 (id is required. Left out attributes or empty attributes "" will not be replaced)
+```
+http -v PATCH http://localhost:8080/blogs/1 content="This content was replaced"    
+```
+
+
+# Diagrams
+
+```plantuml
+@startuml
+
+class Blog {
+    - Long id
+    - String title = ""
+    - String content = ""
+    - ZonedDateTime createdAt = ZonedDateTime.now()
+    - ZonedDateTime lastChangedAt = ZonedDateTime.now()
+    
+    + Blog()
+    + Blog(Long id, String title, String content)
+    
+    + Long getId()
+    + String getTitle()
+    + String getContent()
+    + ZonedDateTime getCreatedAt()
+    + ZonedDateTime getLastChangedAt()
+    
+    + void setId(Long id)
+    + void setTitle(String title)
+    + void setContent(String content)
+    + void setCreatedAt(ZonedDateTime createdAt)
+    + void setLastChangesAt()
+}
+
+@enduml
+
+
 
 # Administrative
 ### Grading
@@ -81,6 +152,7 @@ Each sample will be assessed according to the following scheme with a maximum of
     * ☑️ 1 point: Little effort towards the last task is evident.
     * ❌ 0 points: No effort towards the last task is evident.
 
+### Roadmap
 ### To-Do
 This list keeps track of currently open and completed tasks. 
 - [x] Basic Setup
