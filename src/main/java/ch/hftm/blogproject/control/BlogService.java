@@ -10,6 +10,10 @@ import io.quarkus.panache.common.Page;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.PUT;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.core.Response;
 
 // This class handles the business logic for the blog posts. It interacts with the BlogRessource class and the BlogRepository class.
 
@@ -56,9 +60,28 @@ public class BlogService {
         Blog blog = blogRepository.findById(id);
         if (blog != null) {
             blogRepository.delete(blog);
-             Log.info("Deleted blog with id " + id);
+            Log.info("Deleted blog with id " + id);
         } else {
             Log.warn("Blog with id " + id + " not found for deletion");
+        }
+    }
+
+    @Transactional
+    public boolean replaceBlog(Long id, Blog blog) {
+        Blog existingBlog = blogRepository.findById(id);
+        if (existingBlog != null) {
+            // I treid to replace the existing blog entity completely but it would just create a new blog. SOme problems with the Primary key. 
+            // For now, I just replace each attribute manualy, which seems to be suboptimal.
+            // Blog newBlog = new Blog(id, blog.getTitle(), blog.getContent(), existingBlog.getDateTime());
+            // blogRepository.delete(existingBlog);
+            existingBlog.setTitle(blog.getTitle());
+            existingBlog.setContent(blog.getContent());
+            blogRepository.persist(existingBlog);
+            Log.info("Replaced blog with id " + id);
+            return true;
+        } else {
+            Log.warn("Blog with id " + id + " not found for replacement");
+            return false;
         }
     }
 }

@@ -1,6 +1,5 @@
 package ch.hftm.blogproject.entity;
 
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
 import jakarta.persistence.Entity;
@@ -17,7 +16,7 @@ public class Blog {
     private Long id;
     private String title;
     private String content;
-    private ZonedDateTime date;
+    private ZonedDateTime dateTime;
     
     public Long getId() {
         return this.id;
@@ -32,8 +31,8 @@ public class Blog {
         return this.content;
     }
 
-    public ZonedDateTime getDate() {
-        return this.date;
+    public ZonedDateTime getDateTime() {
+        return this.dateTime;
     }
 
 
@@ -50,8 +49,8 @@ public class Blog {
         this.content = content;
     }
 
-    public void setDate(ZonedDateTime date) {
-        this.date = date;
+    public void setDateTime(ZonedDateTime dateTime) {
+        this.dateTime = dateTime;
     }
 
     public Blog() {
@@ -61,6 +60,13 @@ public class Blog {
         this.id = id;
         this.title = title;
         this.content = content;
-        this.date = ZonedDateTime.now();
+        this.dateTime = ZonedDateTime.now();
+    }
+
+    public Blog(Long id, String title, String content, ZonedDateTime dateTIme) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.dateTime = ZonedDateTime.now();
     }
 }
