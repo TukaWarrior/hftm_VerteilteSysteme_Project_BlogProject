@@ -65,6 +65,7 @@ public class BlogRessource {
         return Response.created(uriInfo.getAbsolutePathBuilder().path(persistedBlog.getId().toString()).build()).build();
     }
 
+
     @DELETE
     @Path("{id}")
     public Response deleteBlog(@PathParam("id") long id) {
@@ -76,18 +77,35 @@ public class BlogRessource {
         }
     }
 
+    // Old Code V1 before DTO implementation.
+    // @PUT
+    // @Path("{id}")
+    // public Response putBlog(@PathParam("id") long id, Blog blog) {
+    //     if (blog.getTitle().isEmpty() || blog.getContent().isEmpty()) {
+    //         return Response.status(Status.BAD_REQUEST).build();
+    //     } else {
+    //         Blog responseValue = blogService.putBlog(id, blog);
+    //         if (responseValue != null) {
+    //         return Response.status(Status.OK).entity(responseValue).build();
+    //         } else {
+    //             return Response.status(Status.NOT_FOUND).build();
+    //         }
+    //     }
+    // }
+
+    // V2 with DTO implementation
     @PUT
     @Path("{id}")
-    public Response putBlog(@PathParam("id") long id, Blog blog) {
-        if (blog.getTitle().isEmpty() || blog.getContent().isEmpty()) {
-            return Response.status(Status.BAD_REQUEST).build();
+    public Response putBlog(@PathParam("id") long id, @Valid NewBlogDTO blogDto) {
+        Blog updatedBlog = blogService.putBlog(id, blogDto.toBlog());
+        // updatedBlog.setId(id);
+
+        // Blog responseValue = blogService.putBlog(id, updatedBlog);
+        // return Response.created(uriInfo.getAbsolutePathBuilder().path(persistedBlog.getId().toString()).build()).build();
+        if (updatedBlog != null) {
+             return Response.status(Status.OK).entity(updatedBlog).build();
         } else {
-            Blog responseValue = blogService.putBlog(id, blog);
-            if (responseValue != null) {
-            return Response.status(Status.OK).entity(responseValue).build();
-            } else {
-                return Response.status(Status.NOT_FOUND).build();
-            }
+            return Response.status(Status.NOT_FOUND).build();
         }
     }
 
