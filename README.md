@@ -37,6 +37,8 @@ After the project has been started, the following two links should be accessible
 
 **Dev UI:**         http://localhost:8080/q/dev/
 
+**Swagger UI:**    http://localhost:8080/q/swagger-ui/
+
 ## Packaging and running the application
 
 The application can be packaged using:
