@@ -96,17 +96,9 @@ public class BlogRessource {
     // V2 with DTO implementation
     @PUT
     @Path("{id}")
-    public Response putBlog(@PathParam("id") long id, @Valid NewBlogDTO blogDto) {
+    public Response putBlog(@PathParam("id") long id, @Valid NewBlogDTO blogDto ,@Context UriInfo uriInfo) {
         Blog updatedBlog = blogService.putBlog(id, blogDto.toBlog());
-        // updatedBlog.setId(id);
-
-        // Blog responseValue = blogService.putBlog(id, updatedBlog);
-        // return Response.created(uriInfo.getAbsolutePathBuilder().path(persistedBlog.getId().toString()).build()).build();
-        if (updatedBlog != null) {
-             return Response.status(Status.OK).entity(updatedBlog).build();
-        } else {
-            return Response.status(Status.NOT_FOUND).build();
-        }
+        return Response.created(uriInfo.getAbsolutePathBuilder().path(updatedBlog.getId().toString()).build()).build();
     }
 
     @PATCH
