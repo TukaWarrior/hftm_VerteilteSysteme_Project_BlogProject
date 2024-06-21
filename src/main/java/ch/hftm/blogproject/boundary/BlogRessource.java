@@ -6,6 +6,7 @@ import java.util.Optional;
 import ch.hftm.blogproject.control.BlogService;
 import ch.hftm.blogproject.entity.Blog;
 import jakarta.inject.Inject;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.PATCH;
@@ -40,7 +41,7 @@ public class BlogRessource {
     }
 
     @POST
-    public Response addBlog(Blog blog, @Context UriInfo uriInfo) {
+    public Response addBlog(@Valid Blog blog, @Context UriInfo uriInfo) {
         if (blog.getTitle().isEmpty() || blog.getContent().isEmpty()) {
             return Response.status(Status.BAD_REQUEST).build();
         } else {
