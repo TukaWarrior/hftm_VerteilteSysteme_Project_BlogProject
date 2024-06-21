@@ -22,9 +22,7 @@ public class Blog {
     private String title = "";
     @NotBlank
     private String content= "";
-
     private long likes;
-
     private ZonedDateTime createdAt = ZonedDateTime.now();
     private ZonedDateTime lastChangedAt = ZonedDateTime.now();
     
@@ -35,7 +33,6 @@ public class Blog {
     public String getTitle() {
         return this.title;
     }
-
 
     public String getContent() {
         return this.content;
@@ -52,7 +49,6 @@ public class Blog {
     public ZonedDateTime getLastChangedAt() {
         return this.lastChangedAt;
     }
-
 
     public void setId(Long id) {
         this.id = id;
@@ -85,6 +81,12 @@ public class Blog {
     // Constructor used in StartupBean Class to initialize some blogs for easier testing. 
     public Blog(Long id, String title, String content) {
         this.id = id;
+        this.title = title;
+        this.content = content;
+    }
+
+    // Constructor used in Blog DTO
+    public Blog (String title, String content) {
         this.title = title;
         this.content = content;
     }

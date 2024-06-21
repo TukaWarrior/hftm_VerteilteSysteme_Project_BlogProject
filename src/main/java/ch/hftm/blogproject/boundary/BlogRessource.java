@@ -3,6 +3,7 @@ package ch.hftm.blogproject.boundary;
 import java.net.URI;
 import java.util.Optional;
 
+import ch.hftm.blogproject.boundary.dto.NewBlogDTO;
 import ch.hftm.blogproject.control.BlogService;
 import ch.hftm.blogproject.entity.Blog;
 import jakarta.inject.Inject;
@@ -39,21 +40,29 @@ public class BlogRessource {
     public Response getBlog (long id) {
         return Response.status(Status.OK).entity(blogService.getBlogById(id)).build();
     }
+    
+    // Old Code V1 before DTO implementation.
+    // @POST
+    // public Response addBlog(@Valid Blog blog, @Context UriInfo uriInfo) {
+    //     if (blog.getTitle().isEmpty() || blog.getContent().isEmpty()) {
+    //         return Response.status(Status.BAD_REQUEST).build();
+    //     } else {
+    //         Blog responseValue = blogService.pushBlog(blog);
+    //         URI uri = uriInfo.getAbsolutePathBuilder().path(Long.toString(blog.getId())).build();
+    //         if (responseValue != null) {
+    //             // return Response.status(Status.CREATED).created(uri).entity(responseValue).build();
+    //             return Response.created(uri).entity(responseValue).status(Status.CREATED).build();
+    //         } else {
+    //             return Response.status(Status.BAD_REQUEST).build();
+    //         }
+    //     }
+    // }
 
+    // V2 with DTO implementation
     @POST
-    public Response addBlog(@Valid Blog blog, @Context UriInfo uriInfo) {
-        if (blog.getTitle().isEmpty() || blog.getContent().isEmpty()) {
-            return Response.status(Status.BAD_REQUEST).build();
-        } else {
-            Blog responseValue = blogService.pushBlog(blog);
-            URI uri = uriInfo.getAbsolutePathBuilder().path(Long.toString(blog.getId())).build();
-            if (responseValue != null) {
-                // return Response.status(Status.CREATED).created(uri).entity(responseValue).build();
-                return Response.created(uri).entity(responseValue).status(Status.CREATED).build();
-            } else {
-                return Response.status(Status.BAD_REQUEST).build();
-            }
-        }
+    public Response addBlog(@Valid NewBlogDTO blogDto, @Context UriInfo uriInfo) {
+        Blog persistedBlog = blogService.pushBlog(blogDto.toBlog());
+        return Response.created(uriInfo.getAbsolutePathBuilder().path(persistedBlog.getId().toString()).build()).build();
     }
 
     @DELETE
