@@ -23,7 +23,7 @@ public class Blog {
     @NotBlank
     private String content= "";
 
-    // private long likes;
+    private long likes;
 
     private ZonedDateTime createdAt = ZonedDateTime.now();
     private ZonedDateTime lastChangedAt = ZonedDateTime.now();
@@ -41,9 +41,9 @@ public class Blog {
         return this.content;
     }
 
-    // public long getLikes() {
-    //     return this.likes;
-    // }
+    public long getLikes() {
+        return this.likes;
+    }
 
     public ZonedDateTime getCreatedAt() {
         return this.createdAt;
@@ -67,9 +67,9 @@ public class Blog {
         this.content = content;
     }
 
-    // public void setLikes(long likes) {
-    //     this.likes = likes;
-    // }
+    public void setLikes(long likes) {
+        this.likes = likes;
+    }
 
     public void setCreatedAt(ZonedDateTime createdAt) {
         this.createdAt = createdAt;
