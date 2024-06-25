@@ -11,6 +11,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 
+
 // This class handles the business logic for the blog posts. It interacts with the BlogRessource class and the BlogRepository class.
 
 @ApplicationScoped
@@ -74,7 +75,7 @@ public class BlogService {
             // For now, I just replace each attribute manualy, which seems to be suboptimal.
             existingBlog.setTitle(newBlog.getTitle());
             existingBlog.setContent(newBlog.getContent());
-            existingBlog.setLastChangesAt();
+            existingBlog.setEditedAt();
             blogRepository.persist(existingBlog);
             Log.info("Replaced blog with id " + id);
             return existingBlog;
@@ -95,7 +96,7 @@ public class BlogService {
             if (newBlog.getContent().isEmpty() != true) {
                 existingBlog.setContent(newBlog.getContent());
             }
-            existingBlog.setLastChangesAt();
+            existingBlog.setEditedAt();
             blogRepository.persist(existingBlog);
             Log.info("Partially updated blog with id " + id);
             return existingBlog;
