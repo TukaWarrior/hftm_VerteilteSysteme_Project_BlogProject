@@ -31,7 +31,6 @@ public class BlogService {
             blogQuery = blogRepository.find("title like ?1 or content like ?1", "%" + searchString.get() +"%");
         }
     
-
         long pageIndex = pageNumber.orElse(1L);
         // List<Blog> blogs = blogQuery.page(Page.ofSize(2)).list(); // Old code. Just define the page size. For automatic scrolling in frontend? 
         List<Blog> blogs = blogQuery.page(Page.of((int) (pageIndex - 1), pageSize)).list();
