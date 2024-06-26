@@ -21,7 +21,7 @@ public class Blog {
 
     @Id 
     @GeneratedValue
-    private Long id;
+    private long id;
     @NotNull
     @NotBlank
     @Size(min = 5, message = "Title needs at least 5 characters")
@@ -58,7 +58,7 @@ public class Blog {
     }
 
     // Setters
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -88,11 +88,11 @@ public class Blog {
     }
 
     // Constructor used in StartupBean Class to initialize some blogs for easier testing. 
-    public Blog(Long id, String title, String content) {
-        this.id = id;
-        this.title = title;
-        this.content = content;
-    }
+    // public Blog(Long id, String title, String content) {
+    //     this.id = id;
+    //     this.title = title;
+    //     this.content = content;
+    // }
 
     // Constructor used in Blog DTO
     public Blog (String title, String content) {
