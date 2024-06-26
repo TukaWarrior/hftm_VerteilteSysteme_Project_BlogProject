@@ -2,6 +2,7 @@ package ch.hftm.blogproject.control;
 
 import ch.hftm.blogproject.entity.Blog;
 import ch.hftm.blogproject.entity.Comment;
+import ch.hftm.blogproject.control.BlogService;
 import io.quarkus.logging.Log;
 import ch.hftm.blogproject.control.CommentRepository;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -17,16 +18,20 @@ public class CommentService {
     @Inject
     private CommentRepository commentRepository;
 
+    // @Inject
+    // private BlogService blogService;
+
     // Returns a list of comments for the passed blog id.
     public List<Comment> getComments(long blogId) {
+        // Blog blog = blogService.getBlogById(blogId);
         return commentRepository.findByBlogId(blogId);
     }
 
-    // Creates a new blog with a new id.
+    // Doesen't work: Creates a new blog with a new id.
     @Transactional
-    public Comment pushComment(Long blogId, Comment comment) {
+    public Comment pushComment(Comment comment) {
         Log.info("Adding comment to blog");
-        commentRepository.persist(comment);
+        commentRepository.persist (comment);
         return comment;
     }
 }
