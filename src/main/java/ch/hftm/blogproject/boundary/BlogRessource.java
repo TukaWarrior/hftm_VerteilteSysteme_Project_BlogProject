@@ -1,12 +1,17 @@
 package ch.hftm.blogproject.boundary;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
 
 import ch.hftm.blogproject.boundary.dto.NewBlogDTO;
+import ch.hftm.blogproject.boundary.dto.NewCommentDTO;
 import ch.hftm.blogproject.control.BlogService;
+import ch.hftm.blogproject.control.CommentService;
 import ch.hftm.blogproject.entity.Blog;
+import ch.hftm.blogproject.entity.Comment;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -28,6 +33,9 @@ public class BlogRessource {
 
     @Inject
     BlogService blogService;
+
+    @Inject
+    CommentService commentService;
     
 
     @GET
@@ -110,5 +118,24 @@ public class BlogRessource {
         } else {
             return Response.status(Status.NOT_FOUND).build();
         }
+    }
+
+
+
+    @GET
+    @Path("/{id}/comments")
+    public List<Comment> getComments(@PathParam("id") long id) {
+        return commentService.getComments(id);
+    }
+
+    @POST
+    @Path("/{id}/comments")
+    public Response addComment(@PathParam("id") long id, @Valid NewCommentDTO commentDTO, @Context UriInfo uriInfo) {
+        Blog blog = blogService.getBlogById(id);
+        Comment persistedComment = commentDTO.toComment();
+        persistedComment.setBlog(blog);
+        commentService.pushComment(persistedComment);
+
+        return Response.created(uriInfo.getAbsolutePathBuilder().path(persistedComment.getId().toString()).build()).build();
     }
 }
