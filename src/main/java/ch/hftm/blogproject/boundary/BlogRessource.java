@@ -124,18 +124,14 @@ public class BlogRessource {
 
     @GET
     @Path("/{id}/comments")
-    public List<Comment> getComments(@PathParam("id") long id) {
-        return commentService.getComments(id);
+    public Response getComments(@PathParam("id") long id, @QueryParam("page") Optional<Long> pageIndex) {
+        return Response.status(Status.OK).entity(commentService.getComments(id, pageIndex)).build();
     }
 
     @POST
     @Path("/{id}/comments")
     public Response addComment(@PathParam("id") long id, @Valid NewCommentDTO commentDTO, @Context UriInfo uriInfo) {
-        Blog blog = blogService.getBlogById(id);
-        Comment persistedComment = commentDTO.toComment();
-        persistedComment.setBlog(blog);
-        commentService.pushComment(persistedComment);
-
+        Comment persistedComment = commentService.pushComment(id, commentDTO.toComment());
         return Response.created(uriInfo.getAbsolutePathBuilder().path(persistedComment.getId().toString()).build()).build();
     }
 }

@@ -85,15 +85,18 @@ You can then execute your native executable with: `./target/blogproject-1.0.0-SN
 # HTTP Request Examples
 Once the application is running, following http requests are possible (Examples using httpie):
 
-| Type | Command | Description |
-| --- | --- | --- |
-| GET | ```http GET http://localhost:8080/blogs``` | Lists all blogs, 4 per page |
-| GET | ```http GET http://localhost:8080/blogs?page=2``` | List all blogs, page 2 |
-| GET | ```http GET http://localhost:8080/blogs/1``` | List blog with id 1 |
-| POST | ```http POST http://localhost:8080/blogs title="New Blog" content="This blog is new!"```| Post new blog with title and content (title and content required) |
-| DELETE | ```http DELETE http://localhost:8080/blogs/1``` | Delete blog with the id 1 (id required) |
-| PUT | ```http PUT http://localhost:8080/blogs/1 title="This blog was replaced" content="This content was replaced"``` | Replace blog with id 1 (id, title content required) |
-| PATCH | ```http PATCH http://localhost:8080/blogs/1 content="This content was replaced"```  | Replace attributes of blog with id 1 (id required. Empty "" or null attributesare ignored) |
+| Entity | Type | Command | Description |
+| --- | --- | --- | --- |
+| Blog | GET | ```http GET http://localhost:8080/blogs``` | Lists all blogs, 4 per page |
+| Blog | GET | ```http GET http://localhost:8080/blogs?page=2``` | List all blogs, page 2 |
+| Blog | GET | ```http GET http://localhost:8080/blogs/1``` | List blog with id 1 |
+| Blog | POST | ```http POST http://localhost:8080/blogs title="New Blog" content="This blog is new!"```| Post new blog with title and content (title and content required) |
+| Blog | DELETE | ```http DELETE http://localhost:8080/blogs/1``` | Delete blog with the id 1 (id required) |
+| Blog | PUT | ```http PUT http://localhost:8080/blogs/1 title="This blog was replaced" content="This content was replaced"``` | Replace blog with id 1 (id, title content required) |
+| Blog | PATCH | ```http PATCH http://localhost:8080/blogs/1 content="This content was replaced"```  | Replace attributes of blog with id 1 (id required. Empty "" or null attributesare ignored) |
+| Comment | GET | ```http GET http://localhost:8080/blogs/1/comments``` | Lists all comments on blog with id 1, 10 per page |
+| Comment | GET | ```http GET http://localhost:8080/blogs/1/comments?page=2``` | Lists all comments on blog with id 1, page 2 |
+| Comment | POST | ```http GET http://localhost:8080/blogs/1/comments content="This is a comment"``` | Post new comment on blog with id 1 with content (content required) |
 
 # Administrative
 ### Grading
