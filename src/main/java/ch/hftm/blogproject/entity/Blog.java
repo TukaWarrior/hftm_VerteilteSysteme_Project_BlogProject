@@ -45,7 +45,7 @@ public class Blog {
         return this.content;
     }
 
-    public long getLikes() {
+    public Long getLikes() {
         return this.likes;
     }
 

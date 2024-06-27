@@ -11,7 +11,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class CommentRepository implements PanacheRepository<Comment> {
-    public List<Comment> findByBlogId(Long blogId) {
-        return find("blog.id", blogId).list();
-    }
+    // public List<Comment> findByBlogId(Long blogId) {
+    //     return find("blogId", blogId).list();
+    // }
 }

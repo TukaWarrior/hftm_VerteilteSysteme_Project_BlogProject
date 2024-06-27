@@ -8,6 +8,6 @@ import ch.hftm.blogproject.entity.Comment;
 
 public record NewCommentDTO(@NotNull @NotBlank @Length(min = 5) String content) {
     public Comment toComment() {
-        return new Comment(content);
+        return new Comment (content);
     }
 }

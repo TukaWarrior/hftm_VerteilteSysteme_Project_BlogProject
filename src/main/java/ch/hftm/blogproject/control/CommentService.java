@@ -1,14 +1,14 @@
 package ch.hftm.blogproject.control;
 
-import ch.hftm.blogproject.entity.Blog;
 import ch.hftm.blogproject.entity.Comment;
-import ch.hftm.blogproject.control.BlogService;
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.logging.Log;
-import ch.hftm.blogproject.control.CommentRepository;
+import io.quarkus.panache.common.Page;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @ApplicationScoped
 public class CommentService {
@@ -18,20 +18,25 @@ public class CommentService {
     @Inject
     private CommentRepository commentRepository;
 
-    // @Inject
-    // private BlogService blogService;
-
     // Returns a list of comments for the passed blog id.
-    public List<Comment> getComments(long blogId) {
-        // Blog blog = blogService.getBlogById(blogId);
-        return commentRepository.findByBlogId(blogId);
+    public List<Comment> getComments(Long blogId, Optional<Long> pageNumber) {
+        Log.info("Searching comments for blog: " + blogId);
+        // return commentRepository.findByBlogId(blogId);
+        PanacheQuery<Comment> commentQuery;
+        commentQuery = commentRepository.find("blogId", blogId);
+        long pageIndex = pageNumber.orElse(1L);
+        List<Comment> comments = commentQuery.page(Page.of((int) (pageIndex - 1), pageSize)).list();
+        Log.info("Returning " + comments.size() + " comments");
+        return comments;
     }
 
-    // Doesen't work: Creates a new blog with a new id.
+    // Creates a comment with blogId reference.
     @Transactional
-    public Comment pushComment(Comment comment) {
-        Log.info("Adding comment to blog");
+    public Comment pushComment(Long blogId, Comment comment) {
+        comment.setBlogId(blogId);
+        
         commentRepository.persist (comment);
+        Log.info("Adding comment to blog: " + comment.getContent() + " " + comment.getId() + " " + comment.getBlogId());
         return comment;
     }
 }

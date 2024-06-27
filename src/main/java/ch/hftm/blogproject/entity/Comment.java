@@ -7,6 +7,7 @@ import jakarta.inject.Inject;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -15,18 +16,20 @@ import jakarta.validation.constraints.Size;
 @Entity
 public class Comment {
 
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue
     private long id;
-    @NotNull
-    @NotBlank
-    @Size(min = 5, message = "Comment needs at least 5 characters")
+
+    private long blogId;
+    @NotNull @NotBlank @Size(min = 5, message = "Comment needs at least 5 characters")
     private String content = "";
     // private Long likes;
     // private ZonedDateTime createdAt = ZonedDateTime.now();
     // private ZonedDateTime editedAt = ZonedDateTime.now();
-    @ManyToOne
-    private Blog blog;
+
+    // Foreign key reference to the blog
+    // @ManyToOne
+    // @JoinColumn(name = "blog_id", nullable = false)
+    // private Blog blog;
 
     // Getters
     public Long getId() {
@@ -49,8 +52,8 @@ public class Comment {
     //     return this.editedAt;
     // }
 
-    public Blog getBlog() {
-        return blog;
+    public Long getBlogId() {
+        return blogId;
     }
 
     // Setters
@@ -74,8 +77,8 @@ public class Comment {
     //     this.editedAt = ZonedDateTime.now();
     // }
 
-    public void setBlog(Blog blog) {
-        this.blog = blog;
+    public void setBlogId(long blogId) {
+        this.blogId = blogId;
     }
 
     // Constructors
@@ -87,8 +90,8 @@ public class Comment {
         this.content = content;
     }
 
-    public Comment (String content, Blog blog) {
+    public Comment (long blogId, String content) {
+        this.blogId = blogId;
         this.content = content;
-        this.blog = blog;
     }
 }
