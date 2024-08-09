@@ -130,3 +130,7 @@ This list keeps track of currently open and completed tasks.
     - [x] Implement http DELETE, PUT, PATCH
     - [x] Response and Header pareameters
     - [x] Exception-Handling
+
+
+# Useful subsidiary tools
+**Json Web Tokens:**    https://jwt.io/
