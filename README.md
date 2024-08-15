@@ -153,3 +153,6 @@ Users require a login. They can get and post blogs and comments. They can patch 
 A guest is a role that doesen't require an loging. They can only get blogs and comments. 
 - Moderator
 If the moderator role will exists depends on the time I have avaiable to test out and implement some features. If I have the time to also add user profile entities, I may also add an moderator. Unlike the administrator, who has no restrictions at all, a moderator can get and push all blogs and comments, but he can not alter them. Altering them is prohibited because if the moderator is malicious, he could make it looklike as a user wrote something that they did not. The moderator has also no access to modifying user profiles. 
+
+##### My current mental state when working on this:
+![Help me](https://media.tenor.com/10Zdx_RXqgcAAAAM/programming-crazy.gif)
