@@ -1,4 +1,4 @@
-# BlogProject
+# Blog Project - Java Backend
 This is my school project, that is part of the "Distributed Systems" course from the third year of study at the HFTM in Grenchen.
 The goal is to build up a web-api backend, which I can utilise and extend in future courses. 
 
@@ -124,13 +124,32 @@ This list keeps track of currently open and completed tasks.
     - [x] Access the mysql docker database
 - [x] PU 03 - HTTP Communication 1
     - [x] Implement http GET and POST
-    - [x] Generating JSON files
+    - [x] Blog object class
     - [x] Usage of @Path parameters
-- [x] PU 04 - HTTP Communication 4
+- [x] PU 03 - HTTP Communication 2
+    - [x] Generating Responses
+    - [x] Exception Handling
+- [x] PU 04 - HTTP Communication 3
     - [x] Implement http DELETE, PUT, PATCH
-    - [x] Response and Header pareameters
-    - [x] Exception-Handling
-
+    - [x] Query and Header pareameters
+- [x] PU 05 - HTTP Communication 4
+    - [x] Validation
+    - [x] Mapping with schematics
+    - [x] Testing of API
 
 # Useful subsidiary tools
-**Json Web Tokens:**    https://jwt.io/
+- **Json Web Tokens:**    https://jwt.io/
+- **Bruno API Client:**    https://www.usebruno.com/
+
+
+## Authentication
+Currently, because of time constraints, the authentication using keycload is not fully implemented. But in the future, I will implement the following roles.
+
+- Admin: 
+Has access to everything. Can get, post, patch or delete blogs, comments and other entities I may add. 
+- User
+Users require a login. They can get and post blogs and comments. They can patch and put the blogs and comments they created.
+- Guest
+A guest is a role that doesen't require an loging. They can only get blogs and comments. 
+- Moderator
+If the moderator role will exists depends on the time I have avaiable to test out and implement some features. If I have the time to also add user profile entities, I may also add an moderator. Unlike the administrator, who has no restrictions at all, a moderator can get and push all blogs and comments, but he can not alter them. Altering them is prohibited because if the moderator is malicious, he could make it looklike as a user wrote something that they did not. The moderator has also no access to modifying user profiles. 
