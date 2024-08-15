@@ -10,6 +10,7 @@ import ch.hftm.blogproject.control.BlogService;
 import ch.hftm.blogproject.control.CommentService;
 import ch.hftm.blogproject.entity.Blog;
 import ch.hftm.blogproject.entity.Comment;
+import io.quarkus.security.Authenticated;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -37,13 +38,14 @@ public class BlogRessource {
     @Inject
     CommentService commentService;
     
-
     @GET
+    // @Authenticated
     public Response getBlogs(@QueryParam("searchString") Optional<String> searchString, @QueryParam("page") Optional<Long> pageIndex) {
         return Response.status(Status.OK).entity(blogService.getBlogs(searchString, pageIndex)).build();
     }
 
     @GET
+    // @Authenticated
     @Path("{id}")
     public Response getBlog (long id) {
         return Response.status(Status.OK).entity(blogService.getBlogById(id)).build();
@@ -119,8 +121,6 @@ public class BlogRessource {
             return Response.status(Status.NOT_FOUND).build();
         }
     }
-
-
 
     @GET
     @Path("/{id}/comments")
