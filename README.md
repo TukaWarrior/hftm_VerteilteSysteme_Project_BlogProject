@@ -142,6 +142,151 @@ This list keeps track of currently open and completed tasks.
 - **Bruno API Client:**    https://www.usebruno.com/
 
 
+# Version Controll
+This project currently uses the folowing versions of various dependencies.
+maven: 3.9.9: apache-maven-3.9.9
+Java version: java 21.0.1 2023-10-17 LTS: jdk-21
+
+
+# Troubleshooting Guide
+This troubleshooting guide provides step-by-step instructions to resolve common issues when building or running this Quarkus project.
+
+## If you are unsure what the problem is:
+1. **Check for Code Errors:** Ensure that the issue is not caused by faulty code that leads to a compile error.
+
+2. If the problem persists, try cleaning the project using the Maven wrapper:
+
+```shell script
+./mvnw clean
+```
+If ./mvnw clean fails, there may be a problem with the maven wrapper. 
+If the problem persists, clean install the project using the maven wrapper. See chapter "Problems with the maven wrapper".
+
+Try clean installing the project using the maven wrapper. 
+```shell script
+./mvnw clean install
+```
+If the ./mvnw clean install command fails but ./mvnw clean succeeds, there may be a problem with the dependencies. See chapter "Problems with dependencies".
+
+Try running the application using the maven wrapper:
+```shell script
+./mvnw quarkus:dev
+```
+If the ./mvnw clean and ./mvnw clean install commands succeeded, but the ./mvnw quarkus:dev command fails, there may be a problem with the quarkus configuration. See chapter "Problems with quarkus".
+
+
+
+Additionally, you can check if the programm starts using the local maven installation. Clean install and run the project using your local maven installation:
+
+```shell script
+mvn clean
+```
+If mvn clean fails, there may be a problem with the local maven installation. See chapter "Problems with Java and Maven"
+
+Try clean installing the project using the local maven installation.
+```shell script
+mvn clean install
+```
+If the mvn clean install command fails but mvn clean succeeds, there may be a problem with the dependencies. See chapter "Problems with dependencies".
+
+Try running the application using the local maven installation:
+```shell script
+mvn quarkus:dev
+```
+If the mvn clean and mvn clean install commands succeeded, but the .mvn quarkus:dev command fails, there may be a problem with the quarkus configuration. See chapter "Problems with quarkus".
+If the command succeeds and the application starts, there may be a problem with the maven wrapper. See chapter "Problem with the maven wrapper".
+
+
+## Problems with dependencies
+If dependencies are the cause of problems, reinstall them. To do so, first delete the current dependencies from the lcoal maven repository. 
+
+Delete the local dependency repository:
+C://User/*name*/.m2/repository
+```shell script
+rmdir /s /q C:\Users\<YourUsername>\.m2\repository\
+```
+
+Then reinstall the dependencies:
+```shell script
+mvn clean install
+```
+If the command succeeds, the dependencies are successfully reinstalled. 
+If the mvn clean install fails, dependencies may be incompatible. Update the dependencies to their newest release. Caution! The newest releases of dependencies may also not be fully compatible. 
+```shell script
+mvn versions:use-latest-releases
+```
+Then reinstall the dependencies again:
+```shell script
+mvn clean install
+```
+If the commands succeeded, the dependencies are now updated to the newest release. If the mvn clean install command failed, the updated dependencies may be incompatible Solve the incompatibilities or roll back to a previously working commit. If any mvn command fails, there may be a problem with the local maven installation. See chapter "Problems with Java and Maven.
+
+
+If the mvn clean install command succeeds, run the application using the local maven installation:
+```
+mvn quarkus:dev
+```
+If mvn quarkus:dev fails, there may be a problem with the quarkus configuration. See chapter "Problems with quarkus".
+If the command succeeds and the application starts, the local maven installation and the dependencies are functional. 
+
+## Problems with the Maven Wrapper
+If you have issues with the maven wrapper:
+The Maven Wrapper is a script included in a project that allows you to run Maven without needing to have Maven installed globally on your system.
+It ensures that a specific version of Maven, as defined in the project, is used, regardless of what version is installed globally.
+
+Check the version of the maven version provided by the wrapper inside the project. Make sure the maven version displayed corresponds with the minimum required version listed in the chapter "Required Dependencies.
+```shell script
+./mvnw --version
+```
+
+If the version doesen't match the required maven version or if the command fails, delete the wrapper and then reinstall it. To do so, delete the .mvn folder inside the project root.
+```
+Remove-Item -Recurse -Force .mvn
+```
+
+Then rebuild the maven wrapper. 
+```shell script
+mvn wrapper:wrapper
+```
+If rebuilding the maven wrapper fails, there may be a problem with the local maven installation. See chapter "Problems with java and maven".
+
+
+
+## Problems with java and maven
+If any of the mvn commands is not functioning correctly, your local java or maven installation may be broken or incompatible. 
+
+1. Check the java version
+```shell script
+java -version
+```
+For the minimum required version, check chapter "Version Controll"
+If the --version command shows a lower or different version than the minimum required version, update the Java jdk installation. If it is not working after the installation, check the JAVA_HOME system environment variable. See below.
+If the command fails with a message containing "is not recognized as the name of a cmdlet", the system didn't detect the java installation. Install java or check the JAVA_HOME system environment variable. See below.
+
+
+2. Check the maven version
+```shell script
+mvn -version
+```
+For the minimum required version, check chapter "Version Controll"
+If the --version command shows a lower or different version than the minimum required version, update the Maven installation. If it is not working after the installation, check the PATH system environment variable. See below.
+If the command fails with a message containing "is not recognized as the name of a cmdlet", the system didn't detect the maven installation. Install maven or check the PATH system environment variable. See below.
+
+**System Environment Variable JAVA_HOME**
+Make sure that your JAVA_HOME environment variable is pointing to a jdk installation that fullfills the minimum required version. 
+E.g. JAVA_HOME = C:\Program Files\Java\jdk-21
+
+**System Environment Variable JAVA_HOME**
+Make sure that the PATH system environment variable lists a maven installation of at least the minimum requried version.
+E.g. Path = c:\program files\apache-maven-3.9.9\bin
+
+
+
+
+
+
+
+
 ## Authentication
 Currently, because of time constraints, the authentication using keycload is not fully implemented. But in the future, I will implement the following roles.
 
