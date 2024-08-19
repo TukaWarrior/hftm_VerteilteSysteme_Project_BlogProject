@@ -1,0 +1,15 @@
+meta {
+  name: DELETE Blog by id
+  type: http
+  seq: 7
+}
+
+delete {
+  url: {{localhost}}/blogs/:id
+  body: none
+  auth: none
+}
+
+params:path {
+  id: 1
+}
