@@ -1,6 +1,7 @@
 package ch.hftm.blogproject.control;
 
 import ch.hftm.blogproject.entity.Comment;
+import ch.hftm.blogproject.repository.CommentRepository;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.logging.Log;
 import io.quarkus.panache.common.Page;

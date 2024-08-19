@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import ch.hftm.blogproject.entity.Blog;
+import ch.hftm.blogproject.repository.BlogRepository;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.logging.Log;
 import io.quarkus.panache.common.Page;
@@ -45,7 +46,7 @@ public class BlogService {
 
     // Creates a new blog with a new id.
     @Transactional
-    public Blog pushBlog(Blog blog) {
+    public Blog addBlog(Blog blog) {
         Log.info("Adding blog " + blog.getTitle());
         blogRepository.persist(blog);
         return blog;

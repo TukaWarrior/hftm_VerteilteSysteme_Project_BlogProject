@@ -1,12 +1,11 @@
 package ch.hftm.blogproject.entity;
 
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -19,18 +18,15 @@ import jakarta.validation.constraints.Size;
 @Entity
 public class Blog {
 
-    @Id 
-    @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @NotNull
-    @NotBlank
-    @Size(min = 5, message = "Title needs at least 5 characters")
+    @NotNull @NotBlank @Size(min = 5, message = "Title needs at least 5 characters")
     private String title = "";
-    @NotBlank
+    @NotNull @NotBlank
     private String content= "";
     private long likes;
     private ZonedDateTime createdAt = ZonedDateTime.now();
-    private ZonedDateTime editedAt = ZonedDateTime.now();
+    private ZonedDateTime changedAt = ZonedDateTime.now();
     
     // Getters
     public Long getId() {
@@ -53,8 +49,8 @@ public class Blog {
         return this.createdAt;
     }
 
-    public ZonedDateTime getEditedAt() {
-        return this.editedAt;
+    public ZonedDateTime getChangedAt() {
+        return this.changedAt;
     }
 
     // Setters
@@ -80,19 +76,12 @@ public class Blog {
     }
 
     public void setEditedAt() {
-        this.editedAt = ZonedDateTime.now();
+        this.changedAt = ZonedDateTime.now();
     }
 
     // Constructors
     public Blog() {
     }
-
-    // Constructor used in StartupBean Class to initialize some blogs for easier testing. 
-    // public Blog(Long id, String title, String content) {
-    //     this.id = id;
-    //     this.title = title;
-    //     this.content = content;
-    // }
 
     // Constructor used in Blog DTO
     public Blog (String title, String content) {

@@ -71,7 +71,7 @@ public class BlogRessource {
     // V2 with DTO implementation
     @POST
     public Response addBlog(@Valid NewBlogDTO blogDto, @Context UriInfo uriInfo) {
-        Blog persistedBlog = blogService.pushBlog(blogDto.toBlog());
+        Blog persistedBlog = blogService.addBlog(blogDto.toBlog());
         return Response.created(uriInfo.getAbsolutePathBuilder().path(persistedBlog.getId().toString()).build()).build();
     }
 

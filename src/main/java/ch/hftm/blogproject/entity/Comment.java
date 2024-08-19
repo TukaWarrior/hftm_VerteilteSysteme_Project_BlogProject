@@ -18,7 +18,6 @@ public class Comment {
 
     @Id @GeneratedValue
     private long id;
-
     private long blogId;
     @NotNull @NotBlank @Size(min = 5, message = "Comment needs at least 5 characters")
     private String content = "";
