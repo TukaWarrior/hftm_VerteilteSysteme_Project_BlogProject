@@ -30,12 +30,12 @@ public class AccountService {
     }
 
     @Transactional
-    public void updateAccount(Long id, Account author) {
-        Account existingAuthor = accountRepository.findById(id);
-        if (existingAuthor != null) {
-            existingAuthor.setName(author.getName());
-            existingAuthor.setEmail(author.getEmail());
-            accountRepository.persist(existingAuthor);
+    public void updateAccount(Long id, Account account) {
+        Account existingAccount = accountRepository.findById(id);
+        if (existingAccount != null) {
+            existingAccount.setName(account.getName());
+            existingAccount.setEmail(account.getEmail());
+            accountRepository.persist(existingAccount);
         }
     }
 
