@@ -1,17 +1,17 @@
 meta {
-  name: GET blogs
+  name: GET Blog(s) by page
   type: http
-  seq: 2
+  seq: 3
 }
 
 get {
-  url: {{localhost}}/blogs?page=1
+  url: {{localhost}}/blogs?page=2
   body: none
   auth: none
 }
 
 params:query {
-  page: 1
+  page: 2
 }
 
 headers {

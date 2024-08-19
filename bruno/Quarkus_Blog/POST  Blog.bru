@@ -1,0 +1,18 @@
+meta {
+  name: POST  Blog
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{localhost}}/blogs
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "title": "Brunos Blog 1",
+    "content": "Bruno says hi"
+  }
+}
