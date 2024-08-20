@@ -33,8 +33,6 @@ If the previous command is not working:
 ## Accessing the Webview
 After the project has been started, the following two links should be accessible:
 
-**Homepage:**       http://localhost:8080/hello
-
 **Dev UI:**         http://localhost:8080/q/dev/
 
 **Swagger UI:**    http://localhost:8080/q/swagger-ui/
