@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
+import org.jboss.resteasy.reactive.NoCache;
+
 import ch.hftm.blogproject.boundary.dto.NewBlogDTO;
 import ch.hftm.blogproject.boundary.dto.NewCommentDTO;
 import ch.hftm.blogproject.control.BlogService;
@@ -11,6 +13,8 @@ import ch.hftm.blogproject.control.CommentService;
 import ch.hftm.blogproject.entity.Blog;
 import ch.hftm.blogproject.entity.Comment;
 import io.quarkus.security.Authenticated;
+import jakarta.annotation.security.DenyAll;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -29,6 +33,7 @@ import jakarta.ws.rs.core.UriInfo;
 
 // This class provides the REST API endpoints for managing blog posts.
 
+@DenyAll
 @Path("blogs")
 public class BlogRessource {
 
@@ -38,6 +43,7 @@ public class BlogRessource {
     @Inject
     CommentService commentService;
     
+    @Authenticated
     @GET
     // @Authenticated
     public Response getBlogs(@QueryParam("searchString") Optional<String> searchString, @QueryParam("page") Optional<Long> pageIndex) {
