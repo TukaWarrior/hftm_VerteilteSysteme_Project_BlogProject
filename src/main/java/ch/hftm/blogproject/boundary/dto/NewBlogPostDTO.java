@@ -6,7 +6,7 @@ import org.hibernate.validator.constraints.Length;
 
 import ch.hftm.blogproject.entity.Blog;
 
-public record NewBlogDTO(@NotNull @NotBlank @Length(min = 5) String title, String content) {
+public record NewBlogPostDTO(@NotNull @NotBlank @Length(min = 5) String title, String content) {
     public Blog toBlog() {
         return new Blog(title, content);
     }

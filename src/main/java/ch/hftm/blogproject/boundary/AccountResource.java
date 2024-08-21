@@ -6,7 +6,6 @@ import ch.hftm.blogproject.boundary.dto.NewAccountDTO;
 import ch.hftm.blogproject.control.AccountService;
 import ch.hftm.blogproject.entity.Account;
 import jakarta.inject.Inject;
-import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -26,7 +25,7 @@ import jakarta.ws.rs.core.MediaType;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @Tag(name = "Account Resource", description = "Account Management API")
-public class AccountRessource {
+public class AccountResource {
 
     @Inject
     AccountService accountService;

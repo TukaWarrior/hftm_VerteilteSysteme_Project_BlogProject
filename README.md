@@ -6,6 +6,9 @@ As for now, the application allows the user to create, view and edit blog entrie
 
 This project uses the java framework Quarkus.
 
+## Logs
+[Detailed Documentation](./markdown/logs.md)
+
 ## Table of Contents
 1. [Quarkus](#quarkus)
     1. [Running the application in dev mode](#running-the-application-in-dev-mode)
@@ -337,3 +340,4 @@ E.g. Path = c:\program files\apache-maven-3.9.9\bin
 Follow this section for solving problems with the quarkus configuration.
 
 ![Help me](https://media.tenor.com/10Zdx_RXqgcAAAAM/programming-crazy.gif)
+

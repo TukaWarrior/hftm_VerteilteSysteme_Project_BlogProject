@@ -1,15 +1,15 @@
 package ch.hftm.blogproject.control;
 
+import ch.hftm.blogproject.entity.Blog;
 import ch.hftm.blogproject.entity.Comment;
+import ch.hftm.blogproject.repository.BlogPostRepository;
 import ch.hftm.blogproject.repository.CommentRepository;
-import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.logging.Log;
-import io.quarkus.panache.common.Page;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @ApplicationScoped
 public class CommentService {
@@ -18,26 +18,68 @@ public class CommentService {
 
     @Inject
     private CommentRepository commentRepository;
+    @Inject
+    private BlogPostRepository blogPostRepository;
 
-    // Returns a list of comments for the passed blog id.
-    public List<Comment> getComments(Long blogId, Optional<Long> pageNumber) {
-        Log.info("Searching comments for blog: " + blogId);
-        // return commentRepository.findByBlogId(blogId);
-        PanacheQuery<Comment> commentQuery;
-        commentQuery = commentRepository.find("blogId", blogId);
-        long pageIndex = pageNumber.orElse(1L);
-        List<Comment> comments = commentQuery.page(Page.of((int) (pageIndex - 1), pageSize)).list();
-        Log.info("Returning " + comments.size() + " comments");
-        return comments;
+
+    public List<Comment> getAllComments() {
+        return commentRepository.listAll();
     }
 
-    // Creates a comment with blogId reference.
+    public List<Comment> getCommentsByBlog(Long blogPostId) {
+        Blog blogPost = blogPostRepository.findById(blogPostId);
+        if (blogPost != null) {
+            return blogPost.getComments();
+        }
+        return null;
+    }
+
+    public Comment getCommentById(Long id) {
+        return commentRepository.findById(id);
+    }
+
+
     @Transactional
-    public Comment pushComment(Long blogId, Comment comment) {
-        comment.setBlogId(blogId);
-        
-        commentRepository.persist (comment);
-        Log.info("Adding comment to blog: " + comment.getContent() + " " + comment.getId() + " " + comment.getBlogId());
+    public Comment addComment(String content, Long accountId, Long blogPostId) {
+        Blog blogPost = blogPostRepository.findById(blogPostId);
+        if (blogPost == null) {
+            throw new IllegalArgumentException("BlogPost not found");
+        }
+        Comment comment = new Comment();
+        comment.setContent(content);
+        comment.setAccountId(accountId);
+        comment.setCreatedAt(ZonedDateTime.now());
+
+        commentRepository.persist(comment);
+        blogPost.getComments().add(comment);
+        blogPostRepository.persist(blogPost);
         return comment;
     }
+
+    @Transactional
+    public void updateComment(Long id, Comment updatedComment) {
+        Comment existingComment = commentRepository.findById(id);
+        if (existingComment != null) {
+            if (updatedComment.getContent() != null) {
+                existingComment.setContent(updatedComment.getContent());
+            }
+            existingComment.setChangedAt(ZonedDateTime.now());
+            commentRepository.persist(existingComment);
+            Log.info("Updated comment: " + existingComment.getId());
+        }
+    }
 }
+
+
+// Old Code
+    // Returns a list of comments for the passed blog id.
+    // public List<Comment> getComments(Long blogId, Optional<Long> pageNumber) {
+    //     Log.info("Searching comments for blog: " + blogId);
+    //     // return commentRepository.findByBlogId(blogId);
+    //     PanacheQuery<Comment> commentQuery;
+    //     commentQuery = commentRepository.find("blogId", blogId);
+    //     long pageIndex = pageNumber.orElse(1L);
+    //     List<Comment> comments = commentQuery.page(Page.of((int) (pageIndex - 1), pageSize)).list();
+    //     Log.info("Returning " + comments.size() + " comments");
+    //     return comments;
+    // }
