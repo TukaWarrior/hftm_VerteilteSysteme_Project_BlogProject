@@ -1,0 +1,21 @@
+meta {
+  name: PATCH BlogPost by id
+  type: http
+  seq: 6
+}
+
+patch {
+  url: {{localhost}}/blogpost/:id
+  body: json
+  auth: none
+}
+
+params:path {
+  id: 1
+}
+
+body:json {
+  {
+    "content": "Bruno replaced this content"
+  }
+}

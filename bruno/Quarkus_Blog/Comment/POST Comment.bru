@@ -1,0 +1,25 @@
+meta {
+  name: POST Comment
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{localhost}}/comment/:blogPostId
+  body: json
+  auth: none
+}
+
+params:path {
+  blogPostId: 1
+}
+
+headers {
+  accountId: 1
+}
+
+body:json {
+  {
+    "content": "This is a new comment"
+  }
+}

@@ -1,0 +1,25 @@
+meta {
+  name: PATCH Comment by Id
+  type: http
+  seq: 3
+}
+
+patch {
+  url: {{localhost}}/comment/:blogPostId
+  body: json
+  auth: none
+}
+
+params:path {
+  blogPostId: 1
+}
+
+headers {
+  commentId: 1
+}
+
+body:json {
+  {
+    "content": "This comment was replaced"
+  }
+}

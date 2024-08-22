@@ -1,0 +1,18 @@
+meta {
+  name: POST Account
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{localhost}}/account
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Bruno 1",
+    "email": "bruno1@email.com"
+  }
+}

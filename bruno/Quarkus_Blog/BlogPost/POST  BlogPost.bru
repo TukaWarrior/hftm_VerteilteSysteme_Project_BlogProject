@@ -1,0 +1,23 @@
+meta {
+  name: POST  BlogPost
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{localhost}}/blogpost
+  body: json
+  auth: none
+}
+
+headers {
+  accountId: 1
+}
+
+body:json {
+  {
+    "title": "Brunos BlogPost 1",
+    "content": "Bruno says hi",
+    "accountId": "1"
+  }
+}

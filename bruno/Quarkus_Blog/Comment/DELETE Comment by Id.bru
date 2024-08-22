@@ -1,0 +1,15 @@
+meta {
+  name: DELETE Comment by Id
+  type: http
+  seq: 4
+}
+
+delete {
+  url: {{localhost}}/comment
+  body: none
+  auth: none
+}
+
+headers {
+  commentId: 2
+}

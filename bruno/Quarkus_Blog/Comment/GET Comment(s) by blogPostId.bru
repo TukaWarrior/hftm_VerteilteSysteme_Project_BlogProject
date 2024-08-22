@@ -1,0 +1,15 @@
+meta {
+  name: GET Comment(s) by blogPostId
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{localhost}}/comment/:blogPostId
+  body: none
+  auth: none
+}
+
+params:path {
+  blogPostId: 1
+}
