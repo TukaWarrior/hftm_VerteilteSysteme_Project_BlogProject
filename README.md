@@ -7,7 +7,7 @@ As for now, the application allows the user to create, view and edit blog entrie
 This project uses the java framework Quarkus.
 
 > [!IMPORTANT]
-> Please Simeon have mercy when grading this. I just don't have enough time. I have been working on this for countless hours. I spent all time I had from Monday to Thursday, 6:00pm to 12:00pm or even 01:00pm in the middle of the night sometimes. In total 20+ hours. I have redone this project 3 times now but I still encounter so many bugs. When I fix something, new problems emerge and nothing works anymore. So if something is not working, I am sorry. I have been working past midnight consistently every day since the beginning of july and spent all weekends for various school projects. I can physically not invest more time, even if I wanted.
+> Please Simeon have mercy when grading this. I just don't have enough time. I have been working on this for countless hours. I spent all time I had from Monday to Thursday, 6:00pm to 12:00pm or even 01:00pm in the middle of the night sometimes. In total 20+ hours. I have redone this project 3 times now but I still encounter so many bugs. When I fix something, new problems emerge and nothing works anymore. So if something is not working, I am sorry. I have been working past midnight consistently every day since the beginning of july and spent all weekends for various school projects. I can physically not invest more time for the school, even if I wanted.
 My keycloack auth should be working correctly but I just haven't had time to write test classes. 
 
 
