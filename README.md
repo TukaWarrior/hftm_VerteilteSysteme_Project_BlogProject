@@ -13,6 +13,7 @@ My keycloack auth should be working correctly but I just haven't had time to wri
 
 
 ## Table of Contents
+- [Important files](#important-files)
 - [Quarkus](#quarkus)
     - [Running the application in dev mode](#running-the-application-in-dev-mode)
     - [Accessing the Webview](#accessing-the-webview)
@@ -40,9 +41,7 @@ My keycloack auth should be working correctly but I just haven't had time to wri
     - [Grading](#grading)
     - [Roadmap](#roadmap)
 - [Useful subsidiary tools](#useful-subsidiary-tools)
-- [VersionControl](#versioncontrol)
-- [Troubleshooting Guide](#troubleshooting-guide)
-- [Important files](#important-files)
+- 
 
 # Important files
 [Troubleshooting guide](./markdown/troubleshooting-guide.md)
