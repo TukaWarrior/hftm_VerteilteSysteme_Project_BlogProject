@@ -2,15 +2,16 @@ package ch.hftm.blogproject.entity;
 
 import java.time.ZonedDateTime;
 import java.util.List;
+
+import org.hibernate.internal.util.ZonedDateTimeComparator;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,25 +24,32 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class BlogPost {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotNull @NotBlank @Size(min = 5, message = "Title needs at least 5 characters")
     private String title;
-    @NotNull @NotBlank
     private String content;
-    // private Long likes;
-    private ZonedDateTime createdAt = ZonedDateTime.now();
-    private ZonedDateTime changedAt = ZonedDateTime.now();
+    private ZonedDateTime createdAt;
+    private ZonedDateTime changedAt;
 
     @ManyToOne
     private Account account;
     
-    @OneToMany
+    @OneToMany (mappedBy = "blogPost", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
 
-    // Constructor used in Blog DTO
-    public BlogPost (String title, String content) {
+    // Constructor to create new blogPosts.
+    public BlogPost (String title, String content, Account account) {
         this.title = title;
         this.content = content;
+        this.account = account;
+        this.createdAt = ZonedDateTime.now();
+        this.changedAt = ZonedDateTime.now();
     }
 }
+
+    // Constructor used in Blog DTO
+    // public BlogPost (String title, String content) {
+    //     this.title = title;
+    //     this.content = content;
+    // }

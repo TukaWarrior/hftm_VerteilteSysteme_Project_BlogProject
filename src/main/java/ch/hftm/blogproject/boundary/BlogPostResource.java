@@ -2,11 +2,16 @@ package ch.hftm.blogproject.boundary;
 
 import java.util.List;
 import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.headers.Header;
+import org.eclipse.microprofile.openapi.annotations.tags.Tag;
+
+import ch.hftm.blogproject.boundary.dto.BlogPostDTO;
 import ch.hftm.blogproject.control.BlogPostService;
 import ch.hftm.blogproject.control.CommentService;
-import ch.hftm.blogproject.entity.Blog;
+import ch.hftm.blogproject.entity.BlogPost;
 import jakarta.annotation.security.DenyAll;
 import jakarta.inject.Inject;
+import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.HeaderParam;
@@ -14,24 +19,29 @@ import jakarta.ws.rs.PATCH;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
+import java.util.stream.Collectors;
 
 // This class provides the REST API endpoints for managing blog posts.
 
-@DenyAll
+// @DenyAll
 @Path("/blogpost")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
+@Tag(name = "BlogPost Resource", description = "BlogPost Management API")
 public class BlogPostResource {
 
     @Inject
     BlogPostService blogPostService;
-    @Inject
-    CommentService commentService;
     
     @GET
     @Operation(summary = "Get all BlogPosts", description = "Returns all BlogPosts")
-    public List<Blog> getAllBlogPosts() {
-        return blogPostService.getAllBlogPosts();
+    public List<BlogPostDTO> getAllBlogPosts() {
+        List<BlogPost> blogPosts = blogPostService.getAllBlogPosts();
+        return blogPosts.stream().map(BlogPostDTO::new).collect(Collectors.toList());
     }
 
     @GET
@@ -41,22 +51,34 @@ public class BlogPostResource {
         if (id == null) {
             return Response.status(Status.BAD_REQUEST).build();
         }
-        Blog blogPost = blogPostService.getBlogPostById(id);
+        BlogPost blogPost = blogPostService.getBlogPostById(id);
         if (blogPost == null) {
             return Response.status(Status.NOT_FOUND).build();
         }
-        return Response.status(Status.OK).entity(blogPost).build();
+        BlogPostDTO blogPostDTO = new BlogPostDTO(blogPost);
+        return Response.status(Status.OK).entity(blogPostDTO).build();
     }
 
     @POST
     @Operation(summary = "Add a new BlogPost", description = "Creates a new BlogPost")
-    public Response addBlog(Blog blogPost, @HeaderParam("authorId") Long accountId) {
+    public Response addBlog(BlogPostDTO blogPostDTO, @HeaderParam("accountId") Long accountId) {
         try {
-            blogPostService.addBlogPost(blogPost, accountId);
+            blogPostService.addBlogPost(blogPostDTO, accountId);
             return Response.status(Status.CREATED).build();
         } catch (IllegalArgumentException e) {
             return Response.status(Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
+    }
+
+    @PATCH
+    @Path("/{id}")
+    @Operation(summary = "Update a BlogPost", description = "Updates an existing BlogPost")
+    public Response updateBlog(BlogPostDTO blogPostDTO, @PathParam("id") Long id) {
+        if (id == null) {
+            return Response.status(Status.BAD_REQUEST).build();
+        }
+        blogPostService.updateBlogPost(id, blogPostDTO);
+        return Response.ok().build();
     }
 
     @DELETE
@@ -68,17 +90,6 @@ public class BlogPostResource {
         }
         blogPostService.deleteBlogPost(id);
         return Response.noContent().build();
-    }
-
-    @PATCH
-    @Path("/{id}")
-    @Operation(summary = "Update a BlogPost", description = "Updates an existing BlogPost")
-    public Response updateBlog(@PathParam("id") Long id, Blog blogPost) {
-        if (id == null) {
-            return Response.status(Status.BAD_REQUEST).build();
-        }
-        blogPostService.updateBlogPost(id, blogPost);
-        return Response.ok().build();
     }
 }
     // @Authenticated

@@ -1,7 +1,10 @@
 package ch.hftm.blogproject.control;
 
-import ch.hftm.blogproject.entity.Blog;
+import ch.hftm.blogproject.boundary.dto.CommentDTO;
+import ch.hftm.blogproject.entity.Account;
+import ch.hftm.blogproject.entity.BlogPost;
 import ch.hftm.blogproject.entity.Comment;
+import ch.hftm.blogproject.repository.AccountRepository;
 import ch.hftm.blogproject.repository.BlogPostRepository;
 import ch.hftm.blogproject.repository.CommentRepository;
 import io.quarkus.logging.Log;
@@ -20,6 +23,8 @@ public class CommentService {
     private CommentRepository commentRepository;
     @Inject
     private BlogPostRepository blogPostRepository;
+    @Inject
+    private AccountRepository accountRepository;
 
 
     public List<Comment> getAllComments() {
@@ -27,7 +32,7 @@ public class CommentService {
     }
 
     public List<Comment> getCommentsByBlog(Long blogPostId) {
-        Blog blogPost = blogPostRepository.findById(blogPostId);
+        BlogPost blogPost = blogPostRepository.findById(blogPostId);
         if (blogPost != null) {
             return blogPost.getComments();
         }
@@ -40,34 +45,47 @@ public class CommentService {
 
 
     @Transactional
-    public Comment addComment(String content, Long accountId, Long blogPostId) {
-        Blog blogPost = blogPostRepository.findById(blogPostId);
-        if (blogPost == null) {
-            throw new IllegalArgumentException("BlogPost not found");
+    public Comment addComment(CommentDTO  commentDTO, Long blogPostId, Long accountId) {
+        BlogPost blogPost = blogPostRepository.findById(blogPostId);
+        Account account = accountRepository.findById(accountId);
+        if (blogPost == null || account == null) {
+            throw new IllegalArgumentException("BlogPost or Account not found");
         }
-        Comment comment = new Comment();
-        comment.setContent(content);
-        comment.setAccountId(accountId);
+        Comment comment = commentDTO.toEntity(account);
+        comment.setBlogPost(blogPost);
+        comment.setBlogPost(blogPost); // For relations
+        comment.setAccount(account);
         comment.setCreatedAt(ZonedDateTime.now());
 
         commentRepository.persist(comment);
-        blogPost.getComments().add(comment);
-        blogPostRepository.persist(blogPost);
+        // blogPost.getComments().add(comment);
+        // blogPostRepository.persist(blogPost);
         return comment;
     }
 
     @Transactional
-    public void updateComment(Long id, Comment updatedComment) {
+    public void updateComment(Long id, CommentDTO updatedCommentDTO) {
         Comment existingComment = commentRepository.findById(id);
         if (existingComment != null) {
-            if (updatedComment.getContent() != null) {
-                existingComment.setContent(updatedComment.getContent());
+            if (updatedCommentDTO.getContent() != null) {
+                existingComment.setContent(updatedCommentDTO.getContent());
             }
             existingComment.setChangedAt(ZonedDateTime.now());
             commentRepository.persist(existingComment);
             Log.info("Updated comment: " + existingComment.getId());
         }
     }
+
+    // Deletes one Comment by id.
+    @Transactional
+    public void deleteComment(Long id) {
+        Comment comment = commentRepository.findById(id);
+        if (comment != null) {
+            commentRepository.delete(comment);
+        }
+    }
+
+
 }
 
 

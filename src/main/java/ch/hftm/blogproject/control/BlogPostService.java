@@ -2,8 +2,10 @@ package ch.hftm.blogproject.control;
 
 import java.time.ZonedDateTime;
 import java.util.List;
+
+import ch.hftm.blogproject.boundary.dto.BlogPostDTO;
 import ch.hftm.blogproject.entity.Account;
-import ch.hftm.blogproject.entity.Blog;
+import ch.hftm.blogproject.entity.BlogPost;
 import ch.hftm.blogproject.repository.AccountRepository;
 import ch.hftm.blogproject.repository.BlogPostRepository;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -24,46 +26,47 @@ public class BlogPostService {
     private AccountRepository accountRepository;
 
     // Returns one list with all BlogPosts.
-    public List<Blog> getAllBlogPosts(){
+    public List<BlogPost> getAllBlogPosts(){
         return blogPostRepository.listAll();
     }
 
     // Returns one BlogPost matching the passed id.
-    public Blog getBlogPostById(Long id) {
+    public BlogPost getBlogPostById(Long id) {
         return blogPostRepository.findById(id);
     }
 
     // Adds one BlogPost.
     @Transactional
-    public void addBlogPost(Blog blogPost, Long accountId){
+    public void addBlogPost(BlogPostDTO blogPostDTO, Long accountId){
         Account account = accountRepository.findById(accountId);
         if (account != null) {
-            blogPost.setAccount(account);
+            BlogPost blogPost = blogPostDTO.toEntity(account);
             blogPostRepository.persist(blogPost);
         } else {
-            throw new IllegalArgumentException("Invalid account id: " + accountId);
-        }
-    }
-
-    // Deletes one BlogPost.
-    @Transactional
-    public void deleteBlogPost(Long id) {
-        Blog blogPost = blogPostRepository.findById(id);
-        if (blogPost != null) {
-            blogPostRepository.delete(blogPost);
+            throw new IllegalArgumentException("Invalid account id: " + blogPostDTO.getAccountId());
         }
     }
 
     // Updates one BlogPost.
     @Transactional
-    public void updateBlogPost(Long id, Blog blogPost){
-        Blog existingBlogPost = blogPostRepository.findById(id);
+    public void updateBlogPost(Long id, BlogPostDTO  blogPostDTO){
+        BlogPost existingBlogPost = blogPostRepository.findById(id);
         if (existingBlogPost != null) {
-            existingBlogPost.setTitle(blogPost.getTitle());
-            existingBlogPost.setContent(blogPost.getContent());
+            existingBlogPost.setTitle(blogPostDTO.getTitle());
+            existingBlogPost.setContent(blogPostDTO.getContent());
             existingBlogPost.setChangedAt(ZonedDateTime.now());
         }
     }
+
+    // Deletes one BlogPost by id.
+    @Transactional
+    public void deleteBlogPost(Long id) {
+        BlogPost blogPost = blogPostRepository.findById(id);
+        if (blogPost != null) {
+            blogPostRepository.delete(blogPost);
+        }
+    }
+
 }
 
     // // Returns a list of blogs that match the passed search terms. 
