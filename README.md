@@ -6,8 +6,11 @@ As for now, the application allows the user to create, view and edit blog entrie
 
 This project uses the java framework Quarkus.
 
-## Logs
-[Detailed Documentation](./markdown/logs.md)
+> [!IMPORTANT]
+> Please Simeon have mercy when grading this. I just don't have enough time. I have been working on this for countless hours. I spent all time I had from Monday to Thursday, 6:00pm to 12:00pm or even 01:00pm in the middle of the night sometimes. In total 20+ hours. I have redone this project 3 times now but I still encounter so many bugs. When I fix something, new problems emerge and nothing works anymore. So if something is not working, I am sorry. I have been working past midnight consistently every day since the beginning of july and spent all weekends for various school projects. I can physically not invest more time, even if I wanted.
+My keycloack auth should be working correctly but I just haven't had time to write test classes. 
+
+
 
 ## Table of Contents
 1. [Quarkus](#quarkus)
@@ -20,7 +23,17 @@ This project uses the java framework Quarkus.
 3. [Administrative](#administrative)
     1. [Grading](#grading)
     2. [Roadmap](#roadmap)
-    
+4. [Authentication](#authentication)
+5. [VersionControll](#version-controll)
+6. [Troubleshooting Guide](#troubleshooting-guide)
+
+# Important files
+[Troubleshooting guide](./markdown/troubleshooting-guide.md)
+
+[Notebook](./markdown/logs.md)
+
+[Bugs](./markdown/errors.md)
+
 # Quarkus
 
 ### Running the application in dev mode
@@ -83,9 +96,19 @@ You can then execute your native executable with: `./target/blogproject-1.0.0-SN
 - **Building native executables:** https://quarkus.io/guides/maven-tooling
 
 
-# HTTP Request Examples
-Once the application is running, following http requests are possible (Examples using httpie):
+# Roles
+There are currently four different roles.
+1. Unauthenticated = Can GET BlogPosts, Accounts and Comments.
+2. User = Same as unauthenticated + can POST, PATCH, DELETE BlogPosts and Comments
+3. Moderator= Same as User + can DELETE BlogPosts and Comments not made by the moderator (not yet implemented)
+4. Admin = Same as moderator + can POST, PATCH, DELETE Accounts.
 
+# HTTP Request Examples
+Once the application is running, following http requests are possible:
+
+How to test: Do you know the API Client bruno? It is amazing. 
+![Help me](./markdown/images/bruno_screenshot.png)
+<!-- 
 | Entity | Type | Command | Description |
 | --- | --- | --- | --- |
 | Blog | GET | ```http GET http://localhost:8080/blogs``` | Lists all blogs, 4 per page |
@@ -97,7 +120,368 @@ Once the application is running, following http requests are possible (Examples 
 | Blog | PATCH | ```http PATCH http://localhost:8080/blogs/1 content="This content was replaced"```  | Replace attributes of blog with id 1 (id required. Empty "" or null attributesare ignored) |
 | Comment | GET | ```http GET http://localhost:8080/blogs/1/comments``` | Lists all comments on blog with id 1, 10 per page |
 | Comment | GET | ```http GET http://localhost:8080/blogs/1/comments?page=2``` | Lists all comments on blog with id 1, page 2 |
-| Comment | POST | ```http GET http://localhost:8080/blogs/1/comments content="This is a comment"``` | Post new comment on blog with id 1 with content (content required) |
+| Comment | POST | ```http GET http://localhost:8080/blogs/1/comments content="This is a comment"``` | Post new comment on blog with id 1 with content (content required) | -->
+
+## Account
+
+### GET Account(s)
+
+**Roles:** @PermitAll
+
+**URL:** http://localhost:8080/account
+
+**Header**
+```
+-
+```
+
+**Body**
+```
+-
+```
+
+**Response Example**
+```
+[
+  {
+    "createdAt": "2024-08-22T21:57:44.474069Z",
+    "email": "alice@email.com",
+    "id": 1,
+    "name": "Alice",
+    "role": "admin"
+  },
+  {
+    "createdAt": "2024-08-22T21:57:44.59975Z",
+    "email": "brian@email.com",
+    "id": 2,
+    "name": "Brian",
+    "role": "moderator"
+  }
+]
+```
+
+### GET Account by id
+
+**Roles:** @PermitAll
+
+**URL:** http://localhost:8080/account/1
+
+**Header**
+```
+-
+```
+
+**Body**
+```
+-
+```
+
+**Response Example**
+```
+{
+  "createdAt": "2024-08-22T21:57:44.474069Z",
+  "email": "alice@email.com",
+  "id": 1,![alt text](image.png)
+  "name": "Alice",
+  "role": "admin"
+}
+```
+
+### POST Account
+
+**Roles:** @RolesAllowed("admin")
+
+**URL:** http://localhost:8080/account
+
+**Header**
+```
+Authorization: Bearer TOKEN
+```
+
+**Body**
+```
+{
+  "name": "Bruno 1",
+  "email": "bruno1@email.com"
+}
+```
+
+**Response Example**
+```
+201 Created
+```
+
+<!-- ### DELETE (wip, problems with foreign key)
+
+**Roles:** @RolesAllowed("admin")
+
+**URL:** http://localhost:8080/account/1
+
+**Header**
+```
+Authorization: Bearer TOKEN
+```
+
+**Body**
+```
+```
+
+**Response Example**
+```
+``` -->
+
+## BlogPost
+
+### GET BlogPost(s)
+
+**Roles:** @PermitAll
+
+**URL:** http://localhost:8080/blogpost
+
+**Header**
+```
+```
+
+**Body**
+```
+```
+
+**Response Example**
+```
+[
+  {
+    "accountId": 1,
+    "accountName": "Alice",
+    "content": "Content of initial BlogPost 1",
+    "createdAt": "2024-08-22T21:57:44.675696Z",
+    "id": 1,
+    "title": "Initial BlogPost 1"
+  },
+  {
+    "accountId": 2,
+    "accountName": "Brian",
+    "content": "Content of initial BlogPost 2",
+    "createdAt": "2024-08-22T21:57:44.694639Z",
+    "id": 2,
+    "title": "Initial BlogPost 2"
+  }
+]
+```
+
+### GET BlogPost by id
+
+**Roles:** @PermitAll
+
+**URL:** http://localhost:8080/blogpost/1
+
+**Header**
+```
+```
+
+**Body**
+```
+```
+
+**Response Example**
+```
+{
+"accountId": 1,
+"accountName": "Alice",
+"content": "Content of initial BlogPost 1",
+"createdAt": "2024-08-22T21:57:44.675696Z",
+"id": 1,
+"title": "Initial BlogPost 1"
+}
+```
+
+### POST BlogPost
+**Roles:** @RolesAllowed({"admin", "moderator", "user"})
+
+**URL:** http://localhost:8080/blogpost
+
+**Header**
+```
+accountID: 1
+Authorization: Bearer TOKEN
+```
+
+**Body**
+```
+{
+  "title": "Brunos BlogPost 1",
+  "content": "Bruno says hi",
+  "accountId": "1"
+}
+```
+
+**Response Example**
+```
+201 Created
+```
+
+### PATCH BlogPost
+
+**Roles:** @RolesAllowed({"admin", "moderator", "user"})
+
+**URL:** http://localhost:8080/blogpost/1
+
+**Header**
+```
+Authorization: Bearer TOKEN
+```
+
+**Body**
+```
+{
+  "content": "Bruno replaced this content"
+}
+```
+
+**Response Example**
+```
+200 OK
+```
+
+### DELETE BlogPost
+
+**Roles:** @RolesAllowed({"admin", "moderator", "user"})
+
+**URL:** http://localhost:8080/blogpost/1
+
+**Header**
+```
+Authorization: Bearer TOKEN
+```
+
+**Body**
+```
+```
+
+**Response Example**
+```
+200 OK
+```
+
+## Comment
+
+### GET Comment(s) by blogPostId
+
+**Roles:** @PermitAll
+
+**URL:** http://localhost:8080/comment/1
+
+**Header**
+```
+```
+
+**Body**
+```
+```
+
+**Response Example**
+```
+[
+  {
+    "accountId": 3,
+    "blogPostId": 1,
+    "changedAt": "2024-08-22T21:35:17.376448Z",
+    "content": "Comment 3 on BlogPost 1",
+    "createdAt": "2024-08-22T21:35:17.376448Z",
+    "id": 3
+  },
+  {
+    "accountId": 4,
+    "blogPostId": 1,
+    "changedAt": "2024-08-22T21:35:17.392654Z",
+    "content": "Comment 4 on BlogPost 1",
+    "createdAt": "2024-08-22T21:35:17.392654Z",
+    "id": 4
+  }
+]
+```
+
+### POST Comment by blogPostId
+
+**Roles:** @RolesAllowed({"admin", "moderator", "user"})
+
+**URL:** http://localhost:8080/comment/1
+
+**Header**
+```
+Authorization: Bearer TOKEN
+```
+
+**Body**
+```
+{
+  "content": "This is a new comment"
+}
+```
+
+**Response Example**
+```
+{
+  "accountId": 1,
+  "blogPostId": 1,
+  "changedAt": "2024-08-22T23:27:36.4742385+02:00[Europe/Zurich]",
+  "content": "This is a new comment",
+  "createdAt": "2024-08-22T23:27:36.4742385+02:00[Europe/Zurich]",
+  "id": 102
+}
+```
+
+### PATCH Comment by blogPostId
+
+**Roles:** @RolesAllowed({"admin", "moderator", "user"})
+
+**URL:** http://localhost:8080/comment/1
+
+**Header**
+```
+commentId: 1
+Authorization: Bearer TOKEN
+```
+
+**Body**
+```
+{
+  "content": "This comment was replaced"
+}
+```
+
+**Response Example**
+```
+{
+  "accountId": 1,
+  "blogPostId": 1,
+  "changedAt": "2024-08-22T21:57:44.749259Z",
+  "content": "Comment 1 on BlogPost 1",
+  "createdAt": "2024-08-22T21:57:44.749259Z",
+  "id": 1
+}
+```
+
+### DELETE Comment
+
+**Roles:** @RolesAllowed({"admin", "moderator", "user"})
+
+**URL:** http://localhost:8080/comment
+
+**Header**
+```
+commentId: 1
+Authorization: Bearer TOKEN
+```
+
+**Body**
+```
+```
+
+**Response Example**
+```
+200 OK
+```
+
 
 # Administrative
 ### Grading
@@ -144,7 +528,7 @@ This list keeps track of currently open and completed tasks.
 
 
 
-# Authentication
+<!-- # Authentication
 Currently, because of time constraints, the authentication using keycload is not fully implemented. But in the future, I will implement the following roles.
 
 - Admin: 
@@ -155,189 +539,5 @@ Users require a login. They can get and post blogs and comments. They can patch 
 A guest is a role that doesen't require an loging. They can only get blogs and comments. 
 - Moderator
 If the moderator role will exists depends on the time I have avaiable to test out and implement some features. If I have the time to also add user profile entities, I may also add an moderator. Unlike the administrator, who has no restrictions at all, a moderator can get and push all blogs and comments, but he can not alter them. Altering them is prohibited because if the moderator is malicious, he could make it looklike as a user wrote something that they did not. The moderator has also no access to modifying user profiles. 
-
-# Version Controll
-This project currently uses the folowing versions of various dependencies.
-
-**Maven:** apache-maven-3.9.9
-
-**Java version:** java 21.0.1 2023-10-17 LTS
-
-
-# Troubleshooting Guide
-This troubleshooting guide provides step-by-step instructions to resolve common issues when building or running this Quarkus project.
-
-## Searching the problem
-If you are unaware about what the problem causes, follow this guide. 
-
-1. Ensure that the issue is not caused by faulty code that leads to a compile error.
-
-2. Try cleaning the project using the maven wrapper:
-    ```shell script
-    ./mvnw clean
-    ```
-    If ./mvnw clean fails, there may be an issue with the Maven wrapper. 
-    
-    **See chapter: "Problems with the Maven Wrapper"**
-
-3. Try clean installing the project using the maven wrapper. 
-    ```shell script
-    ./mvnw clean install
-    ```
-    If the ./mvnw clean install command fails but ./mvnw clean succeeds, there may be a problem with the dependencies. 
-    
-    **See chapter "Problems with dependencies"**
-
-4. Try running the application using the maven wrapper:
-    ```shell script
-    ./mvnw quarkus:dev
-    ```
-    If the ./mvnw clean and ./mvnw clean install commands succeeded, but the ./mvnw quarkus:dev command fails, there may be a problem with the quarkus configuration. 
-
-    **See chapter: "Problems with quarkus"**
-
-
-
-5. Additionally, you can check if the programm starts using the local maven installation. Clean install and run the project using your local maven installation:
-
-    ```shell script
-    mvn clean
-    ```
-    If mvn clean fails, there may be a problem with the local maven installation. 
-
-    **See chapter: "Problems with Java and Maven"**
-
-6. Try clean installing the project using the local maven installation.
-    ```shell script
-    mvn clean install
-    ```
-    If the mvn clean install command fails but mvn clean succeeds, there may be a problem with the dependencies.
-
-    **See chapter: "Problems with dependencies"**
-
-7. Try running the application using the local maven installation:
-    ```shell script
-    mvn quarkus:dev
-    ```
-    If the mvn clean and mvn clean install commands succeeded, but the .mvn quarkus:dev command fails, there may be a problem with the quarkus configuration. 
-
-    **See chapter: "Problems with quarkus"**
-
-    If the command succeeds and the application starts, there may be a problem with the maven wrapper. 
-
-    **See chapter: "Problem with the Maven wrapper"**
-
-
-## Problems with dependencies
-If dependencies are causing issues, reinstall them. To do so, first delete the current dependencies from the lcoal maven repository. 
-
-1. Delete the local dependency repository: C://User/*name*/.m2/repository
-    ```shell script
-    rmdir /s /q C:\Users\<YourUsername>\.m2\repository\
-    ```
-
-    Then reinstall the dependencies:
-    ```shell script
-    mvn clean install
-    ```
-    If the command succeeds, the dependencies are successfully reinstalled. 
-    If the mvn clean install fails, dependencies may be incompatible. 
-    
-2. Update the dependencies to their newest release. Caution! The newest releases of dependencies may also not be fully compatible. 
-    ```shell script
-    mvn versions:use-latest-releases
-    ```
-
-    Then reinstall the dependencies again:
-    ```shell script
-    mvn clean install
-    ```
-    If the commands succeeded, the dependencies are now updated to the newest release. If the mvn clean install command failed, the updated dependencies may be incompatible Solve the incompatibilities or roll back to a previously working commit. If any mvn command fails, there may be a problem with the local maven installation. 
-
-    **See chapter "Problems with Java and Maven**
-
-
-3. If the mvn clean install command succeeds, run the application using the local maven installation:
-    ```
-    mvn quarkus:dev
-    ```
-    If mvn quarkus:dev fails, there may be a problem with the quarkus configuration. 
-
-    **See chapter: "Problems with quarkus"**
-
-    If the command succeeds and the application starts, the local maven installation and the dependencies are functional. 
-
-## Problems with the Maven Wrapper
-If you have issues with the maven wrapper follow this section:
-
-The Maven Wrapper is a script included in a project that allows you to run Maven without needing to have Maven installed globally on your system.
-It ensures that a specific version of Maven, as defined in the project, is used, regardless of what version is installed globally.
-
-1. Check the version of the maven version provided by the wrapper inside the project. Make sure the maven version displayed corresponds with the minimum required version listed in the chapter "Required Dependencies.
-    ```shell script
-    ./mvnw --version
-    ```
-
-2. If the version doesen't match the required maven version or if the command fails, delete the wrapper and then reinstall it. To do so, delete the .mvn folder inside the project root.
-    ```
-    Remove-Item -Recurse -Force .mvn
-    ```
-
-    Then rebuild the maven wrapper. 
-    ```shell script
-    mvn wrapper:wrapper
-    ```
-    If rebuilding the maven wrapper fails, there may be a problem with the local maven installation. 
-    
-    **See chapter: "Problems with Java and Maven"**
-
-
-
-## Problems with Java and Maven
-If any of the mvn commands are not functioning correctly, the local Java or Maven installation may be broken or incompatible. 
-
-1. Check the java version
-    ```shell script
-    java -version
-    ```
-    For the minimum required version, **check chapter "Used dependencies"** 
-
-    If the --version command shows a lower or different version than the minimum required version, update the Java jdk installation. If it is not working after the installation, check the JAVA_HOME system environment variable. 
-    
-    **See below. System Environment Variable JAVA_HOME**
-
-    If the command fails with a message containing "is not recognized as the name of a cmdlet", the system didn't detect the java installation. Install java or check the JAVA_HOME system environment variable. 
-
-    **See below. System Environment Variable JAVA_HOME**
-
-
-2. Check the maven version
-    ```shell script
-    mvn -version
-    ```
-    For the minimum required version, **check chapter "Version Controll"**
-
-    If the --version command shows a lower or different version than the minimum required version, update the Maven installation. If it is not working after the installation, check the PATH system environment variable. 
-
-    **See below. System Environment Variable PATH (Maven)**
-
-    If the command fails with a message containing "is not recognized as the name of a cmdlet", the system didn't detect the maven installation. Install maven or check the PATH system environment variable. 
-
-    **See below. System Environment Variable PATH (Maven)**
-
-
-**System Environment Variable JAVA_HOME**
-
-Make sure that your JAVA_HOME environment variable is pointing to a jdk installation that fullfills the minimum required version. 
-E.g. JAVA_HOME = C:\Program Files\Java\jdk-21
-
-**System Environment Variable PATH (Maven)**
-
-Make sure that the PATH system environment variable lists a maven installation of at least the minimum requried version.
-E.g. Path = c:\program files\apache-maven-3.9.9\bin
-
-## Problems with quarkus
-Follow this section for solving problems with the quarkus configuration.
-
-![Help me](https://media.tenor.com/10Zdx_RXqgcAAAAM/programming-crazy.gif)
+ -->
 

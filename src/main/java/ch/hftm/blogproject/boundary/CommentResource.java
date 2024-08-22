@@ -9,7 +9,9 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import ch.hftm.blogproject.boundary.dto.CommentDTO;
 import ch.hftm.blogproject.control.CommentService;
 import ch.hftm.blogproject.entity.Comment;
+import jakarta.annotation.security.DenyAll;
 import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
@@ -29,6 +31,7 @@ import java.util.stream.Collectors;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @Tag(name = "Comment Resource", description = "Comment Management API")
+@DenyAll
 public class CommentResource {
     
     @Inject
@@ -36,6 +39,7 @@ public class CommentResource {
 
     @GET
     @Path("/{blogPostId}")
+    @PermitAll
     @Operation(summary = "Get comments for a blog", description = "Returns all comments for a specific blog post")
     public Response getCommentsByBlog(@PathParam("blogPostId") Long blogPostId) {
         List<Comment> comments = commentService.getCommentsByBlog(blogPostId);
@@ -49,6 +53,7 @@ public class CommentResource {
 
     @POST
     @Path("/{blogPostId}")
+    @RolesAllowed({"admin", "moderator", "user"})
     @Operation(summary = "Add a comment to a blog", description = "Adds a comment to a specific blog post")
     public Response addCommentToBlog(@PathParam("blogPostId") Long blogPostId, @HeaderParam("accountId") Long accountID, CommentDTO commentDTO) {
         try {
@@ -61,6 +66,7 @@ public class CommentResource {
 
     @PATCH
     @Path("/{blogPostId}")
+    @RolesAllowed({"admin", "moderator", "user"})
     @Operation(summary = "Update a comment", description = "Updates an existing comment")
     public Response updateComment(@PathParam("blogPostId") Long blogPostId, @HeaderParam("commentId") Long commentId, CommentDTO  commentDTO) {
         Comment existingComment = commentService.getCommentById(commentId);
@@ -73,6 +79,7 @@ public class CommentResource {
     }
 
     @DELETE
+    @RolesAllowed({"admin", "moderator", "user"})
     @Operation(summary = "Delete a comment", description = "Deletes an existing comment")
     public Response deleteComment(@HeaderParam("commentId") Long commentId) {
         if (commentId == null) {

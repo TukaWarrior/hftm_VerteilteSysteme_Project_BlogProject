@@ -1,5 +1,7 @@
 [Back to Main Documentation](../README.md)
-# This is a list of bugs I encountered while programming that I need to keep track of, in case they return.
+# Bugs
+> [!NOTE]
+> This is a list of bugs I encountered that may still be relevant today. 
 
 ### Crash at startup, hybernate, alter table BlogPost drop foreign key FKpsf0ikr3q06ymuy6l0baxqnbs" via JDBC
 ```
