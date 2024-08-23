@@ -28,13 +28,13 @@ public class Account {
     private ZonedDateTime createdAt;
 
 
-    @JsonbTransient // Ignored for JSON serialization because account links to blogPost,blogPost links to account. Loop!
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<BlogPost> blogPosts;
+    // @JsonbTransient // Ignored for JSON serialization because account links to blogPost,blogPost links to account. Loop!
+    // @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+    // private List<BlogPost> blogPosts;
 
-    @JsonbTransient // Ignored for JSON serialization because account links to blogPost,blogPost links to account. Loop!
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comment> comments;
+    // @JsonbTransient // Ignored for JSON serialization because account links to blogPost,blogPost links to account. Loop!
+    // @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+    // private List<Comment> comments;
 
     public Account(String name, String email, String role) {
         this.name = name;

@@ -31,14 +31,14 @@ import jakarta.ws.rs.core.MediaType;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @Tag(name = "Account Resource", description = "Account Management API")
-@DenyAll
+// @DenyAll
 public class AccountResource {
 
     @Inject
     AccountService accountService;
     
     @GET
-    @PermitAll
+    // @PermitAll
     @Operation(summary = "Get all accounts", description = "Returns all accounts")
     public List<AccountDTO> getAllAccounts() {
         List<Account> accounts = accountService.getAllAccounts();
@@ -47,7 +47,7 @@ public class AccountResource {
 
     @GET
     @Path("/{id}")
-    @PermitAll
+    // @PermitAll
     @Operation(summary = "Get an account by ID", description = "Returns an account by their ID")
     public Response getAccountById(@PathParam("id") Long id) {
         if (id == null) {
@@ -62,7 +62,7 @@ public class AccountResource {
     }
 
     @POST
-    @RolesAllowed("admin")
+    // @RolesAllowed("admin")
     @Operation(summary = "Add a new account", description = "Creates a new account")
     public Response addAccount(AccountDTO accountDTO) {
         Account account = accountDTO.toEntity();
@@ -73,7 +73,7 @@ public class AccountResource {
 
     @PUT
     @Path("/{id}")
-    @RolesAllowed("admin")
+    // @RolesAllowed("admin")
     @Operation(summary = "Update an account", description = "Updates an existing account")
     public Response updateAccount(@PathParam("id") Long id, AccountDTO  accountDTO) {
         if (id == null) {
@@ -85,7 +85,7 @@ public class AccountResource {
     }
 
     @DELETE
-    @RolesAllowed("admin")
+    // @RolesAllowed("admin")
     @Path("/{id}")
     @Operation(summary = "Delete an account", description = "Deletes an account by their ID")
     public Response deleteAccount(@PathParam("id") Long id) {

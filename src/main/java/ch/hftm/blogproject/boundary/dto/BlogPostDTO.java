@@ -37,17 +37,17 @@ public class BlogPostDTO {
         this.content = blogPost.getContent();
         this.createdAt = blogPost.getCreatedAt();
         this.changedAt = blogPost.getChangedAt();
-        this.accountId = blogPost.getAccount() != null ? blogPost.getAccount().getId() : null;
-        this.accountName = blogPost.getAccount() != null ? blogPost.getAccount().getName() : null;
+        this.accountId = blogPost.getAccountId();
+        // this.accountName = blogPost.getAccount() != null ? blogPost.getAccount().getName() : null;
     }
 
 
     // Method to convert from DTO to entity for POST requests
-    public BlogPost toEntity(Account account) {
+    public BlogPost toEntity(Long accountId) {
         BlogPost blogPost = new BlogPost();
         blogPost.setTitle(this.title);
         blogPost.setContent(this.content);
-        blogPost.setAccount(account);
+        // blogPost.setAccount(account);
         blogPost.setCreatedAt(ZonedDateTime.now());
         // blogPost.setChangedAt(ZonedDateTime.now());
         return blogPost;

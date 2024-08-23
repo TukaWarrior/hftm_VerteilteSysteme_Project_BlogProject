@@ -7,7 +7,7 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 import ch.hftm.blogproject.boundary.dto.BlogPostDTO;
 import ch.hftm.blogproject.control.BlogPostService;
-import ch.hftm.blogproject.control.CommentService;
+// import ch.hftm.blogproject.control.CommentService;
 import ch.hftm.blogproject.entity.BlogPost;
 import jakarta.annotation.security.DenyAll;
 import jakarta.annotation.security.PermitAll;
@@ -29,19 +29,18 @@ import java.util.stream.Collectors;
 
 // This class provides the REST API endpoints for managing blog posts.
 
-// @DenyAll
 @Path("/blogpost")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @Tag(name = "BlogPost Resource", description = "BlogPost Management API")
-@DenyAll
+// @DenyAll
 public class BlogPostResource {
 
     @Inject
     BlogPostService blogPostService;
     
     @GET
-    @PermitAll
+    // @PermitAll
     @Operation(summary = "Get all BlogPosts", description = "Returns all BlogPosts")
     public List<BlogPostDTO> getAllBlogPosts() {
         List<BlogPost> blogPosts = blogPostService.getAllBlogPosts();
@@ -50,7 +49,7 @@ public class BlogPostResource {
 
     @GET
     @Path("/{id}")
-    @PermitAll
+    // @PermitAll
     @Operation(summary = "Get a BlogPost by id", description = "Returns a BlogPost by id")
     public Response getBlogPost(@PathParam("id") Long id) {
         if (id == null) {
@@ -65,7 +64,7 @@ public class BlogPostResource {
     }
 
     @POST
-    @RolesAllowed({"admin", "moderator", "user"})
+    // @RolesAllowed({"admin", "moderator", "user"})
     @Operation(summary = "Add a new BlogPost", description = "Creates a new BlogPost")
     public Response addBlog(BlogPostDTO blogPostDTO, @HeaderParam("accountId") Long accountId) {
         try {
@@ -78,7 +77,7 @@ public class BlogPostResource {
 
     @PATCH
     @Path("/{id}")
-    @RolesAllowed({"admin", "moderator", "user"})
+    // @RolesAllowed({"admin", "moderator", "user"})
     @Operation(summary = "Update a BlogPost", description = "Updates an existing BlogPost")
     public Response updateBlog(BlogPostDTO blogPostDTO, @PathParam("id") Long id) {
         if (id == null) {
@@ -90,7 +89,7 @@ public class BlogPostResource {
 
     @DELETE
     @Path("/{id}")
-    @RolesAllowed({"admin", "moderator", "user"})
+    // @RolesAllowed({"admin", "moderator", "user"})
     @Operation(summary = "Delete a BlogPost", description = "Deletes a BlogPost by its id")
     public Response deleteBlog(@PathParam("id") Long id) {
         if (id == null) {
