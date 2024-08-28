@@ -95,8 +95,14 @@ public class BlogPostResource {
         if (id == null) {
             return Response.status(Status.BAD_REQUEST).build();
         }
-        blogPostService.deleteBlogPost(id);
-        return Response.noContent().build();
+        try {
+            blogPostService.deleteBlogPost(id);
+            return Response.noContent().build();
+        } catch (IllegalArgumentException e) {
+            return Response.status(Status.NOT_FOUND).entity(e.getMessage()).build();
+        }
+
+
     }
 }
     // @Authenticated

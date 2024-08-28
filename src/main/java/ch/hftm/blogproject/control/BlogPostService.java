@@ -62,9 +62,10 @@ public class BlogPostService {
     @Transactional
     public void deleteBlogPost(Long id) {
         BlogPost blogPost = blogPostRepository.findById(id);
-        if (blogPost != null) {
-            blogPostRepository.delete(blogPost);
+        if (blogPost == null) {
+            throw new IllegalArgumentException("Blog post with id " + id + " not found.");
         }
+        blogPostRepository.delete(blogPost);
     }
 
 }
