@@ -7,7 +7,7 @@ meta {
 post {
   url: {{localhost}}/comment/:blogPostId
   body: json
-  auth: none
+  auth: bearer
 }
 
 params:path {
@@ -16,6 +16,10 @@ params:path {
 
 headers {
   accountId: 1
+}
+
+auth:bearer {
+  token: eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJGYlBwa1d0ekIzOXVtaG11dlZVXzFKbng4eUtIU3FtSUR6VDdLU19Cc3BvIn0.eyJleHAiOjE3MjQ5NzExNjksImlhdCI6MTcyNDk3MDU2OSwianRpIjoiZWFkNWJkMmEtNGY4NC00OWYyLThhNGItOWMzMGJmMDM3OGNkIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDg4L3JlYWxtcy9ibG9nIiwic3ViIjoiNWMyNmU1NjUtY2JlZC00MTJiLWFhYzUtMTRlY2FkYWFjMGE1IiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiYmFja2VuZC1zZXJ2aWNlIiwic2Vzc2lvbl9zdGF0ZSI6IjMwYzgyZjkyLTgzNWUtNDcxZC05ZjlkLWZhNDg4ZTMzMjViOSIsInNjb3BlIjoibWljcm9wcm9maWxlLWp3dCIsInNpZCI6IjMwYzgyZjkyLTgzNWUtNDcxZC05ZjlkLWZhNDg4ZTMzMjViOSIsInVwbiI6ImFsaWNlIiwiZ3JvdXBzIjpbImFkbWluIl19.ZGD88QdT0GwoktaB9KRpvb4AtfnQK8wht1Ikzz0MJOMtuqFVE3GGxfcJqa-aWCCfCRovuUj__k7UnF1ccG-Dk7cLoqYsZ91prcRmayviDP8PAaAkSThSTSE_SyOxz8QwI5xJoLlHRDiiJANYalLZEcBqIqyHDRnefTTOg34NDE6bgHubWB8OajPIGHuHgglav16yHRnIq_2wf0hbH-y9taaK3siBM6_IGLCqw2ZI5q2zH0dLO4jjZnTfXM1Bk0NOa6MwSxqoFoCwqOKDCCXWWxZ-vvQ4lM_6hIO-MTRaKZK4XUEuy0Txru8THI5aTAdNspFeITaW7FknCKh2PbIhqg
 }
 
 body:json {

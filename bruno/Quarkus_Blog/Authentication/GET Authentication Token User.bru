@@ -1,0 +1,21 @@
+meta {
+  name: GET Authentication Token User
+  type: http
+  seq: 1
+}
+
+get {
+  url: 
+  body: none
+  auth: oauth2
+}
+
+auth:oauth2 {
+  grant_type: password
+  access_token_url: http://localhost:8088/realms/blog/protocol/openid-connect/token
+  username: carl
+  password: carl
+  client_id: backend-service
+  client_secret: secret
+  scope: 
+}
