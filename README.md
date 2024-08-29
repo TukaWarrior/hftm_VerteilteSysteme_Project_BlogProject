@@ -7,8 +7,9 @@ As for now, the application allows the user to create, view and edit blog entrie
 This project uses the java framework Quarkus.
 
 > [!IMPORTANT]
-> Please Simeon have mercy when grading this. I just don't have enough time. I have been working on this for countless hours. I spent all time I had from Monday to Thursday, 6:00pm to 12:00pm or even 01:00pm in the middle of the night sometimes. In total 20+ hours. I have redone this project 3 times now but I still encounter so many bugs. When I fix something, new problems emerge and nothing works anymore. So if something is not working, I am sorry. I have been working past midnight consistently every day since the beginning of july and spent all weekends for various school projects. I can physically not invest more time for the school, even if I wanted.
-My keycloack auth should be working correctly but I just haven't had time to write test classes. 
+> Please Simeon have mercy when grading this. I just don't have enough time right now. I have redone this project 3 times now but I still encounter so many error. When I fix something, new problems emerge and nothing works anymore. I then spend hours fixing just one problem. Without an example project, iterating on this is almost impossible. As for now, hibernate at startup throws an error because quarkus can't drop the old tables while initializing due to DB relations, and the comments aren't working anymmore for whatever reason. I have tzried writing tests but since I have to change the project all the time, I can't reliably make tests right now. 
+I am sorry. I can physically not invest more time for the school, even if I wanted. I have been permanently working on school stuff since the second week of July. I haven't had more than a couple hours of free time since then and I am working every day until midnight or even 1 o'clock in the morning on school projects. Together with my job, I am currently working for 15ish hours every single day since almost two months. 
+
 
 
 
@@ -115,8 +116,8 @@ You can then execute your native executable with: `./target/blogproject-1.0.0-SN
 # Roles
 There are currently four different roles.
 1. Unauthenticated = Can GET BlogPosts, Accounts and Comments.
-2. User = Same as unauthenticated + can POST, PATCH, DELETE BlogPosts and Comments
-3. Moderator= Same as User + can DELETE BlogPosts and Comments not made by the moderator (not yet implemented)
+2. User = Same as unauthenticated + can POST BlogPosts and Comments
+3. Moderator= Same as User + can DELETE, PUT and PATCH BlogPosts and Comments.
 4. Admin = Same as moderator + can POST, PATCH, DELETE Accounts.
 
 # HTTP Request Examples
@@ -137,6 +138,27 @@ How to test: Do you know the API Client bruno? It is amazing.
 | Comment | GET | ```http GET http://localhost:8080/blogs/1/comments``` | Lists all comments on blog with id 1, 10 per page |
 | Comment | GET | ```http GET http://localhost:8080/blogs/1/comments?page=2``` | Lists all comments on blog with id 1, page 2 |
 | Comment | POST | ```http GET http://localhost:8080/blogs/1/comments content="This is a comment"``` | Post new comment on blog with id 1 with content (content required) | -->
+## Authentication OAUTH 2.0
+To get access tokens, you can send a GET request at the following access token URL:
+```
+http://localhost:8088/realms/blog/protocol/openid-connect/token
+```
+**Username, Password, Role:**
+
+alice, alice, admin
+
+bob, bob, moderator
+
+carl, carl, user
+
+**Client ID:**
+
+backend-service
+
+**Client Secret:**
+
+secret
+
 
 ## Account
 
