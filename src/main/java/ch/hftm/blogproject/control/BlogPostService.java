@@ -37,11 +37,12 @@ public class BlogPostService {
 
     // Adds one BlogPost.
     @Transactional
-    public void addBlogPost(BlogPostDTO blogPostDTO, Long accountId){
+    public BlogPost addBlogPost(BlogPostDTO blogPostDTO, Long accountId){
         // Account account = accountRepository.findById(accountId);
         if (accountId != null) {
             BlogPost blogPost = blogPostDTO.toEntity(accountId);
             blogPostRepository.persist(blogPost);
+            return blogPost;
         } else {
             throw new IllegalArgumentException("Invalid account id: " + blogPostDTO.getAccountId());
         }

@@ -3,14 +3,12 @@ package ch.hftm.blogproject.entity;
 import java.time.ZonedDateTime;
 import java.util.List;
 
-
-// import jakarta.persistence.CascadeType;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-// import jakarta.persistence.ManyToOne;
-// import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,12 +29,9 @@ public class BlogPost {
     private ZonedDateTime createdAt;
     private ZonedDateTime changedAt;
     private Long accountId;
-
-    // @ManyToOne
-    // private Account account;
     
-    // @OneToMany (mappedBy = "blogPost", cascade = CascadeType.ALL, orphanRemoval = true)
-    // private List<Comment> comments;
+    @OneToMany (mappedBy = "blogPost", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments;
 
     // Constructor to create new blogPosts.
     public BlogPost (String title, String content, Account account) {

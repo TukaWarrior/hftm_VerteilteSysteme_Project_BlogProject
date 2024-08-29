@@ -3,6 +3,7 @@ package ch.hftm.blogproject.boundary.dto;
 import java.time.ZonedDateTime;
 import ch.hftm.blogproject.entity.Account;
 import ch.hftm.blogproject.entity.BlogPost;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,9 +12,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BlogPostDTO {
-
-    private Long id;  // Present in GET responses, null for POST
+    private Long id; // Present in GET responses, null for POST
+    @NotBlank(message = "Title can not be empty")
     private String title;
+    @NotBlank(message = "Content can not be empty")
     private String content;
     private ZonedDateTime createdAt;  // Present in GET responses, not used in POST
     private ZonedDateTime changedAt;  // Present in GET responses, not used in POST
@@ -24,10 +26,6 @@ public class BlogPostDTO {
     public BlogPostDTO  (String title, String content) {
         this.title = title;
         this.content = content;
-        // BlogPostDTO blogPostDTO = new BlogPostDTO();
-        // blogPostDTO.setTitle(this.title);
-        // blogPostDTO.setContent(this.content);
-        // blogPostDTO.setAccountId(accountId);
     }
 
     // Constructor for GET responses
@@ -47,9 +45,7 @@ public class BlogPostDTO {
         BlogPost blogPost = new BlogPost();
         blogPost.setTitle(this.title);
         blogPost.setContent(this.content);
-        // blogPost.setAccount(account);
         blogPost.setCreatedAt(ZonedDateTime.now());
-        // blogPost.setChangedAt(ZonedDateTime.now());
         return blogPost;
     }
 

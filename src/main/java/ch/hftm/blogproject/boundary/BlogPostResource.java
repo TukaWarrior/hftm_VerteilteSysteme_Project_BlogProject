@@ -7,8 +7,8 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 import ch.hftm.blogproject.boundary.dto.BlogPostDTO;
 import ch.hftm.blogproject.control.BlogPostService;
-// import ch.hftm.blogproject.control.CommentService;
 import ch.hftm.blogproject.entity.BlogPost;
+import io.quarkus.security.Authenticated;
 import jakarta.annotation.security.DenyAll;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
@@ -27,21 +27,20 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
 import java.util.stream.Collectors;
 
-// This class provides the REST API endpoints for managing blog posts.
-
+// This class provides the REST API endpoints for managing blogposts.
 @Path("/blogpost")
-@Produces(MediaType.APPLICATION_JSON)
-@Consumes(MediaType.APPLICATION_JSON)
+@DenyAll
 @Tag(name = "BlogPost Resource", description = "BlogPost Management API")
-// @DenyAll
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 public class BlogPostResource {
 
     @Inject
     BlogPostService blogPostService;
     
     @GET
-    // @PermitAll
-    @Operation(summary = "Get all BlogPosts", description = "Returns all BlogPosts")
+    @PermitAll
+    @Operation(summary = "Get all BlogPosts", description = "Returns a list of BlogPosts.")
     public List<BlogPostDTO> getAllBlogPosts() {
         List<BlogPost> blogPosts = blogPostService.getAllBlogPosts();
         return blogPosts.stream().map(BlogPostDTO::new).collect(Collectors.toList());
@@ -49,7 +48,7 @@ public class BlogPostResource {
 
     @GET
     @Path("/{id}")
-    // @PermitAll
+    @PermitAll
     @Operation(summary = "Get a BlogPost by id", description = "Returns a BlogPost by id")
     public Response getBlogPost(@PathParam("id") Long id) {
         if (id == null) {
@@ -64,7 +63,7 @@ public class BlogPostResource {
     }
 
     @POST
-    // @RolesAllowed({"admin", "moderator", "user"})
+    @Authenticated
     @Operation(summary = "Add a new BlogPost", description = "Creates a new BlogPost")
     public Response addBlog(BlogPostDTO blogPostDTO, @HeaderParam("accountId") Long accountId) {
         try {
@@ -75,21 +74,9 @@ public class BlogPostResource {
         }
     }
 
-    @PATCH
-    @Path("/{id}")
-    // @RolesAllowed({"admin", "moderator", "user"})
-    @Operation(summary = "Update a BlogPost", description = "Updates an existing BlogPost")
-    public Response updateBlog(BlogPostDTO blogPostDTO, @PathParam("id") Long id) {
-        if (id == null) {
-            return Response.status(Status.BAD_REQUEST).build();
-        }
-        blogPostService.updateBlogPost(id, blogPostDTO);
-        return Response.ok().build();
-    }
-
     @DELETE
     @Path("/{id}")
-    // @RolesAllowed({"admin", "moderator", "user"})
+    @RolesAllowed({"admin", "moderator"})
     @Operation(summary = "Delete a BlogPost", description = "Deletes a BlogPost by its id")
     public Response deleteBlog(@PathParam("id") Long id) {
         if (id == null) {
@@ -101,9 +88,20 @@ public class BlogPostResource {
         } catch (IllegalArgumentException e) {
             return Response.status(Status.NOT_FOUND).entity(e.getMessage()).build();
         }
-
-
     }
+
+    @PATCH
+    @Path("/{id}")
+    @RolesAllowed({"admin", "moderator"})
+    @Operation(summary = "Update a BlogPost", description = "Updates an existing BlogPost")
+    public Response updateBlog(BlogPostDTO blogPostDTO, @PathParam("id") Long id) {
+        if (id == null) {
+            return Response.status(Status.BAD_REQUEST).build();
+        }
+        blogPostService.updateBlogPost(id, blogPostDTO);
+        return Response.ok().build();
+    }
+
 }
     // @Authenticated
     // // @PermitAll
