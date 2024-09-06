@@ -3,6 +3,7 @@ package ch.hftm.blogproject.boundary;
 import java.util.List;
 
 import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.jboss.resteasy.reactive.RestPath;
 import java.util.stream.Collectors;

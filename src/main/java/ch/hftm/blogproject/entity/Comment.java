@@ -1,12 +1,7 @@
 package ch.hftm.blogproject.entity;
 
 import java.time.ZonedDateTime;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,13 +15,16 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
     private String content;
+
     private ZonedDateTime createdAt;
     private ZonedDateTime changedAt;
-    private Long blogPostId;
+
     private Long accountId;
 
     @ManyToOne
-    @JoinColumn(name = "blogpost_id", insertable = false, updatable = false)
+    @JoinColumn(name = "blogpost_id", nullable = false)
     private BlogPost blogPost;
 }
