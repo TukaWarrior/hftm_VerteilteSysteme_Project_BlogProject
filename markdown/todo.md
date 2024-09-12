@@ -1,0 +1,1 @@
+1. POST blog takes accountID body parameter instead of accoundID header parameter. Header parameter dosn't get passed to new Blog entity.
