@@ -29,6 +29,13 @@
   </dependencyManagement>
   <dependencies>
 
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-container-image-docker</artifactId>
+      <version>3.15.0.CR1</version>
+    </dependency>
+
+
     <!-- <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-jdbc-h2</artifactId>
