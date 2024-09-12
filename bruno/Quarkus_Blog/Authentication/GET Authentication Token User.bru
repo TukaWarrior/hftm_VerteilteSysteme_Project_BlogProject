@@ -5,14 +5,14 @@ meta {
 }
 
 get {
-  url: {{keycloack}}
+  url: 
   body: none
   auth: oauth2
 }
 
 auth:oauth2 {
   grant_type: password
-  access_token_url: http://localhost:8088/realms/blog/protocol/openid-connect/token
+  access_token_url: http://localhost:8180/realms/blogproject/protocol/openid-connect/token
   username: carl
   password: carl
   client_id: backend-service
