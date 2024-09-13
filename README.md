@@ -7,8 +7,7 @@ As for now, the application allows the user to create, view and edit blog entrie
 This project uses the java framework Quarkus.
 
 > [!IMPORTANT]
-> Please Simeon have mercy when grading this. I just don't have enough time right now. I have redone this project 3 times now but I still encounter so many error. When I fix something, new problems emerge and nothing works anymore. I then spend hours fixing just one problem. Without an example project, iterating on this is almost impossible. As for now, hibernate at startup throws an error because quarkus can't drop the old tables while initializing due to DB relations, and the comments aren't working anymmore for whatever reason. I have tzried writing tests but since I have to change the project all the time, I can't reliably make tests right now. 
-I am sorry. I can physically not invest more time for the school, even if I wanted. I have been permanently working on school stuff since the second week of July. I haven't had more than a couple hours of free time since then and I am working every day until midnight or even 1 o'clock in the morning on school projects. Together with my job, I am currently working for 15ish hours every single day since almost two months. 
+> This project is under active developement and may contain severe bugs. As further implementations of features often require a change in multiple parts of the application, some features may not always work as intended.
 
 
 
@@ -18,7 +17,8 @@ I am sorry. I can physically not invest more time for the school, even if I want
   - [Table of Contents](#table-of-contents)
 - [Important files](#important-files)
 - [Quarkus](#quarkus)
-    - [Running the application in dev mode](#running-the-application-in-dev-mode)
+  - [Running the application using docker](#running-the-application-using-docker)
+  - [Running the application in dev mode](#running-the-application-in-dev-mode)
   - [Accessing the Webview](#accessing-the-webview)
   - [Packaging and running the application](#packaging-and-running-the-application)
   - [Creating a native executable](#creating-a-native-executable)
@@ -54,6 +54,45 @@ I am sorry. I can physically not invest more time for the school, even if I want
 [Notebook](./markdown/logs.md)
 
 [Bugs](./markdown/errors.md)
+
+# Running the application using docker
+> [!IMPORTANT]
+> I have not yet figured out how to automatically and properly configure keycloak with the correct permissions, roles and users. 
+
+**Configure Keycloak**
+1. Create and start a keycloak-mysql container used for persisting keycloak data.
+```
+docker run --name keycloak-mysql --network blogproject-nw -v keycloak-db:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=vs4tw -e MYSQL_USER=dbuser -e MYSQL_PASSWORD=dbuser -e MYSQL_DATABASE=keycloakdb -d mysql:8.0
+```
+
+2. Create and start a keycloak container.
+```
+docker run --name keycloak --network blogproject-nw -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin -e KC_HTTP_PORT=8180 -e KC_HOSTNAME_URL=http://keycloak:8180 -p 8180:8180 -e KC_DB=mysql -e KC_DB_URL=jdbc:mysql://keycloak-mysql:3306/keycloakdb -e KC_DB_USERNAME=dbuser -e KC_DB_PASSWORD=dbuser -d quay.io/keycloak/keycloak:25.0.5 start-dev
+```
+**Install the quarkus application**
+1. Install the package
+```
+docker pull ghcr.io/tukawarrior/hftm_verteiltesysteme_project_blogproject:1.0.0-snapshot
+```
+
+2. Start the container
+```
+docker run --network blogproject-nw ghcr.io/tukawarrior/hftm_verteiltesysteme_project_blogproject:1.0.0-snapshot
+```
+
+**If the docker pull command is not working due to bandwith constraints**
+1. Clone the repository
+```
+gh repo clone TukaWarrior/hftm_VerteilteSysteme_Project_BlogProject
+```
+2. Package the application. It automatically creates an dopcker image.
+```
+./mvnw package
+```
+3. Run the application
+```
+docker run --network blogproject-nw -i --rm -p 8080:8080 lucab/ch.hftm/blogproject:1.0.0-SNAPSHOT
+```
 
 # Quarkus
 
