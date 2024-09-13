@@ -75,6 +75,8 @@ This project uses the java framework Quarkus.
 # Running the application using docker
 > [!IMPORTANT]
 > I have not yet figured out how to automatically and properly configure keycloak with the correct permissions, roles and users. 
+> [!WARNING]  
+> The package from github may not work. Because of the bandwith limitation, I may not be able to upload the fixed one, as a single image fills up approx. 75% of the monthly bandwith.
 
 ###  Configure Keycloak
 1. Create and start a keycloak-mysql container used for persisting keycloak data.

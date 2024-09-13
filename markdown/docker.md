@@ -54,7 +54,9 @@ docker run --name keycloak --network blogproject-nw -e KEYCLOAK_ADMIN=admin -e K
 ```bash
 docker run --name quarkus-blogproject --network blogproject-nw -i --rm -p 8080:8080 lucab/ch.hftm/blogproject:1.0.0-SNAPSHOT
 ```
-
+<!-- ```bash
+docker run --name quarkus-blogproject --network blogproject-nw -e QUARKUS_OIDC_AUTH=http://keycloak:8180/realms/blogproject -i --rm -p 8080:8080 lucab/ch.hftm/blogproject:1.0.0-SNAPSHOT
+``` -->
 
 
 5. Push image
