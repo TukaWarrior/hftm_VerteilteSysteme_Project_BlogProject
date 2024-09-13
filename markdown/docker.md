@@ -66,3 +66,8 @@ docker tag lucab/ch.hftm/blogproject:1.0.0-SNAPSHOT ghcr.io/tukawarrior/hftm_ver
 ```bash
 docker push ghcr.io/tukawarrior/hftm_verteiltesysteme_project_blogproject:1.0.0-SNAPSHOT
 ```
+
+
+
+
+curl -X POST "http://localhost:8180/realms/blogproject/protocol/openid-connect/token" -H "Content-Type: application/x-www-form-urlencoded" -d "grant_type=password" -d "client_id={backend-service}" -d "client_secret={I5QFojSx5hGVcFmQuEj5qFRRIUyzHSeS}"  # Only include if client is confidential-d "username=alice" -d "password=alice"

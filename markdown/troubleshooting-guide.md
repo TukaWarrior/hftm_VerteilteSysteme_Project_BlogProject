@@ -214,3 +214,7 @@ E.g. Path = c:\program files\apache-maven-3.9.9\bin
 Follow this section for solving problems with the quarkus configuration.
 
 ![Help me](https://media.tenor.com/10Zdx_RXqgcAAAAM/programming-crazy.gif)
+
+
+## Problems with keycloak
+IF the user token can not be retrieved due to "user not fully set up", go to authentication in the left tab, required action and turn off the required user action. Likely, turn off "Verify Profile".
