@@ -29,7 +29,7 @@ This project uses the java framework Quarkus.
 ---
 
 
-## Table of Contents
+## 📄 Table of Contents
 - [Blog Project - Java Backend](#blog-project---java-backend)
   - [Table of Contents](#table-of-contents)
 - [Important files](#important-files)
@@ -64,7 +64,7 @@ This project uses the java framework Quarkus.
 - [Useful subsidiary tools](#useful-subsidiary-tools)
 
 # Important files
-[Running the application in docker](./markdown/docker.md)
+<!-- [Running the application in docker](./markdown/docker.md) -->
 
 [Troubleshooting guide](./markdown/troubleshooting-guide.md)
 
