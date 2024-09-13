@@ -11,6 +11,16 @@ This project uses the java framework Quarkus.
 
 
 
+---
+
+[![Build Status](https://github.com/TukaWarrior/hftm_VerteilteSysteme_Project_BlogProject/actions/workflows/WORKFLOW_FILE/badge.svg)](https://github.com/TukaWarrior/hftm_VerteilteSysteme_Project_BlogProject/actions/workflows/WORKFLOW_FILE)
+
+
+[![Known Vulnerabilities](https://snyk.io/test/github/tukawarrior/hftm_VerteilteSysteme_Project_BlogProject/badge.svg)](https://snyk.io/test/github/tukawarrior/hftm_VerteilteSysteme_Project_BlogProject)
+
+
+---
+
 
 ## Table of Contents
 - [Blog Project - Java Backend](#blog-project---java-backend)
@@ -59,24 +69,24 @@ This project uses the java framework Quarkus.
 > [!IMPORTANT]
 > I have not yet figured out how to automatically and properly configure keycloak with the correct permissions, roles and users. 
 
-**Configure Keycloak**
+###  Configure Keycloak
 1. Create and start a keycloak-mysql container used for persisting keycloak data.
-```
+```bash
 docker run --name keycloak-mysql --network blogproject-nw -v keycloak-db:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=vs4tw -e MYSQL_USER=dbuser -e MYSQL_PASSWORD=dbuser -e MYSQL_DATABASE=keycloakdb -d mysql:8.0
 ```
 
 2. Create and start a keycloak container.
-```
+```bash
 docker run --name keycloak --network blogproject-nw -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin -e KC_HTTP_PORT=8180 -e KC_HOSTNAME_URL=http://keycloak:8180 -p 8180:8180 -e KC_DB=mysql -e KC_DB_URL=jdbc:mysql://keycloak-mysql:3306/keycloakdb -e KC_DB_USERNAME=dbuser -e KC_DB_PASSWORD=dbuser -d quay.io/keycloak/keycloak:25.0.5 start-dev
 ```
 **Install the quarkus application**
 1. Install the package
-```
+```bash
 docker pull ghcr.io/tukawarrior/hftm_verteiltesysteme_project_blogproject:1.0.0-snapshot
 ```
 
 2. Start the container
-```
+```bash
 docker run --network blogproject-nw ghcr.io/tukawarrior/hftm_verteiltesysteme_project_blogproject:1.0.0-snapshot
 ```
 
@@ -93,6 +103,8 @@ gh repo clone TukaWarrior/hftm_VerteilteSysteme_Project_BlogProject
 ```
 docker run --network blogproject-nw -i --rm -p 8080:8080 lucab/ch.hftm/blogproject:1.0.0-SNAPSHOT
 ```
+___
+
 
 # Quarkus
 
