@@ -70,4 +70,4 @@ docker push ghcr.io/tukawarrior/hftm_verteiltesysteme_project_blogproject:1.0.0-
 
 
 
-curl -X POST "http://localhost:8180/realms/blogproject/protocol/openid-connect/token" -H "Content-Type: application/x-www-form-urlencoded" -d "grant_type=password" -d "client_id={backend-service}" -d "client_secret={I5QFojSx5hGVcFmQuEj5qFRRIUyzHSeS}"  # Only include if client is confidential-d "username=alice" -d "password=alice"
+curl -X POST "http://localhost:8180/realms/blogproject/protocol/openid-connect/token" -H "Content-Type: application/x-www-form-urlencoded" -d "grant_type=password" -d "client_id=backend-service" -d "client_secret=I5QFojSx5hGVcFmQuEj5qFRRIUyzHSeS" -d "username=alice" -d "password=alice"
