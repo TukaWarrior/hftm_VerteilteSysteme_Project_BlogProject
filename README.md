@@ -10,15 +10,22 @@ This project uses the java framework Quarkus.
 > This project is under active developement and may contain severe bugs. As further implementations of features often require a change in multiple parts of the application, some features may not always work as intended.
 
 
+<!-- [![Build Status](https://github.com/TukaWarrior/hftm_VerteilteSysteme_Project_BlogProject/actions/workflows/WORKFLOW_FILE/badge.svg)](https://github.com/TukaWarrior/hftm_VerteilteSysteme_Project_BlogProject/actions/workflows/WORKFLOW_FILE) -->
+<!-- [![codecov](https://codecov.io/gh/TukaWarrior/hftm_VerteilteSysteme_Project_BlogProject/branch/main/graph/badge.svg)](https://codecov.io/gh/TukaWarrior/hftm_VerteilteSysteme_Project_BlogProject) -->
+<!-- ![License](https://img.shields.io/github/license/TukaWarrior/hftm_VerteilteSysteme_Project_BlogProject) -->
+[![Known Vulnerabilities](https://snyk.io/test/github/TukaWarrior/hftm_VerteilteSysteme_Project_BlogProject/badge.svg)](https://snyk.io/test/github/TukaWarrior/hftm_VerteilteSysteme_Project_BlogProject)
+![GitHub issues](https://img.shields.io/github/issues/TukaWarrior/hftm_VerteilteSysteme_Project_BlogProject)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/TukaWarrior/hftm_VerteilteSysteme_Project_BlogProject)
+![GitHub stars](https://img.shields.io/github/stars/TukaWarrior/hftm_VerteilteSysteme_Project_BlogProject?style=social)
+![GitHub forks](https://img.shields.io/github/forks/TukaWarrior/hftm_VerteilteSysteme_Project_BlogProject?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/TukaWarrior/hftm_VerteilteSysteme_Project_BlogProject?style=social)
+<!-- ![GitHub release (latest by date)](https://img.shields.io/github/v/release/TukaWarrior/hftm_VerteilteSysteme_Project_BlogProject) -->
 
----
+<!-- ![GitHub contributors](https://img.shields.io/github/contributors/TukaWarrior/hftm_VerteilteSysteme_Project_BlogProject) -->
+<!-- [![Codacy Badge](https://app.codacy.com/project/badge/Grade/REPOSITORY_ID)](https://www.codacy.com/gh/TukaWarrior/hftm_VerteilteSysteme_Project_BlogProject/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=TukaWarrior/hftm_VerteilteSysteme_Project_BlogProject&amp;utm_campaign=Badge_Grade) -->
+<!-- [![GitHub Pages](https://img.shields.io/badge/GitHub-Pages-blue?logo=github)](https://TukaWarrior.github.io/hftm_VerteilteSysteme_Project_BlogProject) -->
 
-[![Build Status](https://github.com/TukaWarrior/hftm_VerteilteSysteme_Project_BlogProject/actions/workflows/WORKFLOW_FILE/badge.svg)](https://github.com/TukaWarrior/hftm_VerteilteSysteme_Project_BlogProject/actions/workflows/WORKFLOW_FILE)
-
-
-[![Known Vulnerabilities](https://snyk.io/test/github/tukawarrior/hftm_VerteilteSysteme_Project_BlogProject/badge.svg)](https://snyk.io/test/github/tukawarrior/hftm_VerteilteSysteme_Project_BlogProject)
-
-
+<!-- [![Project Board](https://img.shields.io/badge/Project-Board-blue)](https://github.com/TukaWarrior/hftm_VerteilteSysteme_Project_BlogProject/projects) -->
 ---
 
 
