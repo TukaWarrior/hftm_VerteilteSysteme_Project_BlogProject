@@ -44,9 +44,14 @@ docker run --name keycloak --network blogproject-nw -e KEYCLOAK_ADMIN=admin -e K
 docker run --name keycloak-mysql --network blogproject-nw -v keycloak-db:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=vs4tw -e MYSQL_USER=dbuser -e MYSQL_PASSWORD=dbuser -e MYSQL_DATABASE=keycloakdb -d mysql:8.0
 ```
 
-2. Start keycloack with db configuration
+2. Start keycloack with db configuration and volume mapping of the container
 ```bash
-docker run --name keycloak --network blogproject-nw -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin -e KC_HTTP_PORT=8180 -e KC_HOSTNAME_URL=http://keycloak:8180 -p 8180:8180 -e KC_DB=mysql -e KC_DB_URL=jdbc:mysql://keycloak-mysql:3306/keycloakdb -e KC_DB_USERNAME=dbuser -e KC_DB_PASSWORD=dbuser -d quay.io/keycloak/keycloak:25.0.5 start-dev
+docker run --name keycloak --network blogproject-nw -v "$(pwd)\keycloak\export:/opt/keycloak/data/export" -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin -e KC_HTTP_PORT=8180 -e KC_HOSTNAME_URL=http://keycloak:8180 -p 8180:8180 -e KC_DB=mysql -e KC_DB_URL=jdbc:mysql://keycloak-mysql:3306/keycloakdb -e KC_DB_USERNAME=dbuser -e KC_DB_PASSWORD=dbuser -d quay.io/keycloak/keycloak:25.0.5 start-dev
+```
+or 
+
+2. Start keycloack with db configuration and volume mapping for import and export, and import config
+```bash
 
 ```
 
@@ -58,7 +63,6 @@ docker run --name quarkus-blogproject --network blogproject-nw -i --rm -p 8080:8
 docker run --name quarkus-blogproject --network blogproject-nw -e QUARKUS_OIDC_AUTH=http://keycloak:8180/realms/blogproject -i --rm -p 8080:8080 lucab/ch.hftm/blogproject:1.0.0-SNAPSHOT
 ``` -->
 
-
 5. Push image
 ```bash
 docker tag lucab/ch.hftm/blogproject:1.0.0-SNAPSHOT ghcr.io/tukawarrior/hftm_verteiltesysteme_project_blogproject:1.0.0-SNAPSHOT
@@ -68,6 +72,13 @@ docker push ghcr.io/tukawarrior/hftm_verteiltesysteme_project_blogproject:1.0.0-
 ```
 
 
+Export keycloack
+```bash
+docker exec keycloak /opt/keycloak/bin/kc.sh export --dir /opt/keycloak/data/export --users realm_file
 
 
-curl -X POST "http://localhost:8180/realms/blogproject/protocol/openid-connect/token" -H "Content-Type: application/x-www-form-urlencoded" -d "grant_type=password" -d "client_id=backend-service" -d "client_secret=I5QFojSx5hGVcFmQuEj5qFRRIUyzHSeS" -d "username=alice" -d "password=alice"
+
+With Import
+docker run --name keycloak --network blogproject-nw -v "$(pwd)\keycloak\import:/opt/keycloak/data/import" -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin -e KC_HTTP_PORT=8180 -e KC_HOSTNAME_URL=http://keycloak:8180 -p 8180:8180 -e KC_DB=mysql -e KC_DB_URL=jdbc:mysql://keycloak-mysql:3306/keycloakdb -e KC_DB_USERNAME=dbuser -e KC_DB_PASSWORD=dbuser -d quay.io/keycloak/keycloak:25.0.5 start-dev --import-realm
+
+```
