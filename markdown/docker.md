@@ -23,7 +23,6 @@ COPY --chown=185 target/blogproject-1.0.0-SNAPSHOT-runner.jar /deployments/```
 3. Start image
 ```bash
 docker run --network blogproject-nw -i --rm -p 8080:8080 lucab/ch.hftm/blogproject:1.0.0-SNAPSHOT
-
 ```
 
 
@@ -54,6 +53,7 @@ or
 ```bash
 docker run --name keycloak --network blogproject-nw -v "$(pwd)\keycloak\import:/opt/keycloak/data/import" -v "$(pwd)\keycloak\export:/opt/keycloak/data/export" -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin -e KC_HTTP_PORT=8180 -e KC_HOSTNAME_URL=http://keycloak:8180 -p 8180:8180 -e KC_DB=mysql -e KC_DB_URL=jdbc:mysql://keycloak-mysql:3306/keycloakdb -e KC_DB_USERNAME=dbuser -e KC_DB_PASSWORD=dbuser -d quay.io/keycloak/keycloak:25.0.5 start-dev --import-realm
 ```
+
 
 4. Run quarkus application
 ```bash
