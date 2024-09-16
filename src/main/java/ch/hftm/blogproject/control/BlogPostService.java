@@ -45,7 +45,7 @@ public class BlogPostService {
         }
     }
 
-    // Get All Blogs with Sorting
+    // Get all Blog Posts with Sorting
     public List<BlogPostDTO> getAllBlogPostsSorted(String sortBy, boolean ascending) {
         try {
             Sort sort = ascending ? Sort.ascending(sortBy) : Sort.descending(sortBy);
@@ -56,7 +56,7 @@ public class BlogPostService {
         }
     }
 
-    // Get a BlogPost by id
+    // Get a BlogPost by ID
     public BlogPostDTO getBlogPostById(Long blogPostID) {
         BlogPost blogPost;
         try {
@@ -70,6 +70,7 @@ public class BlogPostService {
         return DTOConverter.toBlogPostDto(blogPost);
     }
 
+    // Get Blog Posts by Date Range
     public List<BlogPostDTO> getBlogPostsByCreator(String creator) {
         try {
             List<BlogPost> blogPosts = blogPostRepository.find("creator", creator).list();
@@ -78,7 +79,17 @@ public class BlogPostService {
             throw new DatabaseException("Error while accessing the database.", e);
         }
     }
-    
+
+    public List<BlogPostDTO> getBlogPostsByDateRange(ZonedDateTime startDate, ZonedDateTime endDate) {
+        try {
+            List<BlogPost> blogPosts = blogPostRepository
+                .find("createdAt BETWEEN ?1 AND ?2", startDate, endDate).list();
+            return DTOConverter.toBlogPostDtoList(blogPosts);
+        } catch (Exception e) {
+            throw new DatabaseException("Error while accessing the database.", e);
+        }
+    }
+
     // Add a new BlogPost
     @Transactional
     public BlogPostDTO addBlogPost(BlogPostDTO blogPostDTO) {
