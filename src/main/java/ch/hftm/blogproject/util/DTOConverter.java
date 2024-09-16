@@ -107,4 +107,19 @@ public class DTOConverter {
             }
         };
     }
+
+    public static Comment toComment(CommentDTO commentDTO) {
+        if (commentDTO == null) {
+            return null;
+        }
+        return new Comment() {
+            {
+                setCommentID(commentDTO.getCommentID());
+                setContent(commentDTO.getContent());
+                setCreator(commentDTO.getCreator());
+                setCreatedAt(commentDTO.getCreatedAt());
+                setLastChangedAt(commentDTO.getLastChangedAt());
+            }
+        };
+    }
 }
