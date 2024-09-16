@@ -62,7 +62,6 @@ public class DTOConverter {
         if (blogPost == null) {
             return null;
         }
-
         return new BlogPostDTO() {
             {
                 setBlogPostID(blogPost.getBlogPostID());
@@ -80,7 +79,6 @@ public class DTOConverter {
         if (blogPostDTO == null) {
             return null;
         }
-
         return new BlogPost() {
             {
                 setBlogPostID(blogPostDTO.getBlogPostID());
@@ -90,6 +88,22 @@ public class DTOConverter {
                 setCreatedAt(blogPostDTO.getCreatedAt());
                 setLastChangedAt(blogPostDTO.getLastChangedAt());
                 setComments(toCommentList(blogPostDTO.getComments()));
+            }
+        };
+    }
+
+    public static CommentDTO toCommentDto(Comment comment) {
+        if (comment == null) {
+            return null;
+        }
+        return new CommentDTO() {
+            {
+                setCommentID(comment.getCommentID());
+                setBlogPostID(comment.getBlogPost().getBlogPostID());
+                setContent(comment.getContent());
+                setCreator(comment.getCreator());
+                setCreatedAt(comment.getCreatedAt());
+                setLastChangedAt(comment.getLastChangedAt());
             }
         };
     }
