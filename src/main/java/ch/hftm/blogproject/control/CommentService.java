@@ -64,7 +64,7 @@ public class CommentService {
             throw new IllegalArgumentException("Comment not found for id: " + id);
         }
         existingComment.setContent(updatedCommentDTO.getContent());
-        existingComment.setChangedAt(ZonedDateTime.now());
+        existingComment.setLastChangedAt(ZonedDateTime.now());
 
         commentRepository.persist(existingComment);
         return new CommentDTO(existingComment);

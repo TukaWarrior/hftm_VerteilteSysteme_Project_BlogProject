@@ -30,7 +30,7 @@ public class CommentDTO {
         this.id = comment.getCommentID();
         this.content = comment.getContent();
         this.createdAt = comment.getCreatedAt();
-        this.changedAt = comment.getChangedAt();
+        this.changedAt = comment.getLastChangedAt();
         this.accountId = comment.getAccountId();
         this.blogPostId = comment.getBlogPost().getId();
     }
@@ -40,7 +40,7 @@ public class CommentDTO {
         Comment comment = new Comment();
         comment.setContent(this.content);
         comment.setCreatedAt(ZonedDateTime.now());
-        comment.setChangedAt(ZonedDateTime.now());
+        comment.setLastChangedAt(ZonedDateTime.now());
         return comment;
     }
 }

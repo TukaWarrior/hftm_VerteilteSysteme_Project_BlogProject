@@ -11,20 +11,21 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Comment {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(nullable = false)
+    private Long commentID;
+    // @Column(nullable = false)
     private String content;
-
+    private String creator;
     private ZonedDateTime createdAt;
-    private ZonedDateTime changedAt;
-
-    private Long accountId;
+    private ZonedDateTime lastChangedAt;
+    // private Long accountId;
 
     @ManyToOne
-    @JoinColumn(name = "blogpost_id", nullable = false)
+    @JoinColumn(name = "blogpost_id")
     private BlogPost blogPost;
+
+    // @ManyToOne
+    // @JoinColumn(name = "blogpost_id", nullable = false)
+    // private BlogPost blogPost;
 }
