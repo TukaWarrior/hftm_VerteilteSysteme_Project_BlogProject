@@ -42,4 +42,19 @@ public class DTOConverter {
             }
         }).collect(Collectors.toList());
     }
+
+    public static List<Comment> toCommentList(List<CommentDTO> commentDTOs) {
+        if (commentDTOs == null || commentDTOs.isEmpty()) {
+            return null;
+        }
+        return commentDTOs.stream().map(commentDTO -> new Comment() {
+            {
+                setCommentID(commentDTO.getCommentID());
+                setContent(commentDTO.getContent());
+                setCreator(commentDTO.getCreator());
+                setCreatedAt(commentDTO.getCreatedAt());
+                setLastChangedAt(commentDTO.getLastChangedAt());
+            }
+        }).collect(Collectors.toList());
+    }
 }
