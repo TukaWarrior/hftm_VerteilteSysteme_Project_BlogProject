@@ -1,10 +1,10 @@
 package ch.hftm.blogproject.control;
 
+import ch.hftm.blogproject.model.entity.Account;
 import ch.hftm.blogproject.repository.AccountRepository;
 
 import java.util.List;
 
-import ch.hftm.blogproject.entity.Account;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
