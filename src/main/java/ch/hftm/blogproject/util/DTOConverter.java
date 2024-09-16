@@ -58,20 +58,38 @@ public class DTOConverter {
         }).collect(Collectors.toList());
     }
 
-    public static BlogPostDTO toBlogDto(BlogPost blog) {
-        if (blog == null) {
+    public static BlogPostDTO toBlogPostDto(BlogPost blogPost) {
+        if (blogPost == null) {
             return null;
         }
 
         return new BlogPostDTO() {
             {
-                setId(blog.getId());
-                setTitle(blog.getTitle());
-                setContent(blog.getContent());
-                setAuthor(blog.getAuthor());
-                setCreatedAt(blog.getCreatedAt());
-                setLastEditedAt(blog.getLastEditedAt());
-                setComments(toCommentDtoCollection(blog.getComments()));
+                setBlogPostID(blogPost.getBlogPostID());
+                setTitle(blogPost.getTitle());
+                setContent(blogPost.getContent());
+                setCreator(blogPost.getCreator());
+                setCreatedAt(blogPost.getCreatedAt());
+                setLastChangedAt(blogPost.getLastChangedAt());
+                setComments(toCommentDtoList(blogPost.getComments()));
+            }
+        };
+    }
+
+    public static BlogPost toBlogPost(BlogPostDTO blogPostDTO) {
+        if (blogPostDTO == null) {
+            return null;
+        }
+
+        return new BlogPost() {
+            {
+                setBlogPostID(blogPostDTO.getBlogPostID());
+                setTitle(blogPostDTO.getTitle());
+                setContent(blogPostDTO.getContent());
+                setCreator(blogPostDTO.getCreator());
+                setCreatedAt(blogPostDTO.getCreatedAt());
+                setLastChangedAt(blogPostDTO.getLastChangedAt());
+                setComments(toCommentList(blogPostDTO.getComments()));
             }
         };
     }
