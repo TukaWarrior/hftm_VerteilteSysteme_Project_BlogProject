@@ -13,34 +13,30 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true) // Ignore unknown fields during deserialization
 public class CommentDTO {
-
-    private Long id;  // Present in GET responses, null for POST
-
+    private Long commentID;  // Present in GET responses, null for POST
+    private Long blogPostID;
     @NotBlank(message = "Content cannot be empty")
     private String content;
-
+    private String creator;
     private ZonedDateTime createdAt;  // Present in GET responses, not used in POST
-    private ZonedDateTime changedAt;  // Present in GET responses, not used in POST
-
-    private Long accountId;  // For POST requests, to associate the comment with an account
-    private Long blogPostId;  // For POST requests, to associate the comment with a blog post
+    private ZonedDateTime lastChangedAt;  // Present in GET responses, not used in POST
 
     // Constructor for GET responses
-    public CommentDTO(Comment comment) {
-        this.id = comment.getCommentID();
-        this.content = comment.getContent();
-        this.createdAt = comment.getCreatedAt();
-        this.changedAt = comment.getLastChangedAt();
-        this.accountId = comment.getAccountId();
-        this.blogPostId = comment.getBlogPost().getId();
-    }
+    // public CommentDTO(Comment comment) {
+    //     this.commentID = comment.getCommentID();
+    //     this.content = comment.getContent();
+    //     this.createdAt = comment.getCreatedAt();
+    //     this.lastChangedAt = comment.getLastChangedAt();
+    //     this.accountId = comment.getAccountId();
+    //     this.blogPostId = comment.getBlogPost().getBlogPostID();
+    // }
 
     // Convert from DTO to entity
-    public Comment toEntity() {
-        Comment comment = new Comment();
-        comment.setContent(this.content);
-        comment.setCreatedAt(ZonedDateTime.now());
-        comment.setLastChangedAt(ZonedDateTime.now());
-        return comment;
-    }
+    // public Comment toEntity() {
+    //     Comment comment = new Comment();
+    //     comment.setContent(this.content);
+    //     comment.setCreatedAt(ZonedDateTime.now());
+    //     comment.setLastChangedAt(ZonedDateTime.now());
+    //     return comment;
+    // }
 }
