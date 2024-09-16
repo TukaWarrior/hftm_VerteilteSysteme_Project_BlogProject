@@ -122,4 +122,14 @@ public class DTOConverter {
             }
         };
     }
+
+    public static List<Comment> setBlogPostReferenceOnComment(BlogPost blogPost, List<Comment> comments) {
+        if (comments == null || comments.isEmpty()) {
+            return null;
+        }
+        for (Comment comment : comments) {
+            comment.setBlogPost(blogPost);
+        }
+        return comments;
+    }
 }
