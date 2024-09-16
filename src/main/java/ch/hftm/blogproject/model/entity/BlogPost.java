@@ -17,7 +17,7 @@ public class BlogPost {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "blogpost_id")
-    private Long id;
+    private Long blogPostID;
     // @Column(nullable = false)
     private String title;
     // @Column(columnDefinition = "TEXT")
