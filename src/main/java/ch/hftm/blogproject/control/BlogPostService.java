@@ -127,26 +127,53 @@ public class BlogPostService {
     // Update blogPost
     @Transactional
     public BlogPostDTO updateBlogPost(BlogPostDTO blogPostDTO) {
-        BlogPost blogPost;
+        BlogPost existingBlogPost;
         try {
-            blogPost = blogPostRepository.findById(blogPostDTO.getBlogPostID());
+            existingBlogPost = blogPostRepository.findById(blogPostDTO.getBlogPostID());
         } catch (Exception e) {
             throw new DatabaseException("Error while accessing the database.", e);
         }
-        if (blogPost == null) {
+        if (existingBlogPost == null) {
             throw new NotFoundException("Blog post with ID " + blogPostDTO.getBlogPostID() + " not found.");
         }
 
-        blogPost.setTitle(blogPostDTO.getTitle());
-        blogPost.setContent(blogPostDTO.getContent());
-        blogPost.setLastChangedAt(ZonedDateTime.now());
+        existingBlogPost.setTitle(blogPostDTO.getTitle());
+        existingBlogPost.setContent(blogPostDTO.getContent());
+        existingBlogPost.setLastChangedAt(ZonedDateTime.now());
 
         try {
-            blogPostRepository.persist(blogPost);
+            blogPostRepository.persist(existingBlogPost);
         } catch (Exception e) {
             throw new DatabaseException("Error while updating the blog post with ID " + blogPostDTO.getBlogPostID(), e);
         }
-        return DTOConverter.toBlogPostDto(blogPost);
+        return DTOConverter.toBlogPostDto(existingBlogPost);
+    }
+
+    @Transactional
+    public BlogPostDTO patchBlogPost(Long id, BlogPostDTO blogPostDTO) {
+        BlogPost existingBlogPost = blogPostRepository.findById(id);
+        if (existingBlogPost == null) {
+            throw new NotFoundException("BlogPost not found for id: " + id);
+        }
+        // Update only the fields that are provided in the request (patch-like behavior)
+        if (blogPostDTO.getTitle() != null) {
+            existingBlogPost.setTitle(blogPostDTO.getTitle());
+        }
+        if (blogPostDTO.getContent() != null) {
+            existingBlogPost.setContent(blogPostDTO.getContent());
+        }
+        if (blogPostDTO.getCreator() != null) {
+            existingBlogPost.setCreator(blogPostDTO.getCreator());
+        }
+        existingBlogPost.setLastChangedAt(ZonedDateTime.now());
+        try {
+            // Persist the changes
+            blogPostRepository.persist(existingBlogPost);
+        } catch (Exception e) {
+            throw new DatabaseException("Error while partially updating the blog post with ID " + id, e);
+        }
+        // Return the updated blog post as a DTO
+        return DTOConverter.toBlogPostDto(existingBlogPost);
     }
 
     // Delete a BlogPost by id
