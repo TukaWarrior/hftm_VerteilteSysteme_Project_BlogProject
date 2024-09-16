@@ -22,7 +22,7 @@ public class DTOConverter {
             setCreator(blogPost.getCreator());
             setCreatedAt(blogPost.getCreatedAt());
             setLastChangedAt(blogPost.getLastChangedAt());
-            setComments(toCommentDtoCollection(blogPost.getComments()));
+            setComments(toCommentDtoList(blogPost.getComments()));
             }
         }).collect(Collectors.toList());
     }
@@ -56,5 +56,23 @@ public class DTOConverter {
                 setLastChangedAt(commentDTO.getLastChangedAt());
             }
         }).collect(Collectors.toList());
+    }
+
+    public static BlogPostDTO toBlogDto(BlogPost blog) {
+        if (blog == null) {
+            return null;
+        }
+
+        return new BlogPostDTO() {
+            {
+                setId(blog.getId());
+                setTitle(blog.getTitle());
+                setContent(blog.getContent());
+                setAuthor(blog.getAuthor());
+                setCreatedAt(blog.getCreatedAt());
+                setLastEditedAt(blog.getLastEditedAt());
+                setComments(toCommentDtoCollection(blog.getComments()));
+            }
+        };
     }
 }
