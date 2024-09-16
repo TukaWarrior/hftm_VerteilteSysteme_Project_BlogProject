@@ -70,6 +70,15 @@ public class BlogPostService {
         return DTOConverter.toBlogPostDto(blogPost);
     }
 
+    public List<BlogPostDTO> getBlogPostsByCreator(String creator) {
+        try {
+            List<BlogPost> blogPosts = blogPostRepository.find("creator", creator).list();
+            return DTOConverter.toBlogPostDtoList(blogPosts);
+        } catch (Exception e) {
+            throw new DatabaseException("Error while accessing the database.", e);
+        }
+    }
+    
     // Add a new BlogPost
     @Transactional
     public BlogPostDTO addBlogPost(BlogPostDTO blogPostDTO) {
