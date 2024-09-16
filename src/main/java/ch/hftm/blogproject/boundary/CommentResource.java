@@ -5,8 +5,8 @@ import java.util.List;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
-import ch.hftm.blogproject.boundary.dto.CommentDTO;
 import ch.hftm.blogproject.control.CommentService;
+import ch.hftm.blogproject.model.dto.CommentDTO;
 import io.quarkus.security.Authenticated;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;

@@ -1,7 +1,7 @@
 package ch.hftm.blogproject.control;
 
-import ch.hftm.blogproject.boundary.dto.CommentDTO;
-import ch.hftm.blogproject.entity.Comment;
+import ch.hftm.blogproject.model.dto.CommentDTO;
+import ch.hftm.blogproject.model.entity.Comment;
 import ch.hftm.blogproject.repository.AccountRepository;
 import ch.hftm.blogproject.repository.BlogPostRepository;
 import ch.hftm.blogproject.repository.CommentRepository;

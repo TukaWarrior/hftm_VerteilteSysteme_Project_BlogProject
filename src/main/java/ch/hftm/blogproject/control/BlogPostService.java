@@ -4,8 +4,8 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import ch.hftm.blogproject.boundary.dto.BlogPostDTO;
-import ch.hftm.blogproject.entity.BlogPost;
+import ch.hftm.blogproject.model.dto.BlogPostDTO;
+import ch.hftm.blogproject.model.entity.BlogPost;
 import ch.hftm.blogproject.repository.AccountRepository;
 import ch.hftm.blogproject.repository.BlogPostRepository;
 import io.quarkus.panache.common.Page;

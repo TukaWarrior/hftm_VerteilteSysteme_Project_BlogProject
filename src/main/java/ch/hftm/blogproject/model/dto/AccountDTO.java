@@ -1,7 +1,8 @@
-package ch.hftm.blogproject.boundary.dto;
+package ch.hftm.blogproject.model.dto;
 
 import java.time.ZonedDateTime;
-import ch.hftm.blogproject.entity.Account;
+
+import ch.hftm.blogproject.model.entity.Account;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

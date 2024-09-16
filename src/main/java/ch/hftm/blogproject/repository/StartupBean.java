@@ -1,12 +1,11 @@
 package ch.hftm.blogproject.repository;
 
-import ch.hftm.blogproject.boundary.dto.BlogPostDTO;
-import ch.hftm.blogproject.boundary.dto.CommentDTO;
 import ch.hftm.blogproject.control.AccountService;
 import ch.hftm.blogproject.control.BlogPostService;
-// import ch.hftm.blogproject.control.CommentService;
-import ch.hftm.blogproject.entity.Account;
-import ch.hftm.blogproject.entity.BlogPost;
+import ch.hftm.blogproject.model.dto.BlogPostDTO;
+import ch.hftm.blogproject.model.dto.CommentDTO;
+import ch.hftm.blogproject.model.entity.Account;
+import ch.hftm.blogproject.model.entity.BlogPost;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;

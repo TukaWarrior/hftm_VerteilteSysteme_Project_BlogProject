@@ -1,4 +1,4 @@
-package ch.hftm.blogproject.entity;
+package ch.hftm.blogproject.model.entity;
 
 import java.time.ZonedDateTime;
 import jakarta.persistence.*;

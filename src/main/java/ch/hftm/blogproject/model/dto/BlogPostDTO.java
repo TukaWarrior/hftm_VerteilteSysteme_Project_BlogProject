@@ -1,10 +1,10 @@
-package ch.hftm.blogproject.boundary.dto;
+package ch.hftm.blogproject.model.dto;
 
 import java.time.ZonedDateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import ch.hftm.blogproject.entity.BlogPost;
+import ch.hftm.blogproject.model.entity.BlogPost;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.NoArgsConstructor;
