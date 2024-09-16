@@ -45,6 +45,17 @@ public class BlogPostService {
         }
     }
 
+    // Get All Blogs with Sorting
+    public List<BlogPostDTO> getAllBlogPostsSorted(String sortBy, boolean ascending) {
+        try {
+            Sort sort = ascending ? Sort.ascending(sortBy) : Sort.descending(sortBy);
+            List<BlogPost> blogPosts = blogPostRepository.findAll(sort).list();
+            return DTOConverter.toBlogPostDtoList(blogPosts);
+        } catch (Exception e) {
+            throw new DatabaseException("Error while accessing the database.", e);
+        }
+    }
+
     // Get a BlogPost by id
     public BlogPostDTO getBlogPostById(Long blogPostID) {
         BlogPost blogPost;
