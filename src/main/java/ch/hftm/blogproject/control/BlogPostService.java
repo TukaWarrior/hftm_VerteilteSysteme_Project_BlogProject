@@ -1,13 +1,18 @@
 package ch.hftm.blogproject.control;
 
+import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
 import ch.hftm.blogproject.model.dto.BlogPostDTO;
 import ch.hftm.blogproject.model.entity.BlogPost;
+import ch.hftm.blogproject.model.exception.DatabaseException;
+import ch.hftm.blogproject.model.exception.NotFoundException;
 import ch.hftm.blogproject.repository.AccountRepository;
 import ch.hftm.blogproject.repository.BlogPostRepository;
+import ch.hftm.blogproject.util.DTOConverter;
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.panache.common.Page;
 import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -20,55 +25,54 @@ public class BlogPostService {
 
     @Inject
     BlogPostRepository blogPostRepository;
-
     @Inject
     AccountRepository accountRepository;
 
-    private static final int PAGE_SIZE = 3; // Define the page size for pagination
-
-    // // Get all BlogPosts
-    // public List<BlogPostDTO> getAllBlogPosts() {
-    //     return blogPostRepository.listAll().stream()
-    //             .map(BlogPostDTO::new)
-    //             .toList();
-    // }
-
     // Get all BlogPosts with search and pagination
-    public List<BlogPostDTO> getBlogPosts(String searchString, int page) {
-        if (searchString == null || searchString.isBlank()) {
-            // If no search string is provided, return all blogs with pagination
-            return blogPostRepository.findAll(Sort.by("createdAt").descending())
-                    .page(Page.of(page - 1, PAGE_SIZE))
-                    .stream()
-                    .map(BlogPostDTO::new)
-                    .toList();
-        } else {
-            // Search by title with pagination
-            return blogPostRepository.find("title like ?1", Sort.by("createdAt").descending(), "%" + searchString + "%")
-                    .page(Page.of(page - 1, PAGE_SIZE))
-                    .stream()
-                    .map(BlogPostDTO::new)
-                    .toList();
+    public List<BlogPostDTO> getBlogPosts(Optional<String> searchString, Optional<Integer> page) {
+        PanacheQuery<BlogPost> blogPostQuery;
+        try {
+            if (searchString == null || searchString.isEmpty()) {
+                blogPostQuery = blogPostRepository.findAll();
+            } else {
+                blogPostQuery = blogPostRepository.find("title like ?1 or content like ?1", "%" + searchString.get() + "%");
+            } 
+            int pageNumber = page.orElse(0);
+            List<BlogPost> blogposts = blogPostQuery.page(Page.of(pageNumber, 15)).list();
+            return DTOConverter.toBlogPostDtoList(blogposts);
+        } catch (Exception e) {
+            throw new DatabaseException("Error while accessing the database.", e);
         }
     }
 
     // Get a BlogPost by id
-    public Optional<BlogPostDTO> getBlogPostById(Long id) {
-        return Optional.ofNullable(blogPostRepository.findById(id))
-                       .map(BlogPostDTO::new);
+    public BlogPostDTO getBlogPostById(Long blogPostID) {
+        BlogPost blogPost;
+        try {
+            blogPost = blogPostRepository.findById(blogPostID);
+        } catch (Exception e) {
+            throw new DatabaseException("Error while accessing the database.", e);
+        }
+        if (blogPost == null) {
+            throw new NotFoundException("Blog post with ID " + blogPostID + " not found.");
+        }
+        return DTOConverter.toBlogPostDto(blogPost);
     }
 
     // Add a new BlogPost
     @Transactional
-    public BlogPostDTO addBlogPost(BlogPostDTO blogPostDTO, Long accountId) {
-        if (accountRepository.findById(accountId) == null) {
-            throw new IllegalArgumentException("Invalid account ID: " + accountId);
-        }
-        BlogPost blogPost = blogPostDTO.toEntity();
+    public BlogPostDTO addBlogPost(BlogPostDTO blogPostDTO) {
+        BlogPost blogPost = new BlogPost();
+        blogPost.setTitle(blogPostDTO.getTitle());
+        blogPost.setContent(blogPostDTO.getContent());
+        blogPost.setCreator(blogPostDTO.getCreator());
         blogPost.setCreatedAt(ZonedDateTime.now());
-        blogPost.setLastChangedAt(ZonedDateTime.now());
-        blogPostRepository.persist(blogPost);
-        return new BlogPostDTO(blogPost);
+        try {
+            blogPostRepository.persist(blogPost);
+        } catch (Exception e) {
+            throw new DatabaseException("Error while adding the blog post to the database.", e);
+        }
+        return DTOConverter.toBlogPostDto(blogPost);
     }
 
      // Update an existing BlogPost
@@ -89,14 +93,45 @@ public class BlogPostService {
          }
      }
 
+    // Update blogPost
+    @Transactional
+    public BlogPostDTO updateBlogPost(BlogPostDTO blogPostDTO) {
+        BlogPost blogPost;
+        try {
+            blogPost = blogPostRepository.findById(blogPostDTO.getBlogPostID());
+        } catch (Exception e) {
+            throw new DatabaseException("Error while accessing the database.", e);
+        }
+        if (blogPost == null) {
+            throw new NotFoundException("Blog post with ID " + blogPostDTO.getBlogPostID() + " not found.");
+        }
+
+        blogPost.setTitle(blogPostDTO.getTitle());
+        blogPost.setContent(blogPostDTO.getContent());
+        blogPost.setLastChangedAt(ZonedDateTime.now());
+
+        try {
+            blogPostRepository.persist(blogPost);
+        } catch (Exception e) {
+            throw new DatabaseException("Error while updating the blog post with ID " + blogPostDTO.getBlogPostID(), e);
+        }
+        return DTOConverter.toBlogPostDto(blogPost);
+    }
+
     // Delete a BlogPost by id
     @Transactional
-    public void deleteBlogPost(Long id) {
-        BlogPost blogPost = blogPostRepository.findById(id);
-        if (blogPost != null) {
-            blogPostRepository.delete(blogPost);
-        } else {
-            throw new IllegalArgumentException("Blog post with id " + id + " not found.");
+    public BlogPostDTO deleteBlogPost (Long blogPostID) {
+
+        BlogPost blogPost = blogPostRepository.findById(blogPostID);
+        if (blogPost == null) {
+            throw new NotFoundException("Blog post with ID " + blogPostID + " not found.");
         }
+        BlogPostDTO deletedBlogPostDTO = DTOConverter.toBlogPostDto(blogPost);
+        try {
+            blogPostRepository.deleteById(blogPostID);
+        } catch (Exception e) {
+            throw new DatabaseException("Error while deleting the blog post with ID " + blogPostID, e);
+        }
+        return deletedBlogPostDTO;
     }
 }
