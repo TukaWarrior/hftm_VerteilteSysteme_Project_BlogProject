@@ -1,6 +1,5 @@
 package ch.hftm.blogproject.control;
 
-import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -18,7 +17,6 @@ import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import jakarta.ws.rs.core.Response;
 
 @ApplicationScoped
 public class BlogPostService {
@@ -167,12 +165,10 @@ public class BlogPostService {
         }
         existingBlogPost.setLastChangedAt(ZonedDateTime.now());
         try {
-            // Persist the changes
             blogPostRepository.persist(existingBlogPost);
         } catch (Exception e) {
             throw new DatabaseException("Error while partially updating the blog post with ID " + id, e);
         }
-        // Return the updated blog post as a DTO
         return DTOConverter.toBlogPostDto(existingBlogPost);
     }
 
@@ -197,12 +193,13 @@ public class BlogPostService {
     @Transactional
     public void deleteAllBlogPosts() {
         try {
-            blogPostRepository.deleteAll(); // Delete all blog posts in the repository
+            blogPostRepository.deleteAll();
         } catch (Exception e) {
             throw new DatabaseException("Error while deleting all blog posts.", e);
         }
     }
-
+    
+    // Cound all BlogPosts
     public long countBlogPosts() {
         try {
             return blogPostRepository.count();
