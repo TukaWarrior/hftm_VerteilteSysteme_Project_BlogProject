@@ -134,4 +134,14 @@ public class BlogPostService {
         }
         return deletedBlogPostDTO;
     }
+
+    // Delete all BlogPosts
+    @Transactional
+    public void deleteAllBlogPosts() {
+        try {
+            blogPostRepository.deleteAll(); // Delete all blog posts in the repository
+        } catch (Exception e) {
+            throw new DatabaseException("Error while deleting all blog posts.", e);
+        }
+    }
 }
