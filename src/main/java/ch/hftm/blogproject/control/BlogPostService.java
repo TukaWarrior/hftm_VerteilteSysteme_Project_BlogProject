@@ -155,4 +155,12 @@ public class BlogPostService {
             throw new DatabaseException("Error while deleting all blog posts.", e);
         }
     }
+
+    public long countBlogPosts() {
+        try {
+            return blogPostRepository.count();
+        } catch (Exception e) {
+            throw new DatabaseException("Error while counting blog posts in the database.", e);
+        }
+    }
 }
