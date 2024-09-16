@@ -1,6 +1,8 @@
 package ch.hftm.blogproject.model.entity;
 
 import java.time.ZonedDateTime;
+import java.util.List;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,25 +16,26 @@ public class BlogPost {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "blogpost_id")
     private Long id;
-    
-    @Column(nullable = false)
+    // @Column(nullable = false)
     private String title;
-    
-    @Column(nullable = false)
+    // @Column(columnDefinition = "TEXT")
+    // @Column(nullable = false)
     private String content;
-    
+    private String creator;
     private ZonedDateTime createdAt;
-    private ZonedDateTime changedAt;
+    private ZonedDateTime lastChangedAt;
     
-    private Long accountId;
+    @OneToMany(mappedBy = "blogpost", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Comment> comments;
 
     // Constructor for creating new blog posts
-    public BlogPost(String title, String content, Long accountId) {
-        this.title = title;
-        this.content = content;
-        this.accountId = accountId;
-        this.createdAt = ZonedDateTime.now();
-        this.changedAt = ZonedDateTime.now();
-    }
+    // public BlogPost(String title, String content, Long accountId) {
+    //     this.title = title;
+    //     this.content = content;
+    //     this.accountId = accountId;
+    //     this.createdAt = ZonedDateTime.now();
+    //     this.lastChangedAt = ZonedDateTime.now();
+    // }
 }

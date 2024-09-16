@@ -27,7 +27,7 @@ public class CommentDTO {
 
     // Constructor for GET responses
     public CommentDTO(Comment comment) {
-        this.id = comment.getId();
+        this.id = comment.getCommentID();
         this.content = comment.getContent();
         this.createdAt = comment.getCreatedAt();
         this.changedAt = comment.getChangedAt();

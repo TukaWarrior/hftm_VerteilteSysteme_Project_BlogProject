@@ -66,7 +66,7 @@ public class BlogPostService {
         }
         BlogPost blogPost = blogPostDTO.toEntity();
         blogPost.setCreatedAt(ZonedDateTime.now());
-        blogPost.setChangedAt(ZonedDateTime.now());
+        blogPost.setLastChangedAt(ZonedDateTime.now());
         blogPostRepository.persist(blogPost);
         return new BlogPostDTO(blogPost);
     }
@@ -83,7 +83,7 @@ public class BlogPostService {
              if (blogPostDTO.getContent() != null) {
                  existingBlogPost.setContent(blogPostDTO.getContent());
              }
-             existingBlogPost.setChangedAt(ZonedDateTime.now());
+             existingBlogPost.setLastChangedAt(ZonedDateTime.now());
          } else {
              throw new IllegalArgumentException("BlogPost not found for id: " + id);
          }

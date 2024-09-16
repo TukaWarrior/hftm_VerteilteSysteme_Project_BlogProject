@@ -33,7 +33,7 @@ public class BlogPostDTO {
         this.title = blogPost.getTitle();
         this.content = blogPost.getContent();
         this.createdAt = blogPost.getCreatedAt();
-        this.changedAt = blogPost.getChangedAt();
+        this.changedAt = blogPost.getLastChangedAt();
         this.accountId = blogPost.getAccountId();
     }
 
