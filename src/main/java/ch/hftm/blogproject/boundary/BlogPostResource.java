@@ -77,13 +77,14 @@ public class BlogPostResource {
         }
     }
 
+    // Put and patch are the same for now.
     @PUT
     @Path("/{blogPostID}")
     @RolesAllowed({"admin", "moderator"})
     @Operation(summary = "Update a BlogPost", description = "Updates an existing BlogPost")
-    public Response putBlogPost(@PathParam("blogPostID") Long id, BlogPostDTO blogPostDTO) {
+    public Response putBlogPost(@PathParam("blogPostID") Long blogPostID, BlogPostDTO blogPostDTO) {
         try {
-            blogPostDTO.setBlogPostID(id); // Ensure the ID in DTO is the same as the path ID
+            blogPostDTO.setBlogPostID(blogPostID);
             BlogPostDTO updatedBlogPost = blogPostService.putBlogPost(blogPostDTO);
             return Response.ok(updatedBlogPost).build();
         } catch (NotFoundException e) {
@@ -92,15 +93,16 @@ public class BlogPostResource {
             return buildErrorResponse(Response.Status.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
-
+    
+    // Put and patch are the same for now.
     @PATCH
     @Path("/{blogPostID}")
     @RolesAllowed({"admin", "moderator"})
     @Operation(summary = "Partially Update a BlogPost", description = "Partially updates an existing BlogPost")
-    public Response patchBlogPost(@PathParam("blogPostID") Long id, BlogPostDTO blogPostDTO) {
+    public Response patchBlogPost(@PathParam("blogPostID") Long blogPostID, BlogPostDTO blogPostDTO) {
         try {
-            blogPostDTO.setBlogPostID(id); // Ensure the ID in DTO is the same as the path ID
-            BlogPostDTO updatedBlogPost = blogPostService.putBlogPost(blogPostDTO); // Reuse the update method for simplicity
+            blogPostDTO.setBlogPostID(blogPostID);
+            BlogPostDTO updatedBlogPost = blogPostService.putBlogPost(blogPostDTO);
             return Response.ok(updatedBlogPost).build();
         } catch (NotFoundException e) {
             return buildErrorResponse(Response.Status.NOT_FOUND, e.getMessage());

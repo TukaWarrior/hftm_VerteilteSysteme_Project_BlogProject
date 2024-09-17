@@ -23,17 +23,15 @@ public class BlogPost {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "blogpost_id")
+    @Column(name = "blogPostID")
     private Long blogPostID;
-    // @Column(nullable = false)
     private String title;
     // @Column(columnDefinition = "TEXT")
-    // @Column(nullable = false)
     private String content;
     private String creator;
     private ZonedDateTime createdAt;
     private ZonedDateTime lastChangedAt;
     
-    @OneToMany(mappedBy = "blogpost", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "blogPost", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Comment> comments;
 }

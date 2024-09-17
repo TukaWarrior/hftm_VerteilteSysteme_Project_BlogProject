@@ -20,15 +20,14 @@ import lombok.NoArgsConstructor;
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "comment_id")
+    @Column(name = "commentID")
     private Long commentID;
-    // @Column(nullable = false)
     private String content;
     private String creator;
     private ZonedDateTime createdAt;
     private ZonedDateTime lastChangedAt;
 
     @ManyToOne
-    @JoinColumn(name = "blogpost_id")
+    @JoinColumn(name = "blogPostID")
     private BlogPost blogPost;
 }
