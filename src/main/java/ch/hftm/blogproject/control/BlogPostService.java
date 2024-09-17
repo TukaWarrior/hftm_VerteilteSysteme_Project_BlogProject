@@ -30,13 +30,13 @@ public class BlogPostService {
     public List<BlogPostDTO> getBlogPosts(Optional<String> searchString, Optional<Integer> page) {
         PanacheQuery<BlogPost> blogPostQuery;
         try {
-            if (searchString == null || searchString.isEmpty()) {
+            if (searchString.isEmpty()) {
                 blogPostQuery = blogPostRepository.findAll();
             } else {
                 blogPostQuery = blogPostRepository.find("title like ?1 or content like ?1", "%" + searchString.get() + "%");
             } 
             int pageNumber = page.orElse(0);
-            List<BlogPost> blogposts = blogPostQuery.page(Page.of(pageNumber, 15)).list();
+            List<BlogPost> blogposts = blogPostQuery.page(Page.of(pageNumber, 10)).list();
             return DTOConverter.toBlogPostDtoList(blogposts);
         } catch (Exception e) {
             throw new DatabaseException("Error while accessing the database.", e);
@@ -59,13 +59,13 @@ public class BlogPostService {
         BlogPost blogPost;
         try {
             blogPost = blogPostRepository.findById(blogPostID);
+            if (blogPost == null) {
+                throw new NotFoundException("Blog post with ID " + blogPostID + " not found.");
+            }
+            return DTOConverter.toBlogPostDto(blogPost);
         } catch (Exception e) {
             throw new DatabaseException("Error while accessing the database.", e);
         }
-        if (blogPost == null) {
-            throw new NotFoundException("Blog post with ID " + blogPostID + " not found.");
-        }
-        return DTOConverter.toBlogPostDto(blogPost);
     }
 
     // Get Blog Posts by Creator
