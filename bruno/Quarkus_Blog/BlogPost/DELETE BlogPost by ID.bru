@@ -1,22 +1,17 @@
 meta {
-  name: GET BlogPost(s)
+  name: DELETE BlogPost by ID
   type: http
-  seq: 1
+  seq: 7
 }
 
-get {
-  url: {{localhost}}/blogpost
+delete {
+  url: {{localhost}}/blogpost/:id
   body: none
   auth: bearer
 }
 
-params:query {
-  ~searchString: 
-  ~page: 
-}
-
-headers {
-  ~Origin: Origin www.google.ch
+params:path {
+  id: 1
 }
 
 auth:bearer {
