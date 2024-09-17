@@ -23,21 +23,20 @@ public class CommentService {
 
     @Inject
     CommentRepository commentRepository;
-
     @Inject
     BlogPostRepository blogPostRepository;
 
     // Get all comments with optional filtering
-    public List<CommentDTO> getAllCommentsWithOptionalFiltering(Optional<String> searchString, Optional<Integer> page) {
+    public List<CommentDTO> getComments(Optional<String> searchString, Optional<Integer> page) {
         PanacheQuery<Comment> commentQuery;
         try {
-            if (searchString.isEmpty() || searchString.get().isEmpty()) {
+            if (searchString.isEmpty()) {
                 commentQuery = commentRepository.findAll();
             } else {
                 commentQuery = commentRepository.find("content like ?1", "%" + searchString.get() + "%");
             }
             int pageNumber = page.orElse(0);
-            List<Comment> comments = commentQuery.page(Page.of(pageNumber, 20)).list();
+            List<Comment> comments = commentQuery.page(Page.of(pageNumber, 10)).list();
             return DTOConverter.toCommentDtoList(comments);
         } catch (Exception e) {
             throw new DatabaseException("Error while getting comments.", e);
@@ -45,119 +44,154 @@ public class CommentService {
     }
 
     // Get all comments for a specific blog post
-    public List<CommentDTO> getAllCommentsFromBlog(Long blogId) {
+    public List<CommentDTO> getAllCommentsOfBlogPost(Long blogPostID) {
         try {
-            BlogPost blog = blogPostRepository.findById(blogId);
-            if (blog == null) {
-                throw new NotFoundException("Blog post with ID " + blogId + " not found.");
+            BlogPost blogPost = blogPostRepository.findById(blogPostID);
+            if (blogPost == null) {
+                throw new NotFoundException("Blog post with ID " + blogPostID + " not found.");
             }
-            return DTOConverter.toCommentDtoList(blog.getComments());
+            return DTOConverter.toCommentDtoList(blogPost.getComments());
         } catch (Exception e) {
-            throw new DatabaseException("Error while getting comments from blog with ID " + blogId, e);
+            throw new DatabaseException("Error while getting comments from blog with ID " + blogPostID, e);
         }
     }
 
     // Get a single comment by ID
-    public CommentDTO getCommentById(Long commentId) {
+    public CommentDTO getCommentById(Long commentID) {
         try {
-            Comment existingComment = commentRepository.findById(commentId);
-            if (existingComment == null) {
-                throw new NotFoundException("Comment with ID " + commentId + " not found.");
+            Comment comment = commentRepository.findById(commentID);
+            if (comment == null) {
+                throw new NotFoundException("Comment with ID " + commentID + " not found.");
             }
-            return DTOConverter.toCommentDto(existingComment);
+            return DTOConverter.toCommentDto(comment);
         } catch (Exception e) {
-            throw new DatabaseException("Error while getting comment with ID " + commentId, e);
+            throw new DatabaseException("Error while getting comment with ID " + commentID, e);
         }
     }
 
     // Get a single comment from a specific blog post
-    public CommentDTO getSingleCommentFromBlog(Long blogId, Long commentId) {
+    public CommentDTO getCommentFromBlogPost(Long blogPostID, Long commentID) {
         try {
-            BlogPost blog = blogPostRepository.findById(blogId);
-            if (blog == null) {
-                throw new NotFoundException("Blog post with ID " + blogId + " not found.");
+            BlogPost blogPost = blogPostRepository.findById(blogPostID);
+            if (blogPost == null) {
+                throw new NotFoundException("Blog post with ID " + blogPostID + " not found.");
             }
-
-            Comment existingComment = commentRepository.findById(commentId);
-            if (existingComment == null || !existingComment.getBlogPost().getBlogPostID().equals(blogId)) {
-                throw new NotFoundException("Comment with ID " + commentId + " not found for blog post with ID " + blogId);
+            Comment comment = commentRepository.findById(commentID);
+            if (comment == null || !comment.getBlogPost().getBlogPostID().equals(blogPostID)) {
+                throw new NotFoundException("Comment with ID " + commentID + " not found for blog post with ID " + blogPostID);
             }
-            return DTOConverter.toCommentDto(existingComment);
+            return DTOConverter.toCommentDto(comment);
         } catch (Exception e) {
-            throw new DatabaseException("Error while getting comment with ID " + commentId + " from blog with ID " + blogId, e);
+            throw new DatabaseException("Error while getting comment with ID " + commentID + " from blog with ID " + blogPostID, e);
         }
-    }
+    }  
 
     // Add a new comment to a blog post
     @Transactional
-    public CommentDTO addCommentToBlog(Long blogId, CommentDTO commentDTO) {
+    public CommentDTO addCommentToBlog(Long blogPostID, CommentDTO commentDTO) {
         try {
-            BlogPost existingBlog = blogPostRepository.findById(blogId);
-            if (existingBlog == null) {
-                throw new NotFoundException("Blog post with ID " + blogId + " not found.");
+            BlogPost blogPost = blogPostRepository.findById(blogPostID);
+            if (blogPost == null) {
+                throw new NotFoundException("Blog post with ID " + blogPostID + " not found.");
             }
-
             // Calculate next comment number for the blog post
-            Long nextCommentNumber = commentRepository.count("blog.id", blogId) + 1;
-
+            // Long nextCommentNumber = commentRepository.count("blog.id", blogPostID) + 1;
             Comment comment = new Comment();
             // comment.setCommentNumber(nextCommentNumber); // Comment number specific to this blog post
             comment.setContent(commentDTO.getContent());
             comment.setCreator(commentDTO.getCreator());
             comment.setCreatedAt(ZonedDateTime.now());
-            comment.setBlogPost(existingBlog);
+            comment.setBlogPost(blogPost);
 
             commentRepository.persist(comment);
             return DTOConverter.toCommentDto(comment);
         } catch (Exception e) {
-            throw new DatabaseException("Error while adding comment to blog post with ID " + blogId, e);
+            throw new DatabaseException("Error while adding comment to blog post with ID " + blogPostID, e);
         }
     }
 
     // Update an existing comment for a specific blog post
     @Transactional
-    public CommentDTO updateCommentOfBlog(Long blogId, CommentDTO commentDTO) {
-        Long commentId = commentDTO.getCommentID();
+    public CommentDTO updateCommentOfBlog(Long blogPostID, CommentDTO commentDTO) {
+        Long commentID = commentDTO.getCommentID();
 
         try {
-            BlogPost existingBlog = blogPostRepository.findById(blogId);
+            BlogPost existingBlog = blogPostRepository.findById(blogPostID);
             if (existingBlog == null) {
-                throw new NotFoundException("Blog post with ID " + blogId + " not found.");
+                throw new NotFoundException("Blog post with ID " + blogPostID + " not found.");
             }
-
-            Comment existingComment = commentRepository.findById(commentId);
-            if (existingComment == null || !existingComment.getBlogPost().getBlogPostID().equals(blogId)) {
-                throw new NotFoundException("Comment with ID " + commentId + " not found for blog post with ID " + blogId);
+            Comment existingComment = commentRepository.findById(commentID);
+            if (existingComment == null || !existingComment.getBlogPost().getBlogPostID().equals(blogPostID)) {
+                throw new NotFoundException("Comment with ID " + commentID + " not found for blog post with ID " + blogPostID);
             }
-
             existingComment.setContent(commentDTO.getContent());
             existingComment.setLastChangedAt(ZonedDateTime.now());
             commentRepository.persist(existingComment);
-
             return DTOConverter.toCommentDto(existingComment);
         } catch (Exception e) {
-            throw new DatabaseException("Error while updating comment with ID " + commentId + " for blog post with ID " + blogId, e);
+            throw new DatabaseException("Error while updating comment with ID " + commentID + " for blog post with ID " + blogPostID, e);
         }
     }
 
     // Delete a comment from a specific blog post
     @Transactional
-    public CommentDTO deleteCommentFromBlog(Long blogId, Long commentId) {
+    public CommentDTO deleteCommentFromBlog(Long blogPostID, Long commentID) {
         try {
-            BlogPost existingBlog = blogPostRepository.findById(blogId);
-            if (existingBlog == null) {
-                throw new NotFoundException("Blog post with ID " + blogId + " not found.");
+            BlogPost existingBlogPost = blogPostRepository.findById(blogPostID);
+            if (existingBlogPost == null) {
+                throw new NotFoundException("Blog post with ID " + blogPostID + " not found.");
             }
-
-            Comment existingComment = commentRepository.findById(commentId);
-            if (existingComment == null || !existingComment.getBlogPost().getBlogPostID().equals(blogId)) {
-                throw new NotFoundException("Comment with ID " + commentId + " not found for blog post with ID " + blogId);
+            Comment existingComment = commentRepository.findById(commentID);
+            if (existingComment == null || !existingComment.getBlogPost().getBlogPostID().equals(blogPostID)) {
+                throw new NotFoundException("Comment with ID " + commentID + " not found for blog post with ID " + blogPostID);
             }
 
             commentRepository.delete(existingComment);
             return DTOConverter.toCommentDto(existingComment);
         } catch (Exception e) {
-            throw new DatabaseException("Error while deleting comment with ID " + commentId + " from blog post with ID " + blogId, e);
+            throw new DatabaseException("Error while deleting comment with ID " + commentID + " from blog post with ID " + blogPostID, e);
+        }
+    }
+
+    // Count all comments
+    public Long countComments() {
+        try {
+            return commentRepository.count();
+        } catch (Exception e) {
+            throw new DatabaseException("Error while counting all comments.", e);
+        }
+    }
+
+    // Count all comments for a specific blog post
+    public Long countCommentsFromBlogPost(Long blogPostID) {
+        try {
+            BlogPost blogPost = blogPostRepository.findById(blogPostID);
+            if (blogPost == null) {
+                throw new NotFoundException("Blog post with ID " + blogPostID + " not found.");
+            }
+            return commentRepository.count("blogPost.id", blogPostID);
+        } catch (Exception e) {
+            throw new DatabaseException("Error while counting comments for blog post with ID " + blogPostID, e);
+        }
+    }
+
+    // Delete all comments (admin operation)
+    @Transactional
+    public void deleteAllComments() {
+        try {
+            commentRepository.deleteAll();
+        } catch (Exception e) {
+            throw new DatabaseException("Error while deleting all comments.", e);
+        }
+    }
+
+    // Get comments within a specific date range
+    public List<CommentDTO> getCommentsByDateRange(ZonedDateTime startDate, ZonedDateTime endDate) {
+        try {
+            List<Comment> comments = commentRepository.find("createdAt BETWEEN ?1 AND ?2", startDate, endDate).list();
+            return DTOConverter.toCommentDtoList(comments);
+        } catch (Exception e) {
+            throw new DatabaseException("Error while getting comments by date range.", e);
         }
     }
 }
