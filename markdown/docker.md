@@ -52,6 +52,8 @@ or
 2. Start keycloack with db configuration and volume mapping for import and export, and import keycloak config. 
 ```bash
 docker run --name keycloak --network blogproject-nw -v "$(pwd)\keycloak\import:/opt/keycloak/data/import" -v "$(pwd)\keycloak\export:/opt/keycloak/data/export" -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin -e KC_HTTP_PORT=8180 -e KC_HOSTNAME_URL=http://keycloak:8180 -p 8180:8180 -e KC_DB=mysql -e KC_DB_URL=jdbc:mysql://keycloak-mysql:3306/keycloakdb -e KC_DB_USERNAME=dbuser -e KC_DB_PASSWORD=dbuser -d quay.io/keycloak/keycloak:25.0.5 start-dev --import-realm
+
+docker run --name keycloak --network blogproject-nw -v "$(pwd)\src\main\resources\keycloak\import:/opt/keycloak/data/import" -v "$(pwd)\src\main\resources\keycloak\export:/opt/keycloak/data/export" -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin -e KC_HTTP_PORT=8180 -e KC_HOSTNAME_URL=http://keycloak:8180 -p 8180:8180 -e KC_DB=mysql -e KC_DB_URL=jdbc:mysql://keycloak-mysql:3306/keycloakdb -e KC_DB_USERNAME=dbuser -e KC_DB_PASSWORD=dbuser -d quay.io/keycloak/keycloak:25.0.5 start-dev --import-realm
 ```
 
 
@@ -78,7 +80,6 @@ Export all realms
 docker exec keycloak /opt/keycloak/bin/kc.sh export --dir /opt/keycloak/data/export --users realm_file
 Export only blogproject realm
 docker exec keycloak /opt/keycloak/bin/kc.sh export --dir /opt/keycloak/data/export --realm blogproject
-
 ```
 Import keycloack config
 ```bash
