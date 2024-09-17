@@ -48,12 +48,12 @@ public class BlogPostResource {
     }
 
     @GET
-    @Path("/{id}")
+    @Path("/{blogPostID}")
     @PermitAll
     @Operation(summary = "Get a BlogPost by ID", description = "Returns a BlogPost by its ID.")
-    public Response getBlogPost(@PathParam("id") Long id) {
+    public Response getBlogPost(@PathParam("blogPostID") Long blogPostID) {
         try {
-            BlogPostDTO blogPost = blogPostService.getBlogPostById(id);
+            BlogPostDTO blogPost = blogPostService.getBlogPostById(blogPostID);
             return Response.ok(blogPost).build();
         } catch (NotFoundException e) {
             return buildErrorResponse(Response.Status.NOT_FOUND, e.getMessage());
@@ -67,6 +67,9 @@ public class BlogPostResource {
     @Operation(summary = "Add a new BlogPost", description = "Creates a new BlogPost")
     public Response addBlogPost(BlogPostDTO blogPostDTO) {
         try {
+            String creator = jsonWebToken.getName(); 
+            blogPostDTO.setCreator(creator);
+
             BlogPostDTO createdBlogPost = blogPostService.addBlogPost(blogPostDTO);
             return Response.status(Response.Status.CREATED).entity(createdBlogPost).build();
         } catch (DatabaseException e) {
@@ -75,10 +78,10 @@ public class BlogPostResource {
     }
 
     @PUT
-    @Path("/{id}")
+    @Path("/{blogPostID}")
     @RolesAllowed({"admin", "moderator"})
     @Operation(summary = "Update a BlogPost", description = "Updates an existing BlogPost")
-    public Response putBlogPost(@PathParam("id") Long id, BlogPostDTO blogPostDTO) {
+    public Response putBlogPost(@PathParam("blogPostID") Long id, BlogPostDTO blogPostDTO) {
         try {
             blogPostDTO.setBlogPostID(id); // Ensure the ID in DTO is the same as the path ID
             BlogPostDTO updatedBlogPost = blogPostService.putBlogPost(blogPostDTO);
@@ -91,10 +94,10 @@ public class BlogPostResource {
     }
 
     @PATCH
-    @Path("/{id}")
+    @Path("/{blogPostID}")
     @RolesAllowed({"admin", "moderator"})
     @Operation(summary = "Partially Update a BlogPost", description = "Partially updates an existing BlogPost")
-    public Response patchBlogPost(@PathParam("id") Long id, BlogPostDTO blogPostDTO) {
+    public Response patchBlogPost(@PathParam("blogPostID") Long id, BlogPostDTO blogPostDTO) {
         try {
             blogPostDTO.setBlogPostID(id); // Ensure the ID in DTO is the same as the path ID
             BlogPostDTO updatedBlogPost = blogPostService.putBlogPost(blogPostDTO); // Reuse the update method for simplicity
@@ -107,10 +110,10 @@ public class BlogPostResource {
     }
 
     @DELETE
-    @Path("/{id}")
+    @Path("/{blogPostID}")
     @RolesAllowed({"admin", "moderator"})
     @Operation(summary = "Delete a BlogPost", description = "Deletes an existing BlogPost")
-    public Response deleteBlogPost(@PathParam("id") Long id) {
+    public Response deleteBlogPost(@PathParam("blogPostID") Long id) {
         try {
             BlogPostDTO deletedBlogPost = blogPostService.deleteBlogPost(id);
             return Response.ok(deletedBlogPost).build();
@@ -173,6 +176,8 @@ public class BlogPostResource {
     @Operation(summary = "Add a Comment to a BlogPost", description = "Adds a new Comment to a specific BlogPost.")
     public Response addCommentToBlogPost(@PathParam("blogPostID") Long blogPostID, CommentDTO commentDTO) {
         try {
+            String creator = jsonWebToken.getName();
+            commentDTO.setCreator(creator);
             CommentDTO createdComment = commentService.addCommentToBlog(blogPostID, commentDTO);
             return Response.status(Response.Status.CREATED).entity(createdComment).build();
         } catch (NotFoundException e) {

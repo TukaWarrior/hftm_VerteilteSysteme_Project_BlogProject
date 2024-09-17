@@ -26,6 +26,7 @@ public class BlogPostService {
     @Inject
     AccountRepository accountRepository;
 
+    // ------------------------- Getting BlogPosts -------------------------
     // Get all BlogPosts with search and pagination
     public List<BlogPostDTO> getBlogPosts(Optional<String> searchString, Optional<Integer> page) {
         PanacheQuery<BlogPost> blogPostQuery;
@@ -44,15 +45,15 @@ public class BlogPostService {
     }
 
     // Get all Blog Posts with Sorting
-    // public List<BlogPostDTO> getAllBlogPostsSorted(String sortBy, boolean ascending) {
-    //     try {
-    //         Sort sort = ascending ? Sort.ascending(sortBy) : Sort.descending(sortBy);
-    //         List<BlogPost> blogPosts = blogPostRepository.findAll(sort).list();
-    //         return DTOConverter.toBlogPostDtoList(blogPosts);
-    //     } catch (Exception e) {
-    //         throw new DatabaseException("Error while accessing the database.", e);
-    //     }
-    // }
+    public List<BlogPostDTO> getAllBlogPostsSorted(String sortBy, boolean ascending) {
+        try {
+            Sort sort = ascending ? Sort.ascending(sortBy) : Sort.descending(sortBy);
+            List<BlogPost> blogPosts = blogPostRepository.findAll(sort).list();
+            return DTOConverter.toBlogPostDtoList(blogPosts);
+        } catch (Exception e) {
+            throw new DatabaseException("Error while accessing the database.", e);
+        }
+    }
 
     // Get a BlogPost by ID
     public BlogPostDTO getBlogPostById(Long blogPostID) {
@@ -69,24 +70,24 @@ public class BlogPostService {
     }
 
     // Get Blog Posts by Creator
-    // public List<BlogPostDTO> getBlogPostsByCreator(String creator) {
-    //     try {
-    //         List<BlogPost> blogPosts = blogPostRepository.find("creator", creator).list();
-    //         return DTOConverter.toBlogPostDtoList(blogPosts);
-    //     } catch (Exception e) {
-    //         throw new DatabaseException("Error while accessing the database.", e);
-    //     }
-    // }
+    public List<BlogPostDTO> getBlogPostsByCreator(String creator) {
+        try {
+            List<BlogPost> blogPosts = blogPostRepository.find("creator", creator).list();
+            return DTOConverter.toBlogPostDtoList(blogPosts);
+        } catch (Exception e) {
+            throw new DatabaseException("Error while accessing the database.", e);
+        }
+    }
 
-    // public List<BlogPostDTO> getBlogPostsByDateRange(ZonedDateTime startDate, ZonedDateTime endDate) {
-    //     try {
-    //         List<BlogPost> blogPosts = blogPostRepository
-    //             .find("createdAt BETWEEN ?1 AND ?2", startDate, endDate).list();
-    //         return DTOConverter.toBlogPostDtoList(blogPosts);
-    //     } catch (Exception e) {
-    //         throw new DatabaseException("Error while accessing the database.", e);
-    //     }
-    // }
+    public List<BlogPostDTO> getBlogPostsByDateRange(ZonedDateTime startDate, ZonedDateTime endDate) {
+        try {
+            List<BlogPost> blogPosts = blogPostRepository
+                .find("createdAt BETWEEN ?1 AND ?2", startDate, endDate).list();
+            return DTOConverter.toBlogPostDtoList(blogPosts);
+        } catch (Exception e) {
+            throw new DatabaseException("Error while accessing the database.", e);
+        }
+    }
 
     // Add a new BlogPost
     @Transactional
@@ -128,30 +129,30 @@ public class BlogPostService {
         return DTOConverter.toBlogPostDto(existingBlogPost);
     }
 
-    // @Transactional
-    // public BlogPostDTO patchBlogPost(Long id, BlogPostDTO blogPostDTO) {
-    //     BlogPost existingBlogPost = blogPostRepository.findById(id);
-    //     if (existingBlogPost == null) {
-    //         throw new NotFoundException("BlogPost not found for id: " + id);
-    //     }
-    //     // Update only the fields that are provided in the request (patch-like behavior)
-    //     if (blogPostDTO.getTitle() != null) {
-    //         existingBlogPost.setTitle(blogPostDTO.getTitle());
-    //     }
-    //     if (blogPostDTO.getContent() != null) {
-    //         existingBlogPost.setContent(blogPostDTO.getContent());
-    //     }
-    //     if (blogPostDTO.getCreator() != null) {
-    //         existingBlogPost.setCreator(blogPostDTO.getCreator());
-    //     }
-    //     existingBlogPost.setLastChangedAt(ZonedDateTime.now());
-    //     try {
-    //         blogPostRepository.persist(existingBlogPost);
-    //     } catch (Exception e) {
-    //         throw new DatabaseException("Error while partially updating the blog post with ID " + id, e);
-    //     }
-    //     return DTOConverter.toBlogPostDto(existingBlogPost);
-    // }
+    @Transactional
+    public BlogPostDTO patchBlogPost(Long id, BlogPostDTO blogPostDTO) {
+        BlogPost existingBlogPost = blogPostRepository.findById(id);
+        if (existingBlogPost == null) {
+            throw new NotFoundException("BlogPost not found for id: " + id);
+        }
+        // Update only the fields that are provided in the request (patch-like behavior)
+        if (blogPostDTO.getTitle() != null) {
+            existingBlogPost.setTitle(blogPostDTO.getTitle());
+        }
+        if (blogPostDTO.getContent() != null) {
+            existingBlogPost.setContent(blogPostDTO.getContent());
+        }
+        if (blogPostDTO.getCreator() != null) {
+            existingBlogPost.setCreator(blogPostDTO.getCreator());
+        }
+        existingBlogPost.setLastChangedAt(ZonedDateTime.now());
+        try {
+            blogPostRepository.persist(existingBlogPost);
+        } catch (Exception e) {
+            throw new DatabaseException("Error while partially updating the blog post with ID " + id, e);
+        }
+        return DTOConverter.toBlogPostDto(existingBlogPost);
+    }
 
     // Delete a BlogPost by id
     @Transactional
@@ -180,6 +181,7 @@ public class BlogPostService {
         }
     }
 
+    // ------------------------- Counting -------------------------
     // Count all BlogPosts
     public Long countBlogPosts() {
         try {
