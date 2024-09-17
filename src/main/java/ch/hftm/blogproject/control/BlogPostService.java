@@ -8,7 +8,6 @@ import ch.hftm.blogproject.model.dto.BlogPostDTO;
 import ch.hftm.blogproject.model.entity.BlogPost;
 import ch.hftm.blogproject.model.exception.DatabaseException;
 import ch.hftm.blogproject.model.exception.NotFoundException;
-import ch.hftm.blogproject.repository.AccountRepository;
 import ch.hftm.blogproject.repository.BlogPostRepository;
 import ch.hftm.blogproject.util.DTOConverter;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
@@ -23,8 +22,6 @@ public class BlogPostService {
 
     @Inject
     BlogPostRepository blogPostRepository;
-    @Inject
-    AccountRepository accountRepository;
 
     // ------------------------- Getting BlogPosts -------------------------
     // Get all BlogPosts with search and pagination
