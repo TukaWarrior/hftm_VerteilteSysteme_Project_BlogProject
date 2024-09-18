@@ -30,7 +30,6 @@ This project uses the java framework Quarkus.
     - [Running in Development Mode](#running-in-development-mode)
 3. [Accessing the Webview](#accessing-the-webview)
 4. [Keycloak Setup](#keycloak)
-    - [Users and Roles](#users)
 5. [Endpoints](#endpoints)
     - [Authentication](#authentication)
     - [BlogPosts](#blogposts)
@@ -40,8 +39,6 @@ This project uses the java framework Quarkus.
     - [Roadmap](#roadmap)
     - [Important Files](#important-files)
     - [Useful Subsidiary Tools](#useful-subsidiary-tools)
-
-Let me know if you'd like to adjust anything!
 
 # Starting the application
 > [!IMPORTANT]  
@@ -83,7 +80,7 @@ Let me know if you'd like to adjust anything!
     ```
     If you see an `Connection refused` error, the other containers may not have startet up yet. Wait a few more seconds and try again. 
 
-## Running in developement mode
+## Running in development mode
 1. 
     ```bash
     ./mvnw quarkus:dev
