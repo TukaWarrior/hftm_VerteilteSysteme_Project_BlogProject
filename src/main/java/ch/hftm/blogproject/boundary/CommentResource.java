@@ -27,7 +27,7 @@ public class CommentResource {
     CommentService commentService;
 
     @GET
-    @PermitAll
+    @Authenticated
     @Operation(summary = "Get all Comments", description = "Returns a list of all Comments with optional search and pagination.")
     public Response getAllComments(@QueryParam("searchString") Optional<String> searchString, @QueryParam("page") Optional<Integer> page) {
         try {
@@ -40,7 +40,7 @@ public class CommentResource {
 
     @GET
     @Path("/{commentID}")
-    @PermitAll
+    @Authenticated
     @Operation(summary = "Get a Comment by ID", description = "Returns a Comment by its ID.")
     public Response getCommentById(@PathParam("commentID") Long id) {
         try {

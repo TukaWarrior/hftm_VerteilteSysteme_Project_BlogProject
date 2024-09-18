@@ -18,6 +18,7 @@ import io.quarkus.security.Authenticated;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -36,7 +37,7 @@ public class BlogPostResource {
     JsonWebToken jsonWebToken;
 
     @GET
-    @PermitAll
+    @Authenticated
     @Operation(summary = "Get all BlogPosts", description = "Returns a list of BlogPosts with optional search and pagination.")
     public Response getAllBlogPosts(@QueryParam("searchString") Optional<String> searchString, @QueryParam("page") Optional<Integer> page) {
         try {
@@ -49,8 +50,8 @@ public class BlogPostResource {
 
     @GET
     @Path("/{blogPostID}")
-    @PermitAll
-    @Operation(summary = "Get a BlogPost by ID", description = "Returns a BlogPost by its ID.")
+    @Authenticated
+    @Operation(summary = "Get one BlogPost by ID", description = "Returns a BlogPost by its ID.")
     public Response getBlogPost(@PathParam("blogPostID") Long blogPostID) {
         try {
             BlogPostDTO blogPost = blogPostService.getBlogPostById(blogPostID);
@@ -64,8 +65,8 @@ public class BlogPostResource {
 
     @POST
     @Authenticated
-    @Operation(summary = "Add a new BlogPost", description = "Creates a new BlogPost")
-    public Response addBlogPost(BlogPostDTO blogPostDTO) {
+    @Operation(summary = "Add one new BlogPost", description = "Creates a new BlogPost")
+    public Response addBlogPost(@Valid BlogPostDTO blogPostDTO) {
         try {
             String creator = jsonWebToken.getName(); 
             blogPostDTO.setCreator(creator);
@@ -114,7 +115,7 @@ public class BlogPostResource {
     @DELETE
     @Path("/{blogPostID}")
     @RolesAllowed({"admin", "moderator"})
-    @Operation(summary = "Delete a BlogPost", description = "Deletes an existing BlogPost")
+    @Operation(summary = "Delete one BlogPost by ID", description = "Deletes an existing BlogPost")
     public Response deleteBlogPost(@PathParam("blogPostID") Long id) {
         try {
             BlogPostDTO deletedBlogPost = blogPostService.deleteBlogPost(id);
@@ -138,11 +139,6 @@ public class BlogPostResource {
         }
     }
 
-    private Response buildErrorResponse(Response.Status status, String message) {
-        return Response.status(status).entity(message).build();
-    }
-
-
     @GET
     @Path("/count")
     @RolesAllowed({"admin"})
@@ -156,10 +152,14 @@ public class BlogPostResource {
         }
     }
 
+    private Response buildErrorResponse(Response.Status status, String message) {
+        return Response.status(status).entity(message).build();
+    }
+
 // Comments
     @GET
     @Path("/{blogPostID}/comment")
-    @PermitAll
+    @Authenticated
     @Operation(summary = "Get all Comments for a BlogPost", description = "Returns a list of Comments for a specific BlogPost.")
     public Response getCommentsForBlogPost(@PathParam("blogPostID") Long blogPostID) {
         try {
@@ -175,8 +175,8 @@ public class BlogPostResource {
     @POST
     @Path("/{blogPostID}/comment")
     @Authenticated
-    @Operation(summary = "Add a Comment to a BlogPost", description = "Adds a new Comment to a specific BlogPost.")
-    public Response addCommentToBlogPost(@PathParam("blogPostID") Long blogPostID, CommentDTO commentDTO) {
+    @Operation(summary = "Add one Comment to a BlogPost", description = "Adds a new Comment to a specific BlogPost.")
+    public Response addCommentToBlogPost(@PathParam("blogPostID") Long blogPostID, @Valid CommentDTO commentDTO) {
         try {
             String creator = jsonWebToken.getName();
             commentDTO.setCreator(creator);
@@ -191,7 +191,7 @@ public class BlogPostResource {
 
     @GET
     @Path("/{blogPostID}/comment/{commentID}")
-    @PermitAll
+    @Authenticated
     @Operation(summary = "Get a Comment by ID from a BlogPost", description = "Returns a Comment by its ID under a specific BlogPost.")
     public Response getCommentFromBlogPost(@PathParam("blogPostID") Long blogPostID, @PathParam("commentID") Long commentID) {
         try {
