@@ -1,22 +1,17 @@
 meta {
-  name: DELETE Comment by Id
+  name: GET¨one Comment by CommentID
   type: http
-  seq: 4
+  seq: 8
 }
 
-delete {
-  url: {{localhost}}/blogpost/:blogPostID/comment/:commentID
+get {
+  url: {{localhost}}/comment/:commentID
   body: none
   auth: bearer
 }
 
 params:path {
-  blogPostID: 30
-  commentID: 2
-}
-
-headers {
-  commentId: 2
+  commentID: 3
 }
 
 auth:bearer {

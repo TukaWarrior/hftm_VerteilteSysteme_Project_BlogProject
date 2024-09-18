@@ -1,22 +1,17 @@
 meta {
-  name: DELETE Comment by Id
+  name: COUNT All Comments of a BlogPost by BlogPost ID
   type: http
-  seq: 4
+  seq: 6
 }
 
-delete {
-  url: {{localhost}}/blogpost/:blogPostID/comment/:commentID
+get {
+  url: {{localhost}}/blogpost/:blogPostID/comment/count
   body: none
   auth: bearer
 }
 
 params:path {
   blogPostID: 30
-  commentID: 2
-}
-
-headers {
-  commentId: 2
 }
 
 auth:bearer {

@@ -1,16 +1,17 @@
 meta {
-  name: GET Comment(s) by BlogPostID
+  name: GET Comment by BlogPost ID and CommentID
   type: http
-  seq: 1
+  seq: 5
 }
 
 get {
-  url: {{localhost}}/blogpost/:blogPostID/comment
+  url: {{localhost}}/blogpost/:blogPostID/comment/:commentID
   body: none
   auth: bearer
 }
 
 params:path {
+  commentID: 1
   blogPostID: 30
 }
 
